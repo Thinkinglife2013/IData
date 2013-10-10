@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/column_category_item_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/column_category_listitem_padding_top_botoom"
+    android:paddingLeft="@dimen/column_category_padding_left"
+    android:paddingRight="@dimen/column_category_padding_left"
+    android:paddingTop="@dimen/column_category_listitem_padding_top_botoom" 
+    >
+
+      <ImageView
+       android:id="@+id/icon"
+       android:layout_width="45dp"
+       android:layout_height="45dp"
+       android:scaleType="fitXY" 
+       android:src="@drawable/folder"/>"
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/column_category_listitem_padding" >
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/column_category_listitem_title_color"
+            android:textSize="@dimen/column_category_listitem_title_textsize" 
+            />
+    
+    </LinearLayout>
+    
+</LinearLayout>
