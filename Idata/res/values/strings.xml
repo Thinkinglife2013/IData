@@ -8,5 +8,16 @@
     <string name="ok">确定</string>
     <string name="cancle">取消</string>
     <string name="input_password">请输入密码</string>
+    
+    <string name="tab_local">本地存储区</string>
+    <string name="tab_idata">iData存储区</string>
+    <string name="setting">设置</string>
+    <string name="mutil_choose">多选</string>
+    <string name="photo">照片</string>
+    <string name="video">视频</string>
+    <string name="music">音乐</string>
+     <string name="doc">文档</string>
+    <string name="folder">文件夹</string>
+    <string name="contact">通讯录备份与恢复</string>
 
 </resources>

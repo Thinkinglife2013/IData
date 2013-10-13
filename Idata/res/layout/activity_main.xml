@@ -2,15 +2,144 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         />
+    >
+    
+      <LinearLayout 
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/top_bg"
+	    android:layout_alignParentTop="true"
+	    android:gravity="center"
+	    >
+	    <ImageView 
+	         android:layout_width="wrap_content"
+	   		 android:layout_height="wrap_content"
+	   		  android:background="@drawable/logo"/>
+     </LinearLayout>
+	    
+      <RelativeLayout 
+        android:id="@+id/content"
+        android:layout_below="@id/top"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@drawable/store_bg">
+	    <LinearLayout 
+	        android:id="@+id/tabbar"
+	        android:layout_width="match_parent"
+		    android:layout_height="40dp"
+		    android:weightSum="2.01">
+		    
+	        <RelativeLayout 
+	            android:id="@+id/local"
+			    android:layout_width="0dp"
+			    android:layout_height="match_parent"
+			    android:layout_weight="1">
+		        <TextView 
+		            android:layout_width="fill_parent"
+			    	android:layout_height="fill_parent"
+			    	android:text="@string/tab_local" 
+			    	android:textColor="@android:color/darker_gray"
+			    	android:gravity="center"/>
+		        <ImageView 
+		            android:id="@+id/local_selected"
+		            android:layout_alignParentBottom="true"
+		            android:layout_centerHorizontal="true"
+		            android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:background="@drawable/tab_selected"/>
+		     </RelativeLayout>
+		     
+	        <ImageView 
+	             android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center_vertical"
+			    android:background="@drawable/tab_divider"
+			    android:layout_weight="0.01" />
+	        <RelativeLayout 
+	            android:id="@+id/idata"
+			    android:layout_width="0dp"
+			    android:layout_height="match_parent"
+			    android:layout_weight="1">
+		         <TextView 
+		            android:layout_width="fill_parent"
+			    	android:layout_height="fill_parent"
+			    	android:text="@string/tab_idata"
+			    	android:textColor="@android:color/darker_gray" 
+			    	android:gravity="center"/>
+	         	 <ImageView 
+	         	    android:id="@+id/idata_selected"
+		            android:layout_alignParentBottom="true"
+		            android:layout_centerHorizontal="true"
+		            android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:background="@drawable/tab_selected"
+			    	android:visibility="gone"/>
+		     </RelativeLayout>
+	    </LinearLayout>
+	    
+	    <ImageView 
+	            android:layout_below="@id/tabbar"
+	            android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/index_divider"
+		    	/>
+	    
+	    <android.support.v4.view.ViewPager    
+	        android:layout_below="@id/tabbar"
+	        android:id="@+id/viewPager"    
+	        android:layout_width="fill_parent"    
+	        android:layout_height="fill_parent"
+	        android:layout_marginBottom="48.5dp"
+	         />   
+	         
+      <LinearLayout 
+          	android:layout_alignParentBottom="true"
+         	android:layout_width="fill_parent"    
+	        android:layout_height="48.5dp" 
+	        android:background="@drawable/bottom_bg"
+	        android:weightSum="2"
+	        >
+	       <LinearLayout 
+	         	android:layout_width="0dp"  
+	         	android:layout_height="fill_parent"  
+	         	android:orientation="vertical"
+	         	android:layout_weight="1"
+	         	android:gravity="center"
+		        >
+	           <ImageView 
+			            android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:scaleType="fitXY"
+				    	android:src="@drawable/setting_icon"
+				    	/>
+	           <TextView 
+	                	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:text="@string/setting"
+				    	android:textSize="12sp"/>
+           </LinearLayout>
+           
+         <LinearLayout 
+         	android:layout_width="0dp"  
+         	android:layout_height="fill_parent"  
+         	android:orientation="vertical"
+         	android:layout_weight="1"
+         	android:gravity="center"
+	        >
+              <ImageView 
+		            android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:scaleType="fitXY"
+			    	android:src="@drawable/multi_choose_icon"
+			    	/>
+              <TextView 
+               	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:text="@string/mutil_choose"
+		    	android:textSize="12sp"/>
+          </LinearLayout>
+      </LinearLayout>
+	</RelativeLayout>
 
 </RelativeLayout>
