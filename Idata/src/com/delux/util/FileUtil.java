@@ -1,4 +1,4 @@
-package com.xiude.util;
+package com.delux.util;
 
 public class FileUtil {
 	public static final int DEFAULT = 0;
@@ -36,5 +36,7 @@ public class FileUtil {
 				}
 			}
 		}
+			return DEFAULT;
+		
 	}
 }

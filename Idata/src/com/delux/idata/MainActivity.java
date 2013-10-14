@@ -1,4 +1,4 @@
-package com.xiude.idata;
+package com.delux.idata;
 
 import java.util.ArrayList;
 import java.util.List;
