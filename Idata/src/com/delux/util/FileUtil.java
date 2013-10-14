@@ -14,7 +14,7 @@ public class FileUtil {
 		if(fileName != null){
 			int index = fileName.lastIndexOf(".");
 			if(index != -1){
-				String suffix = fileName.substring(index);
+				String suffix = fileName.substring(index+1);
 				if("GIF".equalsIgnoreCase(suffix) || "png".equalsIgnoreCase(suffix) || "jpg".equalsIgnoreCase(suffix)
 						|| "bmp".equalsIgnoreCase(suffix) || "tiff".equalsIgnoreCase(suffix) || "psd".equalsIgnoreCase(suffix)
 						|| "swf".equalsIgnoreCase(suffix) || "svg".equalsIgnoreCase(suffix) || "JPEG".equalsIgnoreCase(suffix)){

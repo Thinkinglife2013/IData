@@ -6,6 +6,7 @@
     android:weightSum="6">
 	<!-- 照片 -->
 	<RelativeLayout 
+	    android:id="@+id/photo"
 	    android:layout_width="fill_parent"
 	    android:layout_height="0dp" 
 	    android:layout_weight="1">
@@ -49,6 +50,7 @@
     
 	<!-- 视频-->
 	<RelativeLayout 
+	    android:id="@+id/video"
 	    android:layout_width="fill_parent"
 	    android:layout_height="0dp" 
 	    android:layout_weight="1">
@@ -92,6 +94,7 @@
     
 	<!-- 音乐 -->
 	<RelativeLayout 
+	    android:id="@+id/music"
 	    android:layout_width="fill_parent"
 	    android:layout_height="0dp" 
 	    android:layout_weight="1">
@@ -135,6 +138,7 @@
     
 	<!-- 文档 -->
 	<RelativeLayout 
+	    android:id="@+id/doc"
 	    android:layout_width="fill_parent"
 	    android:layout_height="0dp" 
 	    android:layout_weight="1">
@@ -178,6 +182,7 @@
     
 	<!-- 文件夹 -->
 	<RelativeLayout 
+	    android:id="@+id/folder"
 	    android:layout_width="fill_parent"
 	    android:layout_height="0dp" 
 	    android:layout_weight="1">
