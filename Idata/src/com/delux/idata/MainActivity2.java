@@ -1,4 +1,4 @@
-package com.xiude.idata;
+package com.delux.idata;
 
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
@@ -26,7 +26,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
