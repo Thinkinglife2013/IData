@@ -40,6 +40,25 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 		RelativeLayout localTab = (RelativeLayout) findViewById(R.id.local);
 		RelativeLayout idataTab = (RelativeLayout) findViewById(R.id.idata);
 		
+		View settingView = findViewById(R.id.setting);
+		View mutilChooseView = findViewById(R.id.mutil_choose);
+		
+		settingView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
+		mutilChooseView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
 		localTab.setOnClickListener(new View.OnClickListener() {
 			
 			@Override

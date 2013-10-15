@@ -19,15 +19,16 @@ public final class R {
         public static final int LemonChiffon=0x7f040001;
         public static final int black=0x7f040008;
         public static final int blue=0x7f040004;
+        public static final int click_bg=0x7f04001c;
         /**  列表项描述字体颜色 
          */
-        public static final int column_category_listitem_description_color=0x7f04001e;
+        public static final int column_category_listitem_description_color=0x7f04001f;
         /**  列表项字体颜大小 
          */
-        public static final int column_category_listitem_title_color=0x7f04001d;
+        public static final int column_category_listitem_title_color=0x7f04001e;
         /**  输入框字体颜色 
          */
-        public static final int column_category_search_input_textcolor=0x7f04001c;
+        public static final int column_category_search_input_textcolor=0x7f04001d;
         public static final int column_desc_txt_read_color=0x7f04001b;
         public static final int column_desc_txt_unread_color=0x7f040019;
         public static final int column_title_txt_read_color=0x7f04001a;
@@ -138,31 +139,34 @@ public final class R {
         public static final int store_bg=0x7f020010;
         public static final int tab_divider=0x7f020011;
         public static final int tab_selected=0x7f020012;
-        public static final int top_bg=0x7f020013;
-        public static final int video_icon=0x7f020014;
+        public static final int tab_selector=0x7f020013;
+        public static final int top_bg=0x7f020014;
+        public static final int video_icon=0x7f020015;
     }
     public static final class id {
-        public static final int action_settings=0x7f090015;
+        public static final int action_settings=0x7f090017;
         public static final int content=0x7f090001;
-        public static final int corner_icon=0x7f09000f;
-        public static final int doc=0x7f090012;
-        public static final int editText=0x7f090014;
-        public static final int folder=0x7f090013;
-        public static final int icon=0x7f090008;
+        public static final int corner_icon=0x7f090011;
+        public static final int doc=0x7f090014;
+        public static final int editText=0x7f090016;
+        public static final int folder=0x7f090015;
+        public static final int icon=0x7f09000a;
         public static final int idata=0x7f090005;
         public static final int idata_selected=0x7f090006;
-        public static final int imgback=0x7f09000a;
+        public static final int imgback=0x7f09000c;
         public static final int local=0x7f090003;
         public static final int local_selected=0x7f090004;
-        public static final int music=0x7f090011;
-        public static final int name=0x7f090009;
-        public static final int photo=0x7f09000d;
-        public static final int photo_icon=0x7f09000e;
-        public static final int subscription_list=0x7f09000c;
+        public static final int music=0x7f090013;
+        public static final int mutil_choose=0x7f090009;
+        public static final int name=0x7f09000b;
+        public static final int photo=0x7f09000f;
+        public static final int photo_icon=0x7f090010;
+        public static final int setting=0x7f090008;
+        public static final int subscription_list=0x7f09000e;
         public static final int tabbar=0x7f090002;
-        public static final int title_text=0x7f09000b;
+        public static final int title_text=0x7f09000d;
         public static final int top=0x7f090000;
-        public static final int video=0x7f090010;
+        public static final int video=0x7f090012;
         public static final int viewPager=0x7f090007;
     }
     public static final class layout {

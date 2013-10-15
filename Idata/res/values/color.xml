@@ -39,4 +39,5 @@ Author:HuRonghua cnjxhrh_gmail_com
 	<color name="column_title_txt_read_color">#B2B2B2</color>
 	<color name="column_desc_txt_read_color">#B2B2B2</color>
 	
+	  <color name="click_bg">#00a0e9</color> 
 </resources>
