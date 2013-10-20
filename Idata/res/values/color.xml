@@ -40,4 +40,7 @@ Author:HuRonghua cnjxhrh_gmail_com
 	<color name="column_desc_txt_read_color">#B2B2B2</color>
 	
 	  <color name="click_bg">#00a0e9</color> 
+	  <color name="category_color">#737373</color> 
+	  <color name="item_click_bg">#1e5ea5</color> 
+	   <color name="item_bg">#00a0e9</color> 
 </resources>

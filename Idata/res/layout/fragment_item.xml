@@ -3,267 +3,276 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" 
     android:orientation="vertical"
-    android:weightSum="6">
-	<!-- 照片 -->
-	<RelativeLayout 
-	    android:id="@+id/photo"
+    >
+	<LinearLayout
+	    android:id="@+id/category"
 	    android:layout_width="fill_parent"
-	    android:layout_height="0dp" 
-	    android:layout_weight="1">
-	    <ImageView 
-	        android:id="@+id/photo_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/photo_icon"
-	    	android:layout_centerVertical="true"
-	    	android:layout_marginLeft="17dp" />
-	     <TextView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toRightOf="@id/photo_icon"
-	    	android:text="@string/photo"
-	    	android:layout_marginLeft="17dp" 
-	    	android:textSize="20sp"/>
-	     <ImageView 
-	        android:id="@+id/corner_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/corner"
-	    	android:layout_centerVertical="true"
-	    	android:layout_alignParentRight="true"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/tab_divider"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toLeftOf="@id/corner_icon"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/index_divider"
-	    	android:layout_alignParentBottom="true"
-	    	 />
-    </RelativeLayout>
-    
-	<!-- 视频-->
-	<RelativeLayout 
-	    android:id="@+id/video"
+	    android:layout_height="fill_parent" 
+	    android:orientation="vertical"
+	    android:weightSum="6"
+	    android:visibility="visible">
+		<!-- 照片 -->
+		<RelativeLayout 
+		    android:id="@+id/photo"
+		    android:layout_width="fill_parent"
+		    android:layout_height="0dp" 
+		    android:layout_weight="1">
+		    <ImageView 
+		        android:id="@+id/photo_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/photo_icon"
+		    	android:layout_centerVertical="true"
+		    	android:layout_marginLeft="17dp" />
+		     <TextView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toRightOf="@id/photo_icon"
+		    	android:text="@string/photo"
+		    	android:layout_marginLeft="17dp" 
+		    	android:textColor="@color/category_color"
+		    	android:textSize="18sp"/>
+		     <ImageView 
+		        android:id="@+id/corner_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/corner"
+		    	android:layout_centerVertical="true"
+		    	android:layout_alignParentRight="true"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/tab_divider"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toLeftOf="@id/corner_icon"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/index_divider"
+		    	android:layout_alignParentBottom="true"
+		    	 />
+	    </RelativeLayout>
+	    
+		<!-- 视频-->
+		<RelativeLayout 
+		    android:id="@+id/video"
+		    android:layout_width="fill_parent"
+		    android:layout_height="0dp" 
+		    android:layout_weight="1">
+		    <ImageView 
+		        android:id="@+id/photo_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/video_icon"
+		    	android:layout_centerVertical="true"
+		    	android:layout_marginLeft="17dp" />
+		     <TextView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toRightOf="@id/photo_icon"
+		    	android:text="@string/video"
+		    	android:layout_marginLeft="17dp" 
+		    	android:textColor="@color/category_color"
+		    	android:textSize="18sp"/>
+		     <ImageView 
+		        android:id="@+id/corner_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/corner"
+		    	android:layout_centerVertical="true"
+		    	android:layout_alignParentRight="true"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/tab_divider"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toLeftOf="@id/corner_icon"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/index_divider"
+		    	android:layout_alignParentBottom="true"
+		    	 />
+	    </RelativeLayout>
+	    
+		<!-- 音乐 -->
+		<RelativeLayout 
+		    android:id="@+id/music"
+		    android:layout_width="fill_parent"
+		    android:layout_height="0dp" 
+		    android:layout_weight="1">
+		    <ImageView 
+		        android:id="@+id/photo_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/music_icon"
+		    	android:layout_centerVertical="true"
+		    	android:layout_marginLeft="17dp" />
+		     <TextView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toRightOf="@id/photo_icon"
+		    	android:text="@string/music"
+		    	android:layout_marginLeft="17dp" 
+		    	android:textColor="@color/category_color"
+		    	android:textSize="18sp"/>
+		     <ImageView 
+		        android:id="@+id/corner_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/corner"
+		    	android:layout_centerVertical="true"
+		    	android:layout_alignParentRight="true"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/tab_divider"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toLeftOf="@id/corner_icon"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/index_divider"
+		    	android:layout_alignParentBottom="true"
+		    	 />
+	    </RelativeLayout>
+	    
+		<!-- 文档 -->
+		<RelativeLayout 
+		    android:id="@+id/doc"
+		    android:layout_width="fill_parent"
+		    android:layout_height="0dp" 
+		    android:layout_weight="1">
+		    <ImageView 
+		        android:id="@+id/photo_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/doc_icon"
+		    	android:layout_centerVertical="true"
+		    	android:layout_marginLeft="17dp" />
+		     <TextView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toRightOf="@id/photo_icon"
+		    	android:text="@string/doc"
+		    	android:layout_marginLeft="17dp" 
+		    	android:textColor="@color/category_color"
+		    	android:textSize="18sp"/>
+		     <ImageView 
+		        android:id="@+id/corner_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/corner"
+		    	android:layout_centerVertical="true"
+		    	android:layout_alignParentRight="true"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/tab_divider"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toLeftOf="@id/corner_icon"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/index_divider"
+		    	android:layout_alignParentBottom="true"
+		    	 />
+	    </RelativeLayout>
+	    
+		<!-- 文件夹 -->
+		<RelativeLayout 
+		    android:id="@+id/folder"
+		    android:layout_width="fill_parent"
+		    android:layout_height="0dp" 
+		    android:layout_weight="1">
+		    <ImageView 
+		        android:id="@+id/photo_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/folder_icon"
+		    	android:layout_centerVertical="true"
+		    	android:layout_marginLeft="17dp" />
+		     <TextView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toRightOf="@id/photo_icon"
+		    	android:text="@string/folder"
+		    	android:layout_marginLeft="17dp" 
+		    	android:textColor="@color/category_color"
+		    	android:textSize="18sp"/>
+		     <ImageView 
+		        android:id="@+id/corner_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/corner"
+		    	android:layout_centerVertical="true"
+		    	android:layout_alignParentRight="true"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/tab_divider"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toLeftOf="@id/corner_icon"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/index_divider"
+		    	android:layout_alignParentBottom="true"
+		    	 />
+	    </RelativeLayout>
+	    
+		<!-- 通讯录备份还原 -->
+		<RelativeLayout 
+		    android:layout_width="fill_parent"
+		    android:layout_height="0dp" 
+		    android:layout_weight="1">
+		    <ImageView 
+		        android:id="@+id/photo_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/backup_icon"
+		    	android:layout_centerVertical="true"
+		    	android:layout_marginLeft="17dp" />
+		     <TextView 
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toRightOf="@id/photo_icon"
+		    	android:text="@string/contact"
+		    	android:layout_marginLeft="17dp" 
+		    	android:textColor="@color/category_color"
+		    	android:textSize="18sp"/>
+		     <ImageView 
+		        android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/index_divider"
+		    	android:layout_alignParentBottom="true"
+		    	 />
+	    </RelativeLayout>
+	</LinearLayout>
+	
+	<ListView 
+	    android:id="@+id/filelist_view"
 	    android:layout_width="fill_parent"
-	    android:layout_height="0dp" 
-	    android:layout_weight="1">
-	    <ImageView 
-	        android:id="@+id/photo_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/video_icon"
-	    	android:layout_centerVertical="true"
-	    	android:layout_marginLeft="17dp" />
-	     <TextView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toRightOf="@id/photo_icon"
-	    	android:text="@string/video"
-	    	android:layout_marginLeft="17dp" 
-	    	android:textSize="20sp"/>
-	     <ImageView 
-	        android:id="@+id/corner_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/corner"
-	    	android:layout_centerVertical="true"
-	    	android:layout_alignParentRight="true"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/tab_divider"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toLeftOf="@id/corner_icon"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/index_divider"
-	    	android:layout_alignParentBottom="true"
-	    	 />
-    </RelativeLayout>
-    
-	<!-- 音乐 -->
-	<RelativeLayout 
-	    android:id="@+id/music"
-	    android:layout_width="fill_parent"
-	    android:layout_height="0dp" 
-	    android:layout_weight="1">
-	    <ImageView 
-	        android:id="@+id/photo_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/music_icon"
-	    	android:layout_centerVertical="true"
-	    	android:layout_marginLeft="17dp" />
-	     <TextView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toRightOf="@id/photo_icon"
-	    	android:text="@string/music"
-	    	android:layout_marginLeft="17dp" 
-	    	android:textSize="20sp"/>
-	     <ImageView 
-	        android:id="@+id/corner_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/corner"
-	    	android:layout_centerVertical="true"
-	    	android:layout_alignParentRight="true"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/tab_divider"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toLeftOf="@id/corner_icon"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/index_divider"
-	    	android:layout_alignParentBottom="true"
-	    	 />
-    </RelativeLayout>
-    
-	<!-- 文档 -->
-	<RelativeLayout 
-	    android:id="@+id/doc"
-	    android:layout_width="fill_parent"
-	    android:layout_height="0dp" 
-	    android:layout_weight="1">
-	    <ImageView 
-	        android:id="@+id/photo_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/doc_icon"
-	    	android:layout_centerVertical="true"
-	    	android:layout_marginLeft="17dp" />
-	     <TextView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toRightOf="@id/photo_icon"
-	    	android:text="@string/doc"
-	    	android:layout_marginLeft="17dp" 
-	    	android:textSize="20sp"/>
-	     <ImageView 
-	        android:id="@+id/corner_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/corner"
-	    	android:layout_centerVertical="true"
-	    	android:layout_alignParentRight="true"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/tab_divider"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toLeftOf="@id/corner_icon"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/index_divider"
-	    	android:layout_alignParentBottom="true"
-	    	 />
-    </RelativeLayout>
-    
-	<!-- 文件夹 -->
-	<RelativeLayout 
-	    android:id="@+id/folder"
-	    android:layout_width="fill_parent"
-	    android:layout_height="0dp" 
-	    android:layout_weight="1">
-	    <ImageView 
-	        android:id="@+id/photo_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/folder_icon"
-	    	android:layout_centerVertical="true"
-	    	android:layout_marginLeft="17dp" />
-	     <TextView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toRightOf="@id/photo_icon"
-	    	android:text="@string/folder"
-	    	android:layout_marginLeft="17dp" 
-	    	android:textSize="20sp"/>
-	     <ImageView 
-	        android:id="@+id/corner_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/corner"
-	    	android:layout_centerVertical="true"
-	    	android:layout_alignParentRight="true"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/tab_divider"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toLeftOf="@id/corner_icon"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/index_divider"
-	    	android:layout_alignParentBottom="true"
-	    	 />
-    </RelativeLayout>
-    
-	<!-- 通讯录备份还原 -->
-	<RelativeLayout 
-	    android:layout_width="fill_parent"
-	    android:layout_height="0dp" 
-	    android:layout_weight="1">
-	    <ImageView 
-	        android:id="@+id/photo_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/backup_icon"
-	    	android:layout_centerVertical="true"
-	    	android:layout_marginLeft="17dp" />
-	     <TextView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toRightOf="@id/photo_icon"
-	    	android:text="@string/contact"
-	    	android:layout_marginLeft="17dp" 
-	    	android:textSize="20sp"/>
-	     <ImageView 
-	        android:id="@+id/corner_icon"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/corner"
-	    	android:layout_centerVertical="true"
-	    	android:layout_alignParentRight="true"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/tab_divider"
-	    	android:layout_centerVertical="true"
-	    	android:layout_toLeftOf="@id/corner_icon"
-	    	android:layout_marginRight="14dp" />
-	     <ImageView 
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:background="@drawable/index_divider"
-	    	android:layout_alignParentBottom="true"
-	    	 />
-    </RelativeLayout>
+		android:layout_height="fill_parent"
+		android:cacheColorHint="@color/transparent"
+		android:visibility="gone"
+		android:divider="@drawable/index_divider"
+		/>
+	
 </LinearLayout>

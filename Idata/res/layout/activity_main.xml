@@ -40,7 +40,8 @@
 		            android:layout_width="fill_parent"
 			    	android:layout_height="fill_parent"
 			    	android:text="@string/tab_local" 
-			    	android:textColor="@android:color/darker_gray"
+			    	android:textColor="@color/category_color"
+			    	android:textSize="18sp"
 			    	android:gravity="center"/>
 		        <ImageView 
 		            android:id="@+id/local_selected"
@@ -67,7 +68,8 @@
 		            android:layout_width="fill_parent"
 			    	android:layout_height="fill_parent"
 			    	android:text="@string/tab_idata"
-			    	android:textColor="@android:color/darker_gray" 
+			    	android:textColor="@color/category_color"
+			    	android:textSize="18sp"
 			    	android:gravity="center"/>
 	         	 <ImageView 
 	         	    android:id="@+id/idata_selected"
@@ -121,6 +123,7 @@
 	                	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
 				    	android:text="@string/setting"
+				    	android:textColor="@color/category_color"
 				    	android:textSize="12sp"/>
            </LinearLayout>
            
@@ -143,6 +146,7 @@
                	android:layout_width="wrap_content"
 		    	android:layout_height="wrap_content"
 		    	android:text="@string/mutil_choose"
+		    	android:textColor="@color/category_color"
 		    	android:textSize="12sp"/>
           </LinearLayout>
       </LinearLayout>

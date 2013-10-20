@@ -43,6 +43,7 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 		View settingView = findViewById(R.id.setting);
 		View mutilChooseView = findViewById(R.id.mutil_choose);
 		
+		
 		settingView.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -103,6 +104,6 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 			idataSelectedView.setVisibility(View.VISIBLE);
 		}
 	}
-
+	
 
 }

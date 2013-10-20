@@ -1,5 +1,8 @@
 package com.delux.util;
 
+import jcifs.smb.SmbException;
+import jcifs.smb.SmbFile;
+
 public class FileUtil {
 	public static final int DEFAULT = 0;
 	public static final int PHOTO = 1;
@@ -7,6 +10,8 @@ public class FileUtil {
 	public static final int MUSIC = 3;
 	public static final int DOC = 4;
 	public static final int FOLDER = 5;
+	public static final int ROOT = 6;
+	
 	/**
 	 * 获取文件类别
 	 */
@@ -37,6 +42,24 @@ public class FileUtil {
 			}
 		}
 			return DEFAULT;
-		
+	}
+	
+	public static String getName(SmbFile file){
+		try {
+			String name = file.getName();
+			if(file.isDirectory()){
+				name = name.substring(0, name.length()-1);
+				name = name.substring(name.lastIndexOf("/")+1);
+				
+			}else{
+				name = name.substring(0, name.length());
+				name = name.substring(name.lastIndexOf("/")+1);
+			}
+			return name;
+			
+		} catch (SmbException e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 }

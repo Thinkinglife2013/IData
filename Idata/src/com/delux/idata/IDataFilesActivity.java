@@ -38,6 +38,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * @deprecated 目前弃用此文件列表类
+ *
+ */
 public class IDataFilesActivity extends Activity {
 	private String curParent;
 	private ListView listView;
@@ -58,7 +62,6 @@ public class IDataFilesActivity extends Activity {
 		Intent intent = getIntent();
 		curParent = intent.getStringExtra("curParent");
 		final int type = intent.getIntExtra("type",0);
-//		ArrayList<SmbFile> fileList = (ArrayList<SmbFile>)intent.getSerializableExtra(type);
 		
 		final FileListAdapter listAdapter = new FileListAdapter(IDataFilesActivity.this, null);
 		   new Thread(new Runnable() {
@@ -87,7 +90,7 @@ public class IDataFilesActivity extends Activity {
 							if(subfile.isDirectory()){
 								folderList.add(subfile);
 							}else{
-								int category = FileUtil.getFileCategory(getName(subfile));
+								int category = FileUtil.getFileCategory(FileUtil.getName(subfile));
 								if(FileUtil.PHOTO == category){
 									photoList.add(subfile);
 								}else if(FileUtil.MUSIC == category){
@@ -182,7 +185,7 @@ public class IDataFilesActivity extends Activity {
 					int position, long arg3) {
 				SmbFile file = (SmbFile)parent.getItemAtPosition(position);
 				try {
-					String fileName = getName(file);
+					String fileName = FileUtil.getName(file);
 					
 					openFileOrDir(file, backView, titleTextView, fileName, listAdapter);
 				} catch (Exception e) {
@@ -225,103 +228,5 @@ public class IDataFilesActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-	
-	private String getName(SmbFile file){
-		try {
-			String name = file.getName();
-			if(file.isDirectory()){
-				name = name.substring(0, name.length()-1);
-				name = name.substring(name.lastIndexOf("/")+1);
-				
-			}else{
-				name = name.substring(0, name.length());
-				name = name.substring(name.lastIndexOf("/")+1);
-			}
-			return name;
-			
-		} catch (SmbException e) {
-			e.printStackTrace();
-			return "";
-		}
-		
-	}
-
-	private class FileListAdapter extends BaseAdapter{
-		private SmbFile[] fileArray;
-		private LayoutInflater mInflater;
-
-		public FileListAdapter(Context context, SmbFile[] fileArray){
-			this.mInflater = LayoutInflater.from(context);
-			this.fileArray = fileArray;
-		}
-		
-		public SmbFile[] getFileArray() {
-			return fileArray;
-		}
-
-		public void setFileArray(SmbFile[] fileArray) {
-			this.fileArray = fileArray;
-		}
-
-		@Override
-		public int getCount() {
-			return fileArray.length;
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return fileArray[position];
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		private class ViewHolder{
-			public ImageView icon;
-			public TextView name;
-		}
-		
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
-			if(convertView == null){
-				holder = new ViewHolder();
-				convertView = mInflater.inflate(R.layout.file_item, null);
-				holder.icon = (ImageView)convertView.findViewById(R.id.icon);
-				holder.name = (TextView)convertView.findViewById(R.id.name);
-				
-				convertView.setTag(holder);
-				
-			}else{
-				holder = (ViewHolder)convertView.getTag();
-			}
-			
-			SmbFile file = fileArray[position];
-			try {
-				if(file.isDirectory()){
-					holder.icon.setImageResource(R.drawable.folder);
-				}else{
-					holder.icon.setImageResource(R.drawable.default_fileicon);
-				}
-			} catch (SmbException e) {
-				e.printStackTrace();
-			}
-			
-			String name = getName(file);
-			holder.name.setText(name);
-			
-			return convertView;
-		}
-		
-	}
-	
-/*	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}*/
 
 }
