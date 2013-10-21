@@ -9,6 +9,7 @@
     <string name="cancle">取消</string>
     <string name="input_password">请输入密码</string>
     
+     <string name="load">正在加载文件列表</string>
     <string name="tab_local">本地存储区</string>
     <string name="tab_idata">iData存储区</string>
     <string name="setting">设置</string>

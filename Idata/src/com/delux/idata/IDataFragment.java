@@ -1,5 +1,6 @@
 package com.delux.idata;
 
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +9,8 @@ import java.util.Map;
 import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,17 +19,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
+import com.delux.idata.MainActivity.BackKeyEvent;
 import com.delux.util.FileUtil;
 
 
-public class IDataFragment extends Fragment {
+public class IDataFragment extends Fragment implements BackKeyEvent{
 	private String curParent = "smb://192.168.169.1/Share/";
-	Map<Integer, ArrayList> categoryMap;
+	Map<Integer, ArrayList> categoryMap = new HashMap<Integer, ArrayList>();
+	ListView filelistView;
+	View categoryView;
+	private int curClickType;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,22 +45,24 @@ public class IDataFragment extends Fragment {
 		View musicRow = contextView.findViewById(R.id.music);
 		View docRow = contextView.findViewById(R.id.doc);
 		View folderRow = contextView.findViewById(R.id.folder);
-		final View categoryView = contextView.findViewById(R.id.category);
-		final ListView filelistView = (ListView)contextView.findViewById(R.id.filelist_view);
+		categoryView = contextView.findViewById(R.id.category);
+		filelistView = (ListView)contextView.findViewById(R.id.filelist_view);
 		
-	/*	this.getFragmentManager().addOnBackStackChangedListener(new OnBackStackChangedListener() {
-			
-			@Override
-			public void onBackStackChanged() {
-				Log.i("fragment_back", "addOnBackStackChangedListener");
-			}
-		});*/
 		final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
+		final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.load), true, false); 
 		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
+				
 				categoryMap = getCategoryFiles();
+				getActivity().runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						progressDialog.dismiss();
+					}
+				});
 			}
 		}).start();
 		
@@ -68,6 +75,7 @@ public class IDataFragment extends Fragment {
 					
 					@Override
 					public void run() {
+						curClickType = FileUtil.PHOTO;
 						final SmbFile[] sf = getFileList(categoryMap, FileUtil.PHOTO);
 						
 						getActivity().runOnUiThread(new Runnable() {
@@ -100,11 +108,6 @@ public class IDataFragment extends Fragment {
 					}
 				}).start();
 				
-			/*	Intent i = new Intent(getActivity(), IDataFilesActivity.class);
-				i.putExtra("type", FileUtil.PHOTO);
-//				i.putExtra("PHOTO", categoryMap.get(FileUtil.PHOTO));
-				i.putExtra("curParent", curParent);
-				startActivity(i);*/
 			}
 		});
 		
@@ -116,6 +119,8 @@ public class IDataFragment extends Fragment {
 					
 					@Override
 					public void run() {
+						curClickType = FileUtil.VIDEO;
+						
 						final SmbFile[] sf = getFileList(categoryMap, FileUtil.VIDEO);
 						final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
 						
@@ -164,6 +169,8 @@ public class IDataFragment extends Fragment {
 					
 					@Override
 					public void run() {
+						curClickType = FileUtil.MUSIC;
+						
 						final SmbFile[] sf = getFileList(categoryMap, FileUtil.MUSIC);
 						final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
 						
@@ -213,6 +220,8 @@ public class IDataFragment extends Fragment {
 					
 					@Override
 					public void run() {
+						curClickType = FileUtil.DOC;
+						
 						final SmbFile[] sf = getFileList(categoryMap, FileUtil.DOC);
 						final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
 						
@@ -262,6 +271,9 @@ public class IDataFragment extends Fragment {
 					
 					@Override
 					public void run() {
+						curClickType = FileUtil.ROOT;
+						curParent = "smb://192.168.169.1/";
+						
 						final SmbFile[] sf = getFileList(categoryMap, FileUtil.ROOT);
 						final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
 						
@@ -370,6 +382,20 @@ public class IDataFragment extends Fragment {
 		        	
 					for(SmbFile	subfile : subfiles){
 						if(subfile.isDirectory()){
+							SmbFile[] subfiles2 = subfile.listFiles();
+							
+							for(SmbFile	subfile2 : subfiles2){
+								int category = FileUtil.getFileCategory(FileUtil.getName(subfile2));
+								if(FileUtil.PHOTO == category){
+									photoList.add(subfile2);
+								}else if(FileUtil.MUSIC == category){
+									musicList.add(subfile2);
+								}else if(FileUtil.VIDEO == category){
+									videoList.add(subfile2);
+								}else if(FileUtil.DOC == category){
+									docList.add(subfile2);
+								}
+							}
 //							folderList.add(subfile);
 						}else{
 							int category = FileUtil.getFileCategory(FileUtil.getName(subfile));
@@ -433,6 +459,50 @@ public class IDataFragment extends Fragment {
 		}
 	}
 	
-	
+	public void onBack() {
+		Log.i("IDataFragment", "curParent ="+curParent);
+		if("smb://192.168.169.1/".equals(curParent) || curClickType != FileUtil.ROOT){
+			categoryView.setVisibility(View.VISIBLE);
+			filelistView.setVisibility(View.GONE);
+		}
+		
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+			        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
+					final SmbFile file = new SmbFile(curParent, auth);
+					final SmbFile[] files = file.listFiles();
+					
+				    getActivity().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+//							if("smb://192.168.169.1/Share/".equals(curParent)){
+//								backView.setVisibility(View.GONE);
+//							}
+							
+							String tempPath = curParent;
+							tempPath = tempPath.substring(0, tempPath.length()-1);
+							tempPath = tempPath.substring(tempPath.lastIndexOf("/")+1);
+							
+							FileListAdapter listAdapter = (FileListAdapter)filelistView.getAdapter();
+							listAdapter.setFileArray(files);
+							filelistView.setAdapter(listAdapter);
+//						      titleTextView.setText(tempPath);
+						      
+						      curParent = file.getParent();
+						}
+					});
+				    
+					
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (SmbException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
 
 }

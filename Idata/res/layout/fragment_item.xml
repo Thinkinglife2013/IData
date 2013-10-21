@@ -16,6 +16,7 @@
 		    android:id="@+id/photo"
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
+		    android:background="@drawable/tab_selector"
 		    android:layout_weight="1">
 		    <ImageView 
 		        android:id="@+id/photo_icon"
@@ -33,7 +34,7 @@
 		    	android:layout_marginLeft="17dp" 
 		    	android:textColor="@color/category_color"
 		    	android:textSize="18sp"/>
-		     <ImageView 
+		 <!--     <ImageView 
 		        android:id="@+id/corner_icon"
 		        android:layout_width="wrap_content"
 		    	android:layout_height="wrap_content"
@@ -47,7 +48,7 @@
 		    	android:background="@drawable/tab_divider"
 		    	android:layout_centerVertical="true"
 		    	android:layout_toLeftOf="@id/corner_icon"
-		    	android:layout_marginRight="14dp" />
+		    	android:layout_marginRight="14dp" /> -->
 		     <ImageView 
 		        android:layout_width="fill_parent"
 		    	android:layout_height="wrap_content"
@@ -61,6 +62,7 @@
 		    android:id="@+id/video"
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
+		    android:background="@drawable/tab_selector"
 		    android:layout_weight="1">
 		    <ImageView 
 		        android:id="@+id/photo_icon"
@@ -78,7 +80,7 @@
 		    	android:layout_marginLeft="17dp" 
 		    	android:textColor="@color/category_color"
 		    	android:textSize="18sp"/>
-		     <ImageView 
+		<!--      <ImageView 
 		        android:id="@+id/corner_icon"
 		        android:layout_width="wrap_content"
 		    	android:layout_height="wrap_content"
@@ -92,7 +94,7 @@
 		    	android:background="@drawable/tab_divider"
 		    	android:layout_centerVertical="true"
 		    	android:layout_toLeftOf="@id/corner_icon"
-		    	android:layout_marginRight="14dp" />
+		    	android:layout_marginRight="14dp" /> -->
 		     <ImageView 
 		        android:layout_width="fill_parent"
 		    	android:layout_height="wrap_content"
@@ -106,6 +108,7 @@
 		    android:id="@+id/music"
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
+		    android:background="@drawable/tab_selector"
 		    android:layout_weight="1">
 		    <ImageView 
 		        android:id="@+id/photo_icon"
@@ -123,7 +126,7 @@
 		    	android:layout_marginLeft="17dp" 
 		    	android:textColor="@color/category_color"
 		    	android:textSize="18sp"/>
-		     <ImageView 
+		   <!--   <ImageView 
 		        android:id="@+id/corner_icon"
 		        android:layout_width="wrap_content"
 		    	android:layout_height="wrap_content"
@@ -137,7 +140,7 @@
 		    	android:background="@drawable/tab_divider"
 		    	android:layout_centerVertical="true"
 		    	android:layout_toLeftOf="@id/corner_icon"
-		    	android:layout_marginRight="14dp" />
+		    	android:layout_marginRight="14dp" /> -->
 		     <ImageView 
 		        android:layout_width="fill_parent"
 		    	android:layout_height="wrap_content"
@@ -151,6 +154,7 @@
 		    android:id="@+id/doc"
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
+		    android:background="@drawable/tab_selector"
 		    android:layout_weight="1">
 		    <ImageView 
 		        android:id="@+id/photo_icon"
@@ -168,7 +172,7 @@
 		    	android:layout_marginLeft="17dp" 
 		    	android:textColor="@color/category_color"
 		    	android:textSize="18sp"/>
-		     <ImageView 
+		  <!--    <ImageView 
 		        android:id="@+id/corner_icon"
 		        android:layout_width="wrap_content"
 		    	android:layout_height="wrap_content"
@@ -182,7 +186,7 @@
 		    	android:background="@drawable/tab_divider"
 		    	android:layout_centerVertical="true"
 		    	android:layout_toLeftOf="@id/corner_icon"
-		    	android:layout_marginRight="14dp" />
+		    	android:layout_marginRight="14dp" /> -->
 		     <ImageView 
 		        android:layout_width="fill_parent"
 		    	android:layout_height="wrap_content"
@@ -196,6 +200,7 @@
 		    android:id="@+id/folder"
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
+		    android:background="@drawable/tab_selector"
 		    android:layout_weight="1">
 		    <ImageView 
 		        android:id="@+id/photo_icon"
@@ -213,7 +218,7 @@
 		    	android:layout_marginLeft="17dp" 
 		    	android:textColor="@color/category_color"
 		    	android:textSize="18sp"/>
-		     <ImageView 
+		 <!--     <ImageView 
 		        android:id="@+id/corner_icon"
 		        android:layout_width="wrap_content"
 		    	android:layout_height="wrap_content"
@@ -227,7 +232,7 @@
 		    	android:background="@drawable/tab_divider"
 		    	android:layout_centerVertical="true"
 		    	android:layout_toLeftOf="@id/corner_icon"
-		    	android:layout_marginRight="14dp" />
+		    	android:layout_marginRight="14dp" /> -->
 		     <ImageView 
 		        android:layout_width="fill_parent"
 		    	android:layout_height="wrap_content"
@@ -240,6 +245,7 @@
 		<RelativeLayout 
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
+		    android:background="@drawable/tab_selector"
 		    android:layout_weight="1">
 		    <ImageView 
 		        android:id="@+id/photo_icon"

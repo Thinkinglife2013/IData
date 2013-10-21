@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -79,8 +80,8 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 			Fragment localFragment = new LocalFragment();
 			mFragmentList.add(localFragment);
 		
-			Fragment IDataFragment = new IDataFragment();
-			mFragmentList.add(IDataFragment);
+			Fragment iDataFragment = new IDataFragment();
+			mFragmentList.add(iDataFragment);
 	}
 	
 	@Override
@@ -97,12 +98,35 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 	public void onPageSelected(int position) {
 		
 		if(position == 0){
+			curSelectPosition = 0;
 			localSelectedView.setVisibility(View.VISIBLE);
 			idataSelectedView.setVisibility(View.GONE);
 		}else{
+			curSelectPosition = 1;
 			localSelectedView.setVisibility(View.GONE);
 			idataSelectedView.setVisibility(View.VISIBLE);
 		}
+	}
+	
+	
+	public interface BackKeyEvent{
+		public void onBack();
+	}
+	
+	private int curSelectPosition;
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	  if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+		  
+		  if(curSelectPosition == 0){
+			  ((BackKeyEvent)mFragmentList.get(0)).onBack();
+		  }else{
+			  ((BackKeyEvent)mFragmentList.get(1)).onBack();
+		  }
+          return false;
+	  }
+		return super.onKeyDown(keyCode, event);
 	}
 	
 
