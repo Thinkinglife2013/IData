@@ -5,6 +5,7 @@ import java.io.File;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,12 @@ public class LocalFileListAdapter extends BaseAdapter {
 
 	private File[] fileArray;
 	private LayoutInflater mInflater;
+	private int categoryType;
 
-	public LocalFileListAdapter(Context context, File[] fileArray){
+	public LocalFileListAdapter(Context context, File[] fileArray, int categoryType){
 		this.mInflater = LayoutInflater.from(context);
 		this.fileArray = fileArray;
+		this.categoryType = categoryType;
 	}
 	
 	public File[] getFileArray() {
@@ -68,27 +71,47 @@ public class LocalFileListAdapter extends BaseAdapter {
 		}
 		
 		File file = fileArray[position];
+		String name = getName(file);
+		
 		try {
 			if(file.isDirectory()){
 				holder.icon.setImageResource(R.drawable.folder);
 			}else{
-				holder.icon.setImageResource(R.drawable.default_fileicon);
+				holder.icon.setImageResource(FileUtil.getFileIconResId(name));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		String name = getName(file);
 		holder.name.setText(name);
 		
 		return convertView;
 	}
 	
-	private String getName(File file){
+/*	private String getName(File file){
 		try {
 			String name = file.getName();
 			if(file.isDirectory()){
 				name = name.substring(0, name.length()-1);
+				name = name.substring(name.lastIndexOf("/")+1);
+				
+			}else{
+				name = name.substring(0, name.length());
+				name = name.substring(name.lastIndexOf("/")+1);
+			}
+			return name;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}*/
+	
+	private String getName(File file){
+		try {
+			String name = file.getName();
+			if(file.isDirectory()){
+				name = name.substring(0, name.length());
 				name = name.substring(name.lastIndexOf("/")+1);
 				
 			}else{

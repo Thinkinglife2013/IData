@@ -40,7 +40,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		curParent = "/mnt";
+		curParent = "/data/data";
 		
 		View contextView = inflater.inflate(R.layout.fragment_item2, container, false);
 		View photoRow = contextView.findViewById(R.id.photo);
@@ -48,27 +48,36 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 		View musicRow = contextView.findViewById(R.id.music);
 		View docRow = contextView.findViewById(R.id.doc);
 		View folderRow = contextView.findViewById(R.id.folder);
+		
+		View internalStoreView = contextView.findViewById(R.id.internal_store);
+		View sdcardView = contextView.findViewById(R.id.sdcard);
+		
+		internalStoreView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				curParent = "/data/data";
+				getCategoryFilesOnThread(false);
+			}
+		});
+		
+		sdcardView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				curParent = "/mnt";
+				getCategoryFilesOnThread(true);
+			}
+		});
+		
 		categoryView = contextView.findViewById(R.id.category);
 		filelistView = (ListView)contextView.findViewById(R.id.filelist_view);
 		
-		final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null);
-		final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.load), true, false); 
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				
-				categoryMap = getCategoryFiles();
-				getActivity().runOnUiThread(new Runnable() {
-					
-					@Override
-					public void run() {
-						progressDialog.dismiss();
-					}
-				});
-			}
-		}).start();
-		
+		if("/mnt".equals(curParent)){
+			getCategoryFilesOnThread(true);
+		}else{
+			getCategoryFilesOnThread(false);
+		}
 		
 		photoRow.setOnClickListener(new View.OnClickListener() {
 			
@@ -80,6 +89,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 					public void run() {
 						curClickType = FileUtil.PHOTO;
 						final File[] sf = getFileList(categoryMap, FileUtil.PHOTO);
+						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
 						
 						getActivity().runOnUiThread(new Runnable() {
 							
@@ -125,7 +135,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 						curClickType = FileUtil.VIDEO;
 						
 						final File[] sf = getFileList(categoryMap, FileUtil.VIDEO);
-						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null);
+						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
 						
 						getActivity().runOnUiThread(new Runnable() {
 							
@@ -170,7 +180,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 						curClickType = FileUtil.MUSIC;
 						
 						final File[] sf = getFileList(categoryMap, FileUtil.MUSIC);
-						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null);
+						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
 						
 						getActivity().runOnUiThread(new Runnable() {
 							
@@ -215,7 +225,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 						curClickType = FileUtil.DOC;
 						
 						final File[] sf = getFileList(categoryMap, FileUtil.DOC);
-						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null);
+						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
 						
 						getActivity().runOnUiThread(new Runnable() {
 							
@@ -260,7 +270,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 						curClickType = FileUtil.ROOT;
 						
 						final File[] sf = getFileList(categoryMap, FileUtil.ROOT);
-						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null);
+						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
 						
 						getActivity().runOnUiThread(new Runnable() {
 							
@@ -297,6 +307,33 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 		return contextView;
 	}
 	
+	/**
+	 * 开子线程开始分类
+	 */
+	private void getCategoryFilesOnThread(final boolean isSdcard){
+		final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.load), true, false); 
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				if(isSdcard){
+					categoryMap = getCategoryFiles(true);
+				}else{
+					categoryMap = getCategoryFiles(false);
+				}
+				
+				getActivity().runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						progressDialog.dismiss();
+					}
+				});
+			}
+		}).start();
+	}
+	
+	
 	private void openFileOrDir(File file, ImageView backView, TextView titleTextView, String fileName, LocalFileListAdapter listAdapter){
 		try {
 			if(file.isDirectory()){
@@ -326,20 +363,31 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 			   
 			    intent.setData(content_url);  
 			    startActivity(intent);*/
+			/*	Intent i = new Intent();
+				i.setAction(Intent.ACTION_VIEW);
+				i.setType("application/msword");
+				Log.i("file_path", file.getPath());
+				i.setData(Uri.parse("file:/"+file.getPath()));
+				startActivity(i);*/
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private Map<Integer, ArrayList> getCategoryFiles(){
+	private Map<Integer, ArrayList> getCategoryFiles(boolean isSdcard){
 		try {
 //			jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
 //	        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
 //	        SmbFile file = new SmbFile("smb://192.168.169.1/Share/",auth);
+			File rootFile;
+			if(isSdcard){
+				rootFile = Environment.getExternalStorageDirectory();
+			}else{
+				rootFile = new File("/data/data/com.delux.idata/");
+			}
 			
-			File sdcard = Environment.getExternalStorageDirectory();
-			File[] files = sdcard.listFiles();
+			File[] files = rootFile.listFiles();
 			if(files != null && files.length > 0){
 		        
 		        Map<Integer, ArrayList> categoryMap = new HashMap<Integer, ArrayList>();
@@ -438,9 +486,10 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 	
 	public void onBack() {
 		Log.i("IDataFragment", "curParent ="+curParent);
-		if("/mnt".equals(curParent) || curClickType != FileUtil.ROOT){
+		if("/mnt".equals(curParent) || curClickType != FileUtil.ROOT || "/data/data".equals(curParent)){
 			categoryView.setVisibility(View.VISIBLE);
 			filelistView.setVisibility(View.GONE);
+			return;
 		}
 		
 		new Thread(new Runnable() {

@@ -66,17 +66,18 @@ public class FileListAdapter extends BaseAdapter {
 		}
 		
 		SmbFile file = fileArray[position];
+		
+		String name = FileUtil.getName(file);
 		try {
 			if(file.isDirectory()){
 				holder.icon.setImageResource(R.drawable.folder);
 			}else{
-				holder.icon.setImageResource(R.drawable.default_fileicon);
+				holder.icon.setImageResource(FileUtil.getFileIconResId(name));
 			}
 		} catch (SmbException e) {
 			e.printStackTrace();
 		}
 		
-		String name = FileUtil.getName(file);
 		holder.name.setText(name);
 		
 		return convertView;

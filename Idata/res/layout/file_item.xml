@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/column_category_listitem_padding_top_botoom" 
     >
 
-      <ImageView
+     <!--  <ImageView
        android:id="@+id/icon"
        android:layout_width="45dp"
        android:layout_height="45dp"
@@ -33,6 +33,48 @@
             android:textSize="@dimen/column_category_listitem_title_textsize" 
             />
     
-    </LinearLayout>
+    </LinearLayout> -->
+    
+    <RelativeLayout 
+		    android:id="@+id/line"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent" 
+		    >
+            <ImageView 
+		        android:id="@+id/icon"
+		        android:layout_width="45dp"
+		    	android:layout_height="45dp"
+		    	android:layout_centerVertical="true"
+		    	android:scaleType="fitXY" 
+		    	/>
+		     <TextView 
+		         android:id="@+id/name"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toRightOf="@id/icon"
+		    	android:layout_marginLeft="17dp" 
+		    	android:textColor="@color/category_color"
+		    	android:textSize="18sp"
+		    	android:layout_marginRight="50dp"
+		    	android:singleLine="true"
+		    	android:ellipsize="end"/>
+		     <ImageView 
+		        android:id="@+id/corner_icon"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/corner"
+		    	android:layout_centerVertical="true"
+		    	android:layout_alignParentRight="true"
+		    	android:layout_marginRight="14dp" />
+		     <ImageView 
+		        android:id="@+id/divider"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/tab_divider"
+		    	android:layout_centerVertical="true"
+		    	android:layout_toLeftOf="@id/corner_icon"
+		    	android:layout_marginRight="14dp" />
+    </RelativeLayout>
     
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.delux.util;
 
+import com.delux.idata.R;
+
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 
@@ -42,6 +44,45 @@ public class FileUtil {
 			}
 		}
 			return DEFAULT;
+	}
+	
+	public static int getFileIconResId(String fileName){
+		if(fileName != null){
+			int index = fileName.lastIndexOf(".");
+			if(index != -1){
+				String suffix = fileName.substring(index+1);
+				if("GIF".equalsIgnoreCase(suffix) || "png".equalsIgnoreCase(suffix) || "jpg".equalsIgnoreCase(suffix)
+						|| "bmp".equalsIgnoreCase(suffix) || "tiff".equalsIgnoreCase(suffix) || "psd".equalsIgnoreCase(suffix)
+						|| "swf".equalsIgnoreCase(suffix) || "svg".equalsIgnoreCase(suffix) || "JPEG".equalsIgnoreCase(suffix)){
+					return R.drawable.default_fileicon;
+				}else if("rmvb".equalsIgnoreCase(suffix) || "rm".equalsIgnoreCase(suffix) || "wmv".equalsIgnoreCase(suffix)
+						|| "avi".equalsIgnoreCase(suffix) || "MOV".equalsIgnoreCase(suffix) || "MPEG".equalsIgnoreCase(suffix) 
+						|| "ASF".equalsIgnoreCase(suffix)){
+					return R.drawable.video_icon;
+				}else if("mp3".equalsIgnoreCase(suffix) || "wma".equalsIgnoreCase(suffix) || "wav".equalsIgnoreCase(suffix)
+						|| "ogg".equalsIgnoreCase(suffix) || "ac3".equalsIgnoreCase(suffix) || "aiff".equalsIgnoreCase(suffix) 
+						|| "dat".equalsIgnoreCase(suffix)){
+					return R.drawable.music_file;
+				}else if("wri".equalsIgnoreCase(suffix) || "xml".equalsIgnoreCase(suffix)){
+					return R.drawable.default_doc;
+				}else if("doc".equalsIgnoreCase(suffix) || "docx".equalsIgnoreCase(suffix)){
+					return R.drawable.doc_file;
+				}else if("pdf".equalsIgnoreCase(suffix)){
+					return R.drawable.pdf_file;
+				}else if("epub".equalsIgnoreCase(suffix)){
+					return R.drawable.epub_file;
+				}else if("ppt".equalsIgnoreCase(suffix)){
+					return R.drawable.ppt_file;
+				}else if("txt".equalsIgnoreCase(suffix)){
+					return R.drawable.txt_file;
+				}else if("xls".equalsIgnoreCase(suffix) || "xlsx".equalsIgnoreCase(suffix)){
+					return R.drawable.xls_file;
+				}else{
+					return R.drawable.default_fileicon;
+				}
+			}
+		}
+		return R.drawable.default_fileicon;
 	}
 	
 	public static String getName(SmbFile file){

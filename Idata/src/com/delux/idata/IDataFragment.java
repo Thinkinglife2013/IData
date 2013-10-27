@@ -23,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delux.idata.MainActivity.BackKeyEvent;
 import com.delux.util.FileUtil;
@@ -76,34 +77,47 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					@Override
 					public void run() {
 						curClickType = FileUtil.PHOTO;
-						final SmbFile[] sf = getFileList(categoryMap, FileUtil.PHOTO);
 						
-						getActivity().runOnUiThread(new Runnable() {
+						try{
+							final SmbFile[] sf = getFileList(categoryMap, FileUtil.PHOTO);
 							
-							@Override
-							public void run() {
-								categoryView.setVisibility(View.GONE);
-								listAdapter.setFileArray(sf);
-								filelistView.setAdapter(listAdapter);
-								filelistView.setVisibility(View.VISIBLE);
+							getActivity().runOnUiThread(new Runnable() {
 								
-								filelistView.setOnItemClickListener(new OnItemClickListener() {
-
-									@Override
-									public void onItemClick(AdapterView<?> parent, View arg1,
-											int position, long arg3) {
-										SmbFile file = (SmbFile)parent.getItemAtPosition(position);
-										try {
-											String fileName = getName(file);
-											
-											openFileOrDir(file, null, null, fileName, listAdapter);
-										} catch (Exception e) {
-											e.printStackTrace();
+								@Override
+								public void run() {
+									categoryView.setVisibility(View.GONE);
+									listAdapter.setFileArray(sf);
+									filelistView.setAdapter(listAdapter);
+									filelistView.setVisibility(View.VISIBLE);
+									
+									filelistView.setOnItemClickListener(new OnItemClickListener() {
+	
+										@Override
+										public void onItemClick(AdapterView<?> parent, View arg1,
+												int position, long arg3) {
+											SmbFile file = (SmbFile)parent.getItemAtPosition(position);
+											try {
+												String fileName = getName(file);
+												
+												openFileOrDir(file, null, null, fileName, listAdapter);
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
 										}
-									}
-								});
-							}
-						});
+									});
+								}
+							});
+						}catch(Exception e){
+							e.printStackTrace();
+							getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									Toast.makeText(getActivity(), R.string.not_connect_idata, Toast.LENGTH_SHORT).show();
+	
+								}
+							});
+						}
 					
 					}
 				}).start();
@@ -121,35 +135,47 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					public void run() {
 						curClickType = FileUtil.VIDEO;
 						
-						final SmbFile[] sf = getFileList(categoryMap, FileUtil.VIDEO);
-						final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
-						
-						getActivity().runOnUiThread(new Runnable() {
+						try{
+							final SmbFile[] sf = getFileList(categoryMap, FileUtil.VIDEO);
+							final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
 							
-							@Override
-							public void run() {
-								categoryView.setVisibility(View.GONE);
-								listAdapter.setFileArray(sf);
-								filelistView.setAdapter(listAdapter);
-								filelistView.setVisibility(View.VISIBLE);
+							getActivity().runOnUiThread(new Runnable() {
 								
-								filelistView.setOnItemClickListener(new OnItemClickListener() {
-
-									@Override
-									public void onItemClick(AdapterView<?> parent, View arg1,
-											int position, long arg3) {
-										SmbFile file = (SmbFile)parent.getItemAtPosition(position);
-										try {
-											String fileName = getName(file);
-											
-											openFileOrDir(file, null, null, fileName, listAdapter);
-										} catch (Exception e) {
-											e.printStackTrace();
+								@Override
+								public void run() {
+									categoryView.setVisibility(View.GONE);
+									listAdapter.setFileArray(sf);
+									filelistView.setAdapter(listAdapter);
+									filelistView.setVisibility(View.VISIBLE);
+									
+									filelistView.setOnItemClickListener(new OnItemClickListener() {
+	
+										@Override
+										public void onItemClick(AdapterView<?> parent, View arg1,
+												int position, long arg3) {
+											SmbFile file = (SmbFile)parent.getItemAtPosition(position);
+											try {
+												String fileName = getName(file);
+												
+												openFileOrDir(file, null, null, fileName, listAdapter);
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
 										}
-									}
-								});
-							}
-						});
+									});
+								}
+							});
+						}catch(Exception e){
+							e.printStackTrace();
+							getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									Toast.makeText(getActivity(), R.string.not_connect_idata, Toast.LENGTH_SHORT).show();
+	
+								}
+							});
+						}
 					
 					}
 				}).start();
@@ -171,35 +197,47 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					public void run() {
 						curClickType = FileUtil.MUSIC;
 						
-						final SmbFile[] sf = getFileList(categoryMap, FileUtil.MUSIC);
-						final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
-						
-						getActivity().runOnUiThread(new Runnable() {
+						try{
+							final SmbFile[] sf = getFileList(categoryMap, FileUtil.MUSIC);
+							final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
 							
-							@Override
-							public void run() {
-								categoryView.setVisibility(View.GONE);
-								listAdapter.setFileArray(sf);
-								filelistView.setAdapter(listAdapter);
-								filelistView.setVisibility(View.VISIBLE);
+							getActivity().runOnUiThread(new Runnable() {
 								
-								filelistView.setOnItemClickListener(new OnItemClickListener() {
-
-									@Override
-									public void onItemClick(AdapterView<?> parent, View arg1,
-											int position, long arg3) {
-										SmbFile file = (SmbFile)parent.getItemAtPosition(position);
-										try {
-											String fileName = getName(file);
-											
-											openFileOrDir(file, null, null, fileName, listAdapter);
-										} catch (Exception e) {
-											e.printStackTrace();
+								@Override
+								public void run() {
+									categoryView.setVisibility(View.GONE);
+									listAdapter.setFileArray(sf);
+									filelistView.setAdapter(listAdapter);
+									filelistView.setVisibility(View.VISIBLE);
+									
+									filelistView.setOnItemClickListener(new OnItemClickListener() {
+	
+										@Override
+										public void onItemClick(AdapterView<?> parent, View arg1,
+												int position, long arg3) {
+											SmbFile file = (SmbFile)parent.getItemAtPosition(position);
+											try {
+												String fileName = getName(file);
+												
+												openFileOrDir(file, null, null, fileName, listAdapter);
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
 										}
-									}
-								});
-							}
-						});
+									});
+								}
+							});
+						}catch(Exception e){
+							e.printStackTrace();
+							getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									Toast.makeText(getActivity(), R.string.not_connect_idata, Toast.LENGTH_SHORT).show();
+	
+								}
+							});
+						}
 					
 					}
 				}).start();
@@ -222,35 +260,47 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					public void run() {
 						curClickType = FileUtil.DOC;
 						
-						final SmbFile[] sf = getFileList(categoryMap, FileUtil.DOC);
-						final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
-						
-						getActivity().runOnUiThread(new Runnable() {
+						try{
+							final SmbFile[] sf = getFileList(categoryMap, FileUtil.DOC);
+							final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
 							
-							@Override
-							public void run() {
-								categoryView.setVisibility(View.GONE);
-								listAdapter.setFileArray(sf);
-								filelistView.setAdapter(listAdapter);
-								filelistView.setVisibility(View.VISIBLE);
+							getActivity().runOnUiThread(new Runnable() {
 								
-								filelistView.setOnItemClickListener(new OnItemClickListener() {
-
-									@Override
-									public void onItemClick(AdapterView<?> parent, View arg1,
-											int position, long arg3) {
-										SmbFile file = (SmbFile)parent.getItemAtPosition(position);
-										try {
-											String fileName = getName(file);
-											
-											openFileOrDir(file, null, null, fileName, listAdapter);
-										} catch (Exception e) {
-											e.printStackTrace();
+								@Override
+								public void run() {
+									categoryView.setVisibility(View.GONE);
+									listAdapter.setFileArray(sf);
+									filelistView.setAdapter(listAdapter);
+									filelistView.setVisibility(View.VISIBLE);
+									
+									filelistView.setOnItemClickListener(new OnItemClickListener() {
+	
+										@Override
+										public void onItemClick(AdapterView<?> parent, View arg1,
+												int position, long arg3) {
+											SmbFile file = (SmbFile)parent.getItemAtPosition(position);
+											try {
+												String fileName = getName(file);
+												
+												openFileOrDir(file, null, null, fileName, listAdapter);
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
 										}
-									}
-								});
-							}
-						});
+									});
+								}
+							});
+						}catch(Exception e){
+							e.printStackTrace();
+							getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									Toast.makeText(getActivity(), R.string.not_connect_idata, Toast.LENGTH_SHORT).show();
+	
+								}
+							});
+						}
 					
 					}
 				}).start();
@@ -274,36 +324,48 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 						curClickType = FileUtil.ROOT;
 						curParent = "smb://192.168.169.1/";
 						
-						final SmbFile[] sf = getFileList(categoryMap, FileUtil.ROOT);
-						final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
-						
-						getActivity().runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								categoryView.setVisibility(View.GONE);
-								listAdapter.setFileArray(sf);
-								filelistView.setAdapter(listAdapter);
-								filelistView.setVisibility(View.VISIBLE);
-								
-								filelistView.setOnItemClickListener(new OnItemClickListener() {
-
-									@Override
-									public void onItemClick(AdapterView<?> parent, View arg1,
-											int position, long arg3) {
-										SmbFile file = (SmbFile)parent.getItemAtPosition(position);
-										try {
-											String fileName = getName(file);
-											
-											openFileOrDir(file, null, null, fileName, listAdapter);
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
-									}
-								});
-							}
-						});
+						try{
+							final SmbFile[] sf = getFileList(categoryMap, FileUtil.ROOT);
 					
+							final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
+							
+							getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									categoryView.setVisibility(View.GONE);
+									listAdapter.setFileArray(sf);
+									filelistView.setAdapter(listAdapter);
+									filelistView.setVisibility(View.VISIBLE);
+									
+									filelistView.setOnItemClickListener(new OnItemClickListener() {
+	
+										@Override
+										public void onItemClick(AdapterView<?> parent, View arg1,
+												int position, long arg3) {
+											SmbFile file = (SmbFile)parent.getItemAtPosition(position);
+											try {
+												String fileName = getName(file);
+												
+												openFileOrDir(file, null, null, fileName, listAdapter);
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
+										}
+									});
+								}
+							});
+						}catch(Exception e){
+							e.printStackTrace();
+							getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									Toast.makeText(getActivity(), R.string.not_connect_idata, Toast.LENGTH_SHORT).show();
+
+								}
+							});
+						}
 					}
 				}).start();
 				
@@ -421,6 +483,14 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 		        Log.i("IDataFragment", "onCreateView");
 			}catch(Exception e){
 				e.printStackTrace();
+				getActivity().runOnUiThread(new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						Toast.makeText(getActivity(), R.string.not_connect_idata, Toast.LENGTH_SHORT).show();
+					}
+				}));
+				
 			}
 			return null;
 	}

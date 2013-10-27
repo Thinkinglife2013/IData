@@ -11,13 +11,76 @@
 	    android:orientation="vertical"
 	    android:weightSum="6"
 	    android:visibility="visible">
+	    
+	    <!-- 手机存储区切换 -->
+		<RelativeLayout 
+		    android:layout_width="fill_parent"
+		    android:layout_height="0dp" 
+		    android:layout_weight="0.75">
+		     <!-- 内部存储区 -->
+		    <RelativeLayout 
+			    android:id="@+id/internal_store"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content" 
+			    android:background="@drawable/button_selector"
+			    android:layout_centerVertical="true"
+			    android:layout_alignParentLeft="true"
+			    android:layout_marginLeft="47dp"
+			    >
+			  	<ImageView 
+		        	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:background="@drawable/local_store_button"
+			    	 />
+			    <TextView 
+			        android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:text="@string/internal_store"
+			    	android:textColor="@color/category_color"
+			    	android:layout_centerInParent="true"
+			    	android:textSize="10sp"
+			    	 />
+		    </RelativeLayout>
+		    
+		     <!-- SD卡 -->
+		      <RelativeLayout 
+			    android:id="@+id/sdcard"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content" 
+			    android:background="@drawable/button_selector"
+			    android:layout_alignParentRight="true"
+			    android:layout_centerVertical="true"
+			    android:layout_marginRight="47dp"
+			    >
+			  	<ImageView 
+		        	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:background="@drawable/local_store_button"
+			    	 />
+			    <TextView 
+			        android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:text="@string/sdcard"
+			    	android:layout_centerInParent="true"
+			    	android:textColor="@color/category_color"
+			    	android:textSize="10sp"
+			    	 />
+		    </RelativeLayout>
+		     <ImageView 
+		        android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+		    	android:background="@drawable/index_divider"
+		    	android:layout_alignParentBottom="true"
+		    	 />
+	    </RelativeLayout>
+	    
 		<!-- 照片 -->
 		<RelativeLayout 
 		    android:id="@+id/photo"
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
 		    android:background="@drawable/tab_selector"
-		    android:layout_weight="1">
+		    android:layout_weight="1.05">
 		    <ImageView 
 		        android:id="@+id/photo_icon"
 		        android:layout_width="wrap_content"
@@ -63,7 +126,7 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
 		    android:background="@drawable/tab_selector"
-		    android:layout_weight="1">
+		    android:layout_weight="1.05">
 		    <ImageView 
 		        android:id="@+id/photo_icon"
 		        android:layout_width="wrap_content"
@@ -109,7 +172,7 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
 		    android:background="@drawable/tab_selector"
-		    android:layout_weight="1">
+		    android:layout_weight="1.05">
 		    <ImageView 
 		        android:id="@+id/photo_icon"
 		        android:layout_width="wrap_content"
@@ -155,7 +218,7 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
 		    android:background="@drawable/tab_selector"
-		    android:layout_weight="1">
+		    android:layout_weight="1.05">
 		    <ImageView 
 		        android:id="@+id/photo_icon"
 		        android:layout_width="wrap_content"
@@ -201,7 +264,7 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
 		    android:background="@drawable/tab_selector"
-		    android:layout_weight="1">
+		    android:layout_weight="1.05">
 		    <ImageView 
 		        android:id="@+id/photo_icon"
 		        android:layout_width="wrap_content"
@@ -241,34 +304,6 @@
 		    	 />
 	    </RelativeLayout>
 	    
-		<!-- 通讯录备份还原 -->
-		<RelativeLayout 
-		    android:layout_width="fill_parent"
-		    android:layout_height="0dp" 
-		    android:layout_weight="1">
-	<!-- 	    <ImageView 
-		        android:id="@+id/photo_icon"
-		        android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:background="@drawable/backup_icon"
-		    	android:layout_centerVertical="true"
-		    	android:layout_marginLeft="17dp" />
-		     <TextView 
-		        android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_centerVertical="true"
-		    	android:layout_toRightOf="@id/photo_icon"
-		    	android:text="@string/contact"
-		    	android:layout_marginLeft="17dp" 
-		    	android:textColor="@color/category_color"
-		    	android:textSize="18sp"/> -->
-		     <ImageView 
-		        android:layout_width="fill_parent"
-		    	android:layout_height="wrap_content"
-		    	android:background="@drawable/index_divider"
-		    	android:layout_alignParentBottom="true"
-		    	 />
-	    </RelativeLayout>
 	</LinearLayout>
 	
 	<ListView 
