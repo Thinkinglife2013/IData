@@ -202,6 +202,8 @@ public final class R {
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
+        public static final int alert_dialog_cancel=0x7f060018;
+        public static final int alert_dialog_ok=0x7f060017;
         public static final int app_name=0x7f060000;
         public static final int cancle=0x7f060005;
         public static final int confirm_password=0x7f060003;
@@ -217,8 +219,10 @@ public final class R {
         public static final int not_connect_idata=0x7f060014;
         public static final int ok=0x7f060004;
         public static final int photo=0x7f06000c;
+        public static final int quit=0x7f060015;
         public static final int sdcard=0x7f060013;
         public static final int setting=0x7f06000a;
+        public static final int sure_quit=0x7f060016;
         public static final int tab_idata=0x7f060009;
         public static final int tab_local=0x7f060008;
         public static final int video=0x7f06000d;

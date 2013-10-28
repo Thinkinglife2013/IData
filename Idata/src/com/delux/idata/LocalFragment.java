@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.delux.idata.MainActivity.BackKeyEvent;
+import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
 
 
@@ -49,14 +50,17 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 		View docRow = contextView.findViewById(R.id.doc);
 		View folderRow = contextView.findViewById(R.id.folder);
 		
-		View internalStoreView = contextView.findViewById(R.id.internal_store);
-		View sdcardView = contextView.findViewById(R.id.sdcard);
+		final View internalStoreView = contextView.findViewById(R.id.internal_store);
+		final View sdcardView = contextView.findViewById(R.id.sdcard);
 		
+		internalStoreView.setBackgroundResource(R.color.click_bg);
 		internalStoreView.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				curParent = "/data/data";
+				v.setBackgroundResource(R.color.click_bg);
+				sdcardView.setBackgroundResource(android.R.color.transparent);
 				getCategoryFilesOnThread(false);
 			}
 		});
@@ -66,6 +70,8 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 			@Override
 			public void onClick(View v) {
 				curParent = "/mnt";
+				v.setBackgroundResource(R.color.click_bg);
+				internalStoreView.setBackgroundResource(android.R.color.transparent);
 				getCategoryFilesOnThread(true);
 			}
 		});
@@ -363,12 +369,26 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 			   
 			    intent.setData(content_url);  
 			    startActivity(intent);*/
+				
+				 Intent intent = new Intent("android.intent.action.VIEW");
+
+				    intent.addCategory("android.intent.category.DEFAULT");
+
+				    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				    Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				    intent.setDataAndType(uri, "application/msword");
+
+//				      intent.setDataAndType(Uri.parse("file:/"+file.getPath()), "text/plain");
+
+				    
 			/*	Intent i = new Intent();
 				i.setAction(Intent.ACTION_VIEW);
 				i.setType("application/msword");
 				Log.i("file_path", file.getPath());
-				i.setData(Uri.parse("file:/"+file.getPath()));
-				startActivity(i);*/
+				i.setData(Uri.parse("file:/"+file.getPath()));*/
+				startActivity(intent);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -484,12 +504,20 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 		super.onActivityCreated(savedInstanceState);
 	}
 	
+	private boolean isRoot;
 	public void onBack() {
 		Log.i("IDataFragment", "curParent ="+curParent);
+		
+		if(isRoot){
+			DialogUtil.showExitDialog(getActivity());
+		}
 		if("/mnt".equals(curParent) || curClickType != FileUtil.ROOT || "/data/data".equals(curParent)){
+			isRoot = true;
 			categoryView.setVisibility(View.VISIBLE);
 			filelistView.setVisibility(View.GONE);
 			return;
+		}else{
+			isRoot = false;
 		}
 		
 		new Thread(new Runnable() {

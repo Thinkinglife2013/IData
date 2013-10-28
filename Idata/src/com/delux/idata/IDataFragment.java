@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delux.idata.MainActivity.BackKeyEvent;
+import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
 
 
@@ -50,7 +51,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 		filelistView = (ListView)contextView.findViewById(R.id.filelist_view);
 		
 		final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
-		final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.load), true, false); 
+	/*	final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.load), true, false); 
 		new Thread(new Runnable() {
 			
 			@Override
@@ -65,7 +66,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					}
 				});
 			}
-		}).start();
+		}).start();*/
 		
 		
 		photoRow.setOnClickListener(new View.OnClickListener() {
@@ -529,11 +530,20 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 		}
 	}
 	
+	private boolean isRoot;
 	public void onBack() {
 		Log.i("IDataFragment", "curParent ="+curParent);
+		if(isRoot){
+			DialogUtil.showExitDialog(getActivity());
+		}
+		
 		if("smb://192.168.169.1/".equals(curParent) || curClickType != FileUtil.ROOT){
+			isRoot = true;
 			categoryView.setVisibility(View.VISIBLE);
 			filelistView.setVisibility(View.GONE);
+			return;
+		}else{
+			isRoot = false;
 		}
 		
 		new Thread(new Runnable() {
