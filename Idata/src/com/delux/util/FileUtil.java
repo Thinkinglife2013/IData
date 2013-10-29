@@ -1,9 +1,15 @@
 package com.delux.util;
 
-import com.delux.idata.R;
+import java.io.File;
+import java.net.URLEncoder;
 
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
+
+import com.delux.idata.R;
 
 public class FileUtil {
 	public static final int DEFAULT = 0;
@@ -83,6 +89,196 @@ public class FileUtil {
 			}
 		}
 		return R.drawable.default_fileicon;
+	}
+	
+	public static Intent getOpenLocalAppIntent(File file){
+		String fileName = file.getName();
+		if(fileName != null){
+			int index = fileName.lastIndexOf(".");
+			if(index != -1){
+				String suffix = fileName.substring(index+1);
+				 Intent intent = new Intent("android.intent.action.VIEW");
+				 
+				if("doc".equalsIgnoreCase(suffix) || "docx".equalsIgnoreCase(suffix)){
+				     intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				     Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				     intent.setDataAndType(uri, "application/msword");
+				}else if("xls".equalsIgnoreCase(suffix) || "xlsx".equalsIgnoreCase(suffix)){
+				     intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				     Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				     intent.setDataAndType(uri, "application/vnd.ms-excel");
+				}else if("ppt".equalsIgnoreCase(suffix) || "pptx".equalsIgnoreCase(suffix)){
+					 intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				     Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				     intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+				}else if("txt".equalsIgnoreCase(suffix) || "xml".equalsIgnoreCase(suffix)){
+					intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				     Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				     intent.setDataAndType(uri, "text/plain");
+				}else if("html".equalsIgnoreCase(suffix) || "htm".equalsIgnoreCase(suffix)){
+				    Uri uri = Uri.fromFile(new File(file.getPath())).buildUpon().encodedAuthority("com.android.htmlfileprovider").scheme("content").encodedPath(file.getPath()).build();
+
+				     intent.setDataAndType(uri, "text/html");
+				}else if("chm".equalsIgnoreCase(suffix)){
+				     intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				     Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				     intent.setDataAndType(uri, "application/x-chm");
+				}else if("epub".equalsIgnoreCase(suffix)){
+					//TODO
+					return null;
+					
+				}else if("pdf".equalsIgnoreCase(suffix)){
+					  intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				     Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				     intent.setDataAndType(uri, "application/pdf");
+				}else if("rmvb".equalsIgnoreCase(suffix) || "rm".equalsIgnoreCase(suffix) || "wmv".equalsIgnoreCase(suffix)
+						|| "avi".equalsIgnoreCase(suffix) || "MOV".equalsIgnoreCase(suffix) || "MPEG".equalsIgnoreCase(suffix) 
+						|| "ASF".equalsIgnoreCase(suffix)){
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				     intent.putExtra("oneshot", 0);
+				     intent.putExtra("configchange", 0);
+
+				     Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				     intent.setDataAndType(uri, "video/*");
+				}else if("mp3".equalsIgnoreCase(suffix) || "wma".equalsIgnoreCase(suffix) || "wav".equalsIgnoreCase(suffix)
+						|| "ogg".equalsIgnoreCase(suffix) || "ac3".equalsIgnoreCase(suffix) || "aiff".equalsIgnoreCase(suffix) 
+						|| "dat".equalsIgnoreCase(suffix)){
+				    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				     intent.putExtra("oneshot", 0);
+				     intent.putExtra("configchange", 0);
+
+				     Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				     intent.setDataAndType(uri, "audio/*");
+				}else if("GIF".equalsIgnoreCase(suffix) || "png".equalsIgnoreCase(suffix) || "jpg".equalsIgnoreCase(suffix)
+						|| "bmp".equalsIgnoreCase(suffix) || "tiff".equalsIgnoreCase(suffix) || "psd".equalsIgnoreCase(suffix)
+						|| "swf".equalsIgnoreCase(suffix) || "svg".equalsIgnoreCase(suffix) || "JPEG".equalsIgnoreCase(suffix)){
+					 intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				     Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				     intent.setDataAndType(uri, "image/*");
+				}else if("zip".equalsIgnoreCase(suffix) || "rar".equalsIgnoreCase(suffix)){
+					 intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				     Uri uri = Uri.fromFile(new File(file.getPath()));
+
+				     intent.setDataAndType(uri, "application/zip");
+				}
+				return intent;
+			}
+		}
+		return null;
+	}
+	
+	public static Intent getOpenIdataAppIntent(SmbFile file){
+		String fileName = file.getName();
+		Log.i("getOpenIdataAppIntent", "idata_fileName ="+fileName);
+		if(fileName != null){
+			int index = fileName.lastIndexOf(".");
+			if(index != -1){
+				String path = file.getPath();
+				Intent intent= new Intent();        
+			    intent.setAction("android.intent.action.VIEW");    
+			    
+			    String openPath;
+			    Uri uri;
+			    if(path.lastIndexOf("Share/Storage/") == -1){
+			    	openPath = path.substring(path.lastIndexOf("Share/SD_Card/")+14);
+			    	uri = Uri.parse("http://192.168.169.1:8080/SD_Card/"+URLEncoder.encode(openPath));   
+			    }else{
+			    	openPath = path.substring(path.lastIndexOf("Share/Storage/")+14);
+			    	uri = Uri.parse("http://192.168.169.1:8080/Storage/"+URLEncoder.encode(openPath));   
+			    }
+			    
+				String suffix = fileName.substring(index+1);
+				 
+				if("doc".equalsIgnoreCase(suffix) || "docx".equalsIgnoreCase(suffix)){
+				     intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				     intent.setDataAndType(uri, "application/msword");
+				}else if("xls".equalsIgnoreCase(suffix) || "xlsx".equalsIgnoreCase(suffix)){
+				     intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				     intent.setDataAndType(uri, "application/vnd.ms-excel");
+				}else if("ppt".equalsIgnoreCase(suffix) || "pptx".equalsIgnoreCase(suffix)){
+					 intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				     intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+				}else if("txt".equalsIgnoreCase(suffix) || "xml".equalsIgnoreCase(suffix)){
+					intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				     intent.setDataAndType(uri, "text/plain");
+				}else if("html".equalsIgnoreCase(suffix) || "htm".equalsIgnoreCase(suffix)){
+//				    Uri uri = Uri.fromFile(new File(file.getPath())).buildUpon().encodedAuthority("com.android.htmlfileprovider").scheme("content").encodedPath(file.getPath()).build();
+
+				     intent.setDataAndType(uri, "text/html");
+				}else if("chm".equalsIgnoreCase(suffix)){
+				     intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				     intent.setDataAndType(uri, "application/x-chm");
+				}else if("epub".equalsIgnoreCase(suffix)){
+					//TODO
+					return null;
+					
+				}else if("pdf".equalsIgnoreCase(suffix)){
+					  intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				     intent.setDataAndType(uri, "application/pdf");
+				}else if("rmvb".equalsIgnoreCase(suffix) || "rm".equalsIgnoreCase(suffix) || "wmv".equalsIgnoreCase(suffix)
+						|| "avi".equalsIgnoreCase(suffix) || "MOV".equalsIgnoreCase(suffix) || "MPEG".equalsIgnoreCase(suffix) 
+						|| "ASF".equalsIgnoreCase(suffix)){
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				     intent.putExtra("oneshot", 0);
+				     intent.putExtra("configchange", 0);
+
+				     intent.setDataAndType(uri, "video/*");
+				}else if("mp3".equalsIgnoreCase(suffix) || "wma".equalsIgnoreCase(suffix) || "wav".equalsIgnoreCase(suffix)
+						|| "ogg".equalsIgnoreCase(suffix) || "ac3".equalsIgnoreCase(suffix) || "aiff".equalsIgnoreCase(suffix) 
+						|| "dat".equalsIgnoreCase(suffix)){
+				    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				     intent.putExtra("oneshot", 0);
+				     intent.putExtra("configchange", 0);
+
+				     intent.setDataAndType(uri, "audio/*");
+				}else if("GIF".equalsIgnoreCase(suffix) || "png".equalsIgnoreCase(suffix) || "jpg".equalsIgnoreCase(suffix)
+						|| "bmp".equalsIgnoreCase(suffix) || "tiff".equalsIgnoreCase(suffix) || "psd".equalsIgnoreCase(suffix)
+						|| "swf".equalsIgnoreCase(suffix) || "svg".equalsIgnoreCase(suffix) || "JPEG".equalsIgnoreCase(suffix)){
+					 intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				     intent.setDataAndType(uri, "image/*");
+				}else if("zip".equalsIgnoreCase(suffix) || "rar".equalsIgnoreCase(suffix)){
+					 intent.addCategory("android.intent.category.DEFAULT");
+				     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				     intent.setDataAndType(uri, "application/zip");
+				}
+				return intent;
+			}
+		}
+		return null;
 	}
 	
 	public static String getName(SmbFile file){

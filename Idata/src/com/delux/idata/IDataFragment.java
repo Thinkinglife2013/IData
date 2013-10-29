@@ -51,7 +51,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 		filelistView = (ListView)contextView.findViewById(R.id.filelist_view);
 		
 		final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
-	/*	final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.load), true, false); 
+		final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.load), true, false); 
 		new Thread(new Runnable() {
 			
 			@Override
@@ -66,7 +66,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					}
 				});
 			}
-		}).start();*/
+		}).start();
 		
 		
 		photoRow.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +77,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					
 					@Override
 					public void run() {
+						isRoot = false;
 						curClickType = FileUtil.PHOTO;
 						
 						try{
@@ -134,6 +135,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					
 					@Override
 					public void run() {
+						isRoot = false;
 						curClickType = FileUtil.VIDEO;
 						
 						try{
@@ -196,6 +198,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					
 					@Override
 					public void run() {
+						isRoot = false;
 						curClickType = FileUtil.MUSIC;
 						
 						try{
@@ -259,6 +262,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					
 					@Override
 					public void run() {
+						isRoot = false;
 						curClickType = FileUtil.DOC;
 						
 						try{
@@ -322,6 +326,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 					
 					@Override
 					public void run() {
+						isRoot = false;
 						curClickType = FileUtil.ROOT;
 						curParent = "smb://192.168.169.1/";
 						
@@ -384,6 +389,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 	
 	private void openFileOrDir(SmbFile file, ImageView backView, TextView titleTextView, String fileName, FileListAdapter listAdapter){
 		try {
+			isRoot = false;
 			if(file.isDirectory()){
 				if(backView != null && titleTextView != null){
 					backView.setVisibility(View.VISIBLE);
@@ -410,6 +416,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 			    }
 			   
 			    intent.setData(content_url);  
+//				Intent intent = FileUtil.getOpenIdataAppIntent(file);
 			    startActivity(intent);
 			}
 		} catch (Exception e) {

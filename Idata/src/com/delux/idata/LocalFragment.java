@@ -93,6 +93,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 					
 					@Override
 					public void run() {
+						isRoot = false;
 						curClickType = FileUtil.PHOTO;
 						final File[] sf = getFileList(categoryMap, FileUtil.PHOTO);
 						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
@@ -138,6 +139,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 					
 					@Override
 					public void run() {
+						isRoot = false;
 						curClickType = FileUtil.VIDEO;
 						
 						final File[] sf = getFileList(categoryMap, FileUtil.VIDEO);
@@ -183,6 +185,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 					
 					@Override
 					public void run() {
+						isRoot = false;
 						curClickType = FileUtil.MUSIC;
 						
 						final File[] sf = getFileList(categoryMap, FileUtil.MUSIC);
@@ -228,6 +231,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 					
 					@Override
 					public void run() {
+						isRoot = false;
 						curClickType = FileUtil.DOC;
 						
 						final File[] sf = getFileList(categoryMap, FileUtil.DOC);
@@ -273,6 +277,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 					
 					@Override
 					public void run() {
+						isRoot = false;
 						curClickType = FileUtil.ROOT;
 						
 						final File[] sf = getFileList(categoryMap, FileUtil.ROOT);
@@ -342,6 +347,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 	
 	private void openFileOrDir(File file, ImageView backView, TextView titleTextView, String fileName, LocalFileListAdapter listAdapter){
 		try {
+			isRoot = false;
 			if(file.isDirectory()){
 				if(backView != null && titleTextView != null){
 					backView.setVisibility(View.VISIBLE);
@@ -370,24 +376,8 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 			    intent.setData(content_url);  
 			    startActivity(intent);*/
 				
-				 Intent intent = new Intent("android.intent.action.VIEW");
-
-				    intent.addCategory("android.intent.category.DEFAULT");
-
-				    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-				    Uri uri = Uri.fromFile(new File(file.getPath()));
-
-				    intent.setDataAndType(uri, "application/msword");
-
-//				      intent.setDataAndType(Uri.parse("file:/"+file.getPath()), "text/plain");
-
+				 Intent intent = FileUtil.getOpenLocalAppIntent(file);
 				    
-			/*	Intent i = new Intent();
-				i.setAction(Intent.ACTION_VIEW);
-				i.setType("application/msword");
-				Log.i("file_path", file.getPath());
-				i.setData(Uri.parse("file:/"+file.getPath()));*/
 				startActivity(intent);
 			}
 		} catch (Exception e) {
