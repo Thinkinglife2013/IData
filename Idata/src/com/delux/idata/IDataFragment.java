@@ -427,6 +427,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 	private Map<Integer, ArrayList> getCategoryFiles(){
 			try {
 				jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+				jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
 		        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
 		        
 		        SmbFile file = new SmbFile("smb://192.168.169.1/Share/",auth);

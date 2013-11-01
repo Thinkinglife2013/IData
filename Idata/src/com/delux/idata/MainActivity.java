@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
@@ -40,10 +41,11 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 		
 		RelativeLayout localTab = (RelativeLayout) findViewById(R.id.local);
 		RelativeLayout idataTab = (RelativeLayout) findViewById(R.id.idata);
+		final LinearLayout bottomFunction = (LinearLayout) findViewById(R.id.bottom_function);
+		final LinearLayout mutilFunction = (LinearLayout) findViewById(R.id.mutil_function);
 		
 		View settingView = findViewById(R.id.setting);
 		View mutilChooseView = findViewById(R.id.mutil_choose);
-		
 		
 		settingView.setOnClickListener(new View.OnClickListener() {
 			
@@ -57,7 +59,8 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				bottomFunction.setVisibility(View.GONE);
+				mutilFunction.setVisibility(View.VISIBLE);
 			}
 		});
 		

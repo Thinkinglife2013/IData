@@ -27,5 +27,8 @@
     <string name="sure_quit">确定退出应用？</string>
     <string name="alert_dialog_ok">确定</string>
     <string name="alert_dialog_cancel">取消</string>
+    <string name="copy">复制</string>
+     <string name="move">移动</string>
+     <string name="delete">删除</string>
 
 </resources>
