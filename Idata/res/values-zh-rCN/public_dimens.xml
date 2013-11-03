@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 栏目列表左右间距 -->
+    <dimen name="public_dimen_padding_left_right">11dip</dimen>
+    <!-- 栏目列表主题字体大小 -->
+    <dimen name="public_dimen_textsize_main_title">16sp</dimen>
+    <!-- 栏目列表时间字体大小 -->
+    <dimen name="public_dimen_textsize_time">11.1sp</dimen>
+    <!-- 栏目列表摘要字体大小 -->
+    <dimen name="public_dimen_textsize_description">12sp</dimen>
+    <!-- 栏目列表图片高_宽 -->
+    <dimen name="public_dimen_img_w_h">67.1dip</dimen>
+    <!-- 栏目列表图片左padding -->
+    <dimen name="public_dimen_img_padding_l">16dip</dimen>
+    <!-- top_bar 标题字体大小 -->
+    <dimen name="public_topbar_title_textsize">17.8sp</dimen>
+</resources>

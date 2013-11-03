@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/store_bg"
+    >
+    
+   <LinearLayout 
+       android:id="@+id/center"
+       android:layout_width="wrap_content"
+	   android:layout_height="159dp"
+	   android:layout_centerInParent="true"
+	   android:orientation="vertical"
+	   android:background="@drawable/lanuage_bg"
+	   android:layout_marginLeft="41dp"
+	   android:layout_marginRight="41dp"
+	   >
+      <RelativeLayout 
+        android:id="@+id/lanuage"
+        android:layout_width="match_parent"
+	    android:layout_height="53dp"
+	    >
+	    <TextView 
+	         android:layout_width="wrap_content"
+	   		 android:layout_height="wrap_content"
+	   		 android:layout_marginLeft="20dp"
+	   		 android:layout_centerVertical="true"
+	   		 android:layout_alignParentLeft="true"
+	   		 android:textColor="@color/category_color"
+	   		 android:text="@string/cn"/>
+	      <RadioButton 
+	          android:id="@+id/cn"
+	         android:layout_width="wrap_content"
+	   		 android:layout_height="wrap_content"
+	   		 android:layout_marginRight="20dp"
+	   		 android:layout_alignParentRight="true"
+	   		 /> 
+     </RelativeLayout>
+     
+      <ImageView 
+           android:layout_width="match_parent"
+	       android:layout_height="wrap_content"
+	       android:background="@drawable/index_divider"/>
+	    
+     <RelativeLayout 
+        android:id="@+id/route"
+        android:layout_width="match_parent"
+	    android:layout_height="53dp"
+	    >
+	    <TextView 
+	         android:layout_width="wrap_content"
+	   		 android:layout_height="wrap_content"
+	   		 android:layout_centerVertical="true"
+	   		 android:layout_alignParentLeft="true"
+	   		 android:textColor="@color/category_color"
+	   		 android:layout_marginLeft="20dp"
+	   		 android:text="@string/tw"/>
+	     <RadioButton 
+	         android:layout_width="wrap_content"
+	   		 android:layout_height="wrap_content"
+	   		 android:layout_marginRight="20dp"
+	   		 android:layout_alignParentRight="true"
+	   		 /> 
+     </RelativeLayout>
+     
+      <ImageView 
+           android:layout_width="match_parent"
+	       android:layout_height="wrap_content"
+	       android:background="@drawable/index_divider"/>
+	    
+     <RelativeLayout 
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+	    android:layout_height="53dp"
+	    >
+	    <TextView 
+	         android:layout_width="wrap_content"
+	   		 android:layout_height="wrap_content"
+	   		  android:layout_centerVertical="true"
+	   		 android:layout_alignParentLeft="true"
+	   		 android:textColor="@color/category_color"
+	   		 android:layout_marginLeft="20dp"
+	   		 android:text="@string/en"/>
+	     <RadioButton 
+	          android:id="@+id/en"
+	         android:layout_width="wrap_content"
+	   		 android:layout_height="wrap_content"
+	   		 android:layout_marginRight="20dp"
+	   		 android:layout_alignParentRight="true"
+	   		 /> 
+     </RelativeLayout>
+     
+     </LinearLayout>
+
+</RelativeLayout>

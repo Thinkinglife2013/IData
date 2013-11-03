@@ -22,12 +22,15 @@ public final class R {
         public static final int category_color=0x7f04001d;
         public static final int click_bg=0x7f04001c;
         /**  列表项描述字体颜色 
+ 列表项描述字体颜色 
          */
         public static final int column_category_listitem_description_color=0x7f040022;
         /**  列表项字体颜大小 
+ 列表项字体颜大小 
          */
         public static final int column_category_listitem_title_color=0x7f040021;
         /**  输入框字体颜色 
+ 输入框字体颜色 
          */
         public static final int column_category_search_input_textcolor=0x7f040020;
         public static final int column_desc_txt_read_color=0x7f04001b;
@@ -54,28 +57,34 @@ public final class R {
         public static final int white=0x7f040009;
     }
     public static final class dimen {
-        /**  Default screen margins, per the Android Design guidelines. 
-
+        /** 
          Customize dimensions originally defined in res/values/dimens.xml (such as
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
+ Default screen margins, per the Android Design guidelines. 
+ Default screen margins, per the Android Design guidelines. 
          */
         public static final int activity_horizontal_margin=0x7f050006;
         public static final int activity_vertical_margin=0x7f050007;
         /**  列表项高度 
+ 列表项高度 
          */
         public static final int column_category_item_height=0x7f050001;
         /**  列表项描述字体大小 
+ 列表项描述字体大小 
          */
         public static final int column_category_listitem_description_textsize=0x7f050003;
         /**  列表项主题和描述padding，左边图片和标题显示区padding 
+ 列表项主题和描述padding，左边图片和标题显示区padding 
          */
         public static final int column_category_listitem_padding=0x7f050004;
         public static final int column_category_listitem_padding_top_botoom=0x7f050005;
         /**  列表项主题大小 
+ 列表项主题大小 
          */
         public static final int column_category_listitem_title_textsize=0x7f050002;
         /**  界面左右padding 
+ 界面左右padding 
          */
         public static final int column_category_padding_left=0x7f050000;
         public static final int content_detail_pub_time_font_size=0x7f050013;
@@ -91,24 +100,31 @@ public final class R {
         public static final int dialog_title_logo_left_margin=0x7f05000e;
         public static final int dialog_top_margin=0x7f050009;
         /**  栏目列表图片左padding 
+ 栏目列表图片左padding 
          */
         public static final int public_dimen_img_padding_l=0x7f050023;
         /**  栏目列表图片高_宽 
+ 栏目列表图片高_宽 
          */
         public static final int public_dimen_img_w_h=0x7f050022;
         /**  栏目列表左右间距 
+ 栏目列表左右间距 
          */
         public static final int public_dimen_padding_left_right=0x7f05001e;
         /**  栏目列表摘要字体大小 
+ 栏目列表摘要字体大小 
          */
         public static final int public_dimen_textsize_description=0x7f050021;
         /**  栏目列表主题字体大小 
+ 栏目列表主题字体大小 
          */
         public static final int public_dimen_textsize_main_title=0x7f05001f;
         /**  栏目列表时间字体大小 
+ 栏目列表时间字体大小 
          */
         public static final int public_dimen_textsize_time=0x7f050020;
         /**  top_bar 标题字体大小 
+ top_bar 标题字体大小 
          */
         public static final int public_topbar_title_textsize=0x7f050024;
         public static final int setting_category=0x7f050014;
@@ -126,75 +142,87 @@ public final class R {
         public static final int backup_icon=0x7f020000;
         public static final int bottom_bg=0x7f020001;
         public static final int button_selector=0x7f020002;
-        public static final int copy_bottom=0x7f020003;
-        public static final int corner=0x7f020004;
-        public static final int default_doc=0x7f020005;
-        public static final int default_fileicon=0x7f020006;
-        public static final int delete_bottom=0x7f020007;
-        public static final int doc_file=0x7f020008;
-        public static final int doc_icon=0x7f020009;
-        public static final int epub_file=0x7f02000a;
-        public static final int folder=0x7f02000b;
-        public static final int folder_icon=0x7f02000c;
-        public static final int ic_launcher=0x7f02000d;
-        public static final int index_divider=0x7f02000e;
-        public static final int local_store_button=0x7f02000f;
-        public static final int logo=0x7f020010;
-        public static final int move_bottom=0x7f020011;
-        public static final int multi_choose_icon=0x7f020012;
-        public static final int music_file=0x7f020013;
-        public static final int music_icon=0x7f020014;
-        public static final int pdf_file=0x7f020015;
-        public static final int photo_icon=0x7f020016;
-        public static final int ppt_file=0x7f020017;
-        public static final int public_title_bg_bule=0x7f020018;
-        public static final int rss_top_back=0x7f020019;
-        public static final int setting_icon=0x7f02001a;
-        public static final int store_bg=0x7f02001b;
-        public static final int tab_divider=0x7f02001c;
-        public static final int tab_selected=0x7f02001d;
-        public static final int tab_selector=0x7f02001e;
-        public static final int top_bg=0x7f02001f;
-        public static final int txt_file=0x7f020020;
-        public static final int video_file=0x7f020021;
-        public static final int video_icon=0x7f020022;
-        public static final int xls_file=0x7f020023;
+        public static final int checkbox_check=0x7f020003;
+        public static final int checkbox_style=0x7f020004;
+        public static final int checkbox_uncheck=0x7f020005;
+        public static final int copy_bottom=0x7f020006;
+        public static final int corner=0x7f020007;
+        public static final int default_doc=0x7f020008;
+        public static final int default_fileicon=0x7f020009;
+        public static final int delete_bottom=0x7f02000a;
+        public static final int doc_file=0x7f02000b;
+        public static final int doc_icon=0x7f02000c;
+        public static final int epub_file=0x7f02000d;
+        public static final int folder=0x7f02000e;
+        public static final int folder_icon=0x7f02000f;
+        public static final int ic_launcher=0x7f020010;
+        public static final int index_divider=0x7f020011;
+        public static final int lanuage_bg=0x7f020012;
+        public static final int lanuage_divider=0x7f020013;
+        public static final int local_store_button=0x7f020014;
+        public static final int logo=0x7f020015;
+        public static final int move_bottom=0x7f020016;
+        public static final int multi_choose_icon=0x7f020017;
+        public static final int music_file=0x7f020018;
+        public static final int music_icon=0x7f020019;
+        public static final int pdf_file=0x7f02001a;
+        public static final int photo_icon=0x7f02001b;
+        public static final int ppt_file=0x7f02001c;
+        public static final int public_title_bg_bule=0x7f02001d;
+        public static final int rss_top_back=0x7f02001e;
+        public static final int setting_icon=0x7f02001f;
+        public static final int store_bg=0x7f020020;
+        public static final int tab_divider=0x7f020021;
+        public static final int tab_selected=0x7f020022;
+        public static final int tab_selector=0x7f020023;
+        public static final int top_bg=0x7f020024;
+        public static final int txt_file=0x7f020025;
+        public static final int video_file=0x7f020026;
+        public static final int video_icon=0x7f020027;
+        public static final int xls_file=0x7f020028;
     }
     public static final class id {
-        public static final int action_settings=0x7f090022;
+        public static final int about=0x7f090024;
+        public static final int action_settings=0x7f090029;
         public static final int bottom_function=0x7f090008;
-        public static final int category=0x7f090014;
+        public static final int category=0x7f090015;
+        public static final int center=0x7f090020;
+        public static final int checkbox=0x7f090011;
+        public static final int cn=0x7f090022;
         public static final int content=0x7f090001;
-        public static final int copy=0x7f09001f;
+        public static final int copy=0x7f090026;
         public static final int corner_icon=0x7f09000f;
-        public static final int del=0x7f090021;
+        public static final int del=0x7f090028;
         public static final int divider=0x7f090010;
-        public static final int doc=0x7f090019;
-        public static final int editText=0x7f09001e;
-        public static final int filelist_view=0x7f09001b;
-        public static final int folder=0x7f09001a;
+        public static final int doc=0x7f09001a;
+        public static final int editText=0x7f09001f;
+        public static final int en=0x7f090025;
+        public static final int filelist_view=0x7f09001c;
+        public static final int folder=0x7f09001b;
         public static final int icon=0x7f09000d;
         public static final int idata=0x7f090005;
         public static final int idata_selected=0x7f090006;
-        public static final int imgback=0x7f090011;
-        public static final int internal_store=0x7f09001c;
+        public static final int imgback=0x7f090012;
+        public static final int internal_store=0x7f09001d;
+        public static final int lanuage=0x7f090021;
         public static final int line=0x7f09000c;
         public static final int local=0x7f090003;
         public static final int local_selected=0x7f090004;
-        public static final int move=0x7f090020;
-        public static final int music=0x7f090018;
+        public static final int move=0x7f090027;
+        public static final int music=0x7f090019;
         public static final int mutil_choose=0x7f09000a;
         public static final int mutil_function=0x7f09000b;
         public static final int name=0x7f09000e;
-        public static final int photo=0x7f090015;
-        public static final int photo_icon=0x7f090016;
-        public static final int sdcard=0x7f09001d;
+        public static final int photo=0x7f090016;
+        public static final int photo_icon=0x7f090017;
+        public static final int route=0x7f090023;
+        public static final int sdcard=0x7f09001e;
         public static final int setting=0x7f090009;
-        public static final int subscription_list=0x7f090013;
+        public static final int subscription_list=0x7f090014;
         public static final int tabbar=0x7f090002;
-        public static final int title_text=0x7f090012;
+        public static final int title_text=0x7f090013;
         public static final int top=0x7f090000;
-        public static final int video=0x7f090017;
+        public static final int video=0x7f090018;
         public static final int viewPager=0x7f090007;
     }
     public static final class layout {
@@ -204,39 +232,48 @@ public final class R {
         public static final int fragment_item=0x7f030003;
         public static final int fragment_item2=0x7f030004;
         public static final int input_password=0x7f030005;
-        public static final int mutil_bottom=0x7f030006;
+        public static final int lanuage_setting=0x7f030006;
+        public static final int mutil_bottom=0x7f030007;
+        public static final int setting=0x7f030008;
     }
     public static final class menu {
         public static final int main=0x7f080000;
     }
     public static final class string {
+        public static final int about=0x7f06001f;
         public static final int action_settings=0x7f060001;
         public static final int alert_dialog_cancel=0x7f060018;
         public static final int alert_dialog_ok=0x7f060017;
         public static final int app_name=0x7f060000;
         public static final int cancle=0x7f060005;
+        public static final int cn=0x7f060020;
         public static final int confirm_password=0x7f060003;
         public static final int contact=0x7f060011;
         public static final int copy=0x7f060019;
         public static final int delete=0x7f06001b;
         public static final int doc=0x7f06000f;
+        public static final int en=0x7f060022;
         public static final int encrypt=0x7f060002;
         public static final int folder=0x7f060010;
         public static final int input_password=0x7f060006;
         public static final int internal_store=0x7f060012;
+        public static final int lanuage=0x7f06001d;
         public static final int load=0x7f060007;
         public static final int move=0x7f06001a;
         public static final int music=0x7f06000e;
         public static final int mutil_choose=0x7f06000b;
         public static final int not_connect_idata=0x7f060014;
         public static final int ok=0x7f060004;
+        public static final int open_file_tip=0x7f06001c;
         public static final int photo=0x7f06000c;
         public static final int quit=0x7f060015;
+        public static final int route=0x7f06001e;
         public static final int sdcard=0x7f060013;
         public static final int setting=0x7f06000a;
         public static final int sure_quit=0x7f060016;
         public static final int tab_idata=0x7f060009;
         public static final int tab_local=0x7f060008;
+        public static final int tw=0x7f060021;
         public static final int video=0x7f06000d;
     }
     public static final class style {
@@ -249,11 +286,23 @@ public final class R {
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         
+
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
          */
         public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
+ Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
+        public static final int CustomCheckboxTheme=0x7f070002;
     }
 }

@@ -179,6 +179,8 @@ public class FileUtil {
 				     Uri uri = Uri.fromFile(new File(file.getPath()));
 
 				     intent.setDataAndType(uri, "application/zip");
+				}else{
+					return null;
 				}
 				return intent;
 			}

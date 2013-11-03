@@ -21,16 +21,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delux.idata.MainActivity.BackKeyEvent;
+import com.delux.idata.MainActivity.MutilChooseCallBack;
 import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
 
 
-public class IDataFragment extends Fragment implements BackKeyEvent{
+public class IDataFragment extends Fragment implements BackKeyEvent, MutilChooseCallBack{
 	private String curParent = "smb://192.168.169.1/Share/";
 	Map<Integer, ArrayList> categoryMap = new HashMap<Integer, ArrayList>();
 	ListView filelistView;
@@ -541,56 +543,86 @@ public class IDataFragment extends Fragment implements BackKeyEvent{
 	private boolean isRoot;
 	public void onBack() {
 		Log.i("IDataFragment", "curParent ="+curParent);
-		if(isRoot){
-			DialogUtil.showExitDialog(getActivity());
-		}
-		
-		if("smb://192.168.169.1/".equals(curParent) || curClickType != FileUtil.ROOT){
-			isRoot = true;
-			categoryView.setVisibility(View.VISIBLE);
-			filelistView.setVisibility(View.GONE);
-			return;
-		}else{
-			isRoot = false;
-		}
-		
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
-			        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
-					final SmbFile file = new SmbFile(curParent, auth);
-					final SmbFile[] files = file.listFiles();
-					
-				    getActivity().runOnUiThread(new Runnable() {
-						
-						@Override
-						public void run() {
-//							if("smb://192.168.169.1/Share/".equals(curParent)){
-//								backView.setVisibility(View.GONE);
-//							}
-							
-							String tempPath = curParent;
-							tempPath = tempPath.substring(0, tempPath.length()-1);
-							tempPath = tempPath.substring(tempPath.lastIndexOf("/")+1);
-							
-							FileListAdapter listAdapter = (FileListAdapter)filelistView.getAdapter();
-							listAdapter.setFileArray(files);
-							filelistView.setAdapter(listAdapter);
-//						      titleTextView.setText(tempPath);
-						      
-						      curParent = file.getParent();
-						}
-					});
-				    
-					
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (SmbException e) {
-					e.printStackTrace();
-				}
+		if(!isMutilChooseMode){
+			if(isRoot){
+				DialogUtil.showExitDialog(getActivity());
 			}
-		}).start();
+			
+			if("smb://192.168.169.1/".equals(curParent) || curClickType != FileUtil.ROOT){
+				isRoot = true;
+				categoryView.setVisibility(View.VISIBLE);
+				filelistView.setVisibility(View.GONE);
+				return;
+			}else{
+				isRoot = false;
+			}
+			
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+				        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
+						final SmbFile file = new SmbFile(curParent, auth);
+						final SmbFile[] files = file.listFiles();
+						
+					    getActivity().runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+	//							if("smb://192.168.169.1/Share/".equals(curParent)){
+	//								backView.setVisibility(View.GONE);
+	//							}
+								
+								String tempPath = curParent;
+								tempPath = tempPath.substring(0, tempPath.length()-1);
+								tempPath = tempPath.substring(tempPath.lastIndexOf("/")+1);
+								
+								FileListAdapter listAdapter = (FileListAdapter)filelistView.getAdapter();
+								listAdapter.setFileArray(files);
+								filelistView.setAdapter(listAdapter);
+	//						      titleTextView.setText(tempPath);
+							      
+							      curParent = file.getParent();
+							}
+						});
+					    
+						
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					} catch (SmbException e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		}else{
+			bottomLayout.setVisibility(View.VISIBLE);
+			mutilChooseLayout.setVisibility(View.GONE);
+			isMutilChooseMode = false;
+			
+			FileListAdapter listAdapter = (FileListAdapter)filelistView.getAdapter();
+			listAdapter.setMutilMode(false);
+			listAdapter.notifyDataSetChanged();
+		}
+	}
+
+	private boolean isMutilChooseMode; //当前是否在多选模式下
+	protected LinearLayout bottomLayout;
+	protected LinearLayout mutilChooseLayout;
+	
+	@Override
+	public void onClick(LinearLayout bottomLayout,
+			LinearLayout mutilChooseLayout) {
+		if(!isRoot){
+			this.bottomLayout = bottomLayout;
+			this.mutilChooseLayout = mutilChooseLayout;
+			bottomLayout.setVisibility(View.GONE);
+			mutilChooseLayout.setVisibility(View.VISIBLE);
+			isMutilChooseMode = true;
+			
+			FileListAdapter listAdapter = (FileListAdapter)filelistView.getAdapter();
+			listAdapter.setMutilMode(true);
+			listAdapter.notifyDataSetChanged();
+		}
 	}
 
 }

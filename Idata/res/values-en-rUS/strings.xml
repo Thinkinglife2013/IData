@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">iData</string>
+    <string name="action_settings">Settings</string>
+    <string name="encrypt">加密</string>
+    <string name="confirm_password">请输入加密的密码</string>
+    <string name="ok">确定</string>
+    <string name="cancle">取消</string>
+    <string name="input_password">请输入密码</string>
+    
+     <string name="load">正在加载文件列表</string>
+    <string name="tab_local">local storage</string>
+    <string name="tab_idata">iData storage</string>
+    <string name="setting">settings</string>
+    <string name="mutil_choose">multi-select</string>
+    <string name="photo">photo</string>
+    <string name="video">video</string>
+    <string name="music">music</string>
+     <string name="doc">documents</string>
+    <string name="folder">folder</string>
+    <string name="contact">backup and recover contacts</string>
+     <string name="internal_store">Internal memory</string>
+     <string name="sdcard">External SD card</string>
+     <string name="not_connect_idata">Please reconnect with iData and try again</string>
+      <string name="quit">退出</string>
+    <string name="sure_quit">Please make sure that you have already quitted application？</string>
+    <string name="alert_dialog_ok">comfirm</string>
+    <string name="alert_dialog_cancel">cancel</string>
+    <string name="copy">copy</string>
+     <string name="move">move</string>
+     <string name="delete">delete</string>
+     <string name="open_file_tip">手机尚未安装打开此种类型的软件，请自行下载安装</string>
+     <string name="lanuage">language</string>
+     <string name="route">路由设置</string>
+      <string name="about">关于本机</string>
+        <string name="cn">简体中文</string>
+        <string name="tw">繁体中文</string>
+         <string name="en">英文</string>
+
+</resources>

@@ -1,18 +1,12 @@
 package com.delux.idata;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import jcifs.smb.NtlmPasswordAuthentication;
-import jcifs.smb.SmbException;
-import jcifs.smb.SmbFile;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -21,22 +15,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delux.idata.MainActivity.BackKeyEvent;
+import com.delux.idata.MainActivity.MutilChooseCallBack;
 import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
 
 
-public class LocalFragment extends Fragment implements BackKeyEvent{
+public class LocalFragment extends Fragment implements BackKeyEvent, MutilChooseCallBack{
 	private String curParent;
 	Map<Integer, ArrayList> categoryMap = new HashMap<Integer, ArrayList>();
 	ListView filelistView;
 	View categoryView;
 	private int curClickType;
+	private boolean isRoot; 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -377,8 +375,12 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 			    startActivity(intent);*/
 				
 				 Intent intent = FileUtil.getOpenLocalAppIntent(file);
-				    
-				startActivity(intent);
+				 
+				 if(intent == null){
+					 Toast.makeText(getActivity(), R.string.open_file_tip, 1).show();
+				 }else{
+					 startActivity(intent);
+				 }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -494,56 +496,85 @@ public class LocalFragment extends Fragment implements BackKeyEvent{
 		super.onActivityCreated(savedInstanceState);
 	}
 	
-	private boolean isRoot;
+	
 	public void onBack() {
 		Log.i("IDataFragment", "curParent ="+curParent);
 		
-		if(isRoot){
-			DialogUtil.showExitDialog(getActivity());
-		}
-		if("/mnt".equals(curParent) || curClickType != FileUtil.ROOT || "/data/data".equals(curParent)){
-			isRoot = true;
-			categoryView.setVisibility(View.VISIBLE);
-			filelistView.setVisibility(View.GONE);
-			return;
-		}else{
-			isRoot = false;
-		}
-		
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-//					jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
-//			        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
-					final File file = new File(curParent);
-					final File[] files = file.listFiles();
-					
-				    getActivity().runOnUiThread(new Runnable() {
-						
-						@Override
-						public void run() {
-//							if("smb://192.168.169.1/Share/".equals(curParent)){
-//								backView.setVisibility(View.GONE);
-//							}
-							
-							String tempPath = curParent;
-							tempPath = tempPath.substring(0, tempPath.length()-1);
-							tempPath = tempPath.substring(tempPath.lastIndexOf("/")+1);
-							
-							LocalFileListAdapter listAdapter = (LocalFileListAdapter)filelistView.getAdapter();
-							listAdapter.setFileArray(files);
-							filelistView.setAdapter(listAdapter);
-//						      titleTextView.setText(tempPath);
-						      
-						      curParent = file.getParent();
-						}
-					});
-				    
-				}catch (Exception e) {
-					e.printStackTrace();
-				}
+		if(!isMutilChooseMode){
+			if(isRoot){
+				DialogUtil.showExitDialog(getActivity());
 			}
-		}).start();
+			if("/mnt".equals(curParent) || curClickType != FileUtil.ROOT || "/data/data".equals(curParent)){
+				isRoot = true;
+				categoryView.setVisibility(View.VISIBLE);
+				filelistView.setVisibility(View.GONE);
+				return;
+			}else{
+				isRoot = false;
+			}
+			
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+	//					jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+	//			        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
+						final File file = new File(curParent);
+						final File[] files = file.listFiles();
+						
+					    getActivity().runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+	//							if("smb://192.168.169.1/Share/".equals(curParent)){
+	//								backView.setVisibility(View.GONE);
+	//							}
+								
+								String tempPath = curParent;
+								tempPath = tempPath.substring(0, tempPath.length()-1);
+								tempPath = tempPath.substring(tempPath.lastIndexOf("/")+1);
+								
+								LocalFileListAdapter listAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+								listAdapter.setFileArray(files);
+								filelistView.setAdapter(listAdapter);
+	//						      titleTextView.setText(tempPath);
+							      
+							      curParent = file.getParent();
+							}
+						});
+					    
+					}catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		}else{
+			bottomLayout.setVisibility(View.VISIBLE);
+			mutilChooseLayout.setVisibility(View.GONE);
+			isMutilChooseMode = false;
+			LocalFileListAdapter listAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+			listAdapter.setMutilMode(false);
+			listAdapter.notifyDataSetChanged();
+		}
+	}
+	
+	private boolean isMutilChooseMode; //当前是否在多选模式下
+	protected LinearLayout bottomLayout;
+	protected LinearLayout mutilChooseLayout;
+
+	@Override
+	public void onClick(LinearLayout bottomLayout,
+			LinearLayout mutilChooseLayout) {
+		if(!isRoot){
+			this.bottomLayout = bottomLayout;
+			this.mutilChooseLayout = mutilChooseLayout;
+			bottomLayout.setVisibility(View.GONE);
+			mutilChooseLayout.setVisibility(View.VISIBLE);
+			isMutilChooseMode = true;
+			
+			LocalFileListAdapter listAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+			listAdapter.setMutilMode(true);
+			listAdapter.notifyDataSetChanged();
+		}
 	}
 
 }

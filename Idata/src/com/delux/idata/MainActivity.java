@@ -3,6 +3,7 @@ package com.delux.idata;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,11 +23,15 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 	
 	ImageView localSelectedView;
 	ImageView idataSelectedView;
+	
+	public static MainActivity mainActivity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		mainActivity = this;
 		
 		mFragmentList =  new ArrayList<Fragment>();
 		
@@ -51,7 +56,8 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				startActivity(new Intent(MainActivity.this, SettingActivity.class));
+
 			}
 		});
 		
@@ -59,8 +65,14 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 			
 			@Override
 			public void onClick(View v) {
-				bottomFunction.setVisibility(View.GONE);
-				mutilFunction.setVisibility(View.VISIBLE);
+//					bottomFunction.setVisibility(View.GONE);
+//					mutilFunction.setVisibility(View.VISIBLE);
+					
+					  if(curSelectPosition == 0){
+						  ((MutilChooseCallBack)mFragmentList.get(0)).onClick(bottomFunction, mutilFunction);
+					  }else{
+						  ((MutilChooseCallBack)mFragmentList.get(1)).onClick(bottomFunction, mutilFunction);
+					  }
 			}
 		});
 		
@@ -114,6 +126,10 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 	
 	public interface BackKeyEvent{
 		public void onBack();
+	}
+	
+	public interface MutilChooseCallBack{
+		public void onClick(LinearLayout bottomLayout, LinearLayout mutilChooseLayout);
 	}
 	
 	private int curSelectPosition;

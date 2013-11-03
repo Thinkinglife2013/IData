@@ -23,18 +23,34 @@
          android:theme="@android:style/Theme.NoTitleBar" 
         >
         <activity
+            android:configChanges="locale"
             android:name="com.delux.idata.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-            <activity
+         <activity
             android:name="com.delux.idata.IDataFilesActivity"
             android:label="@string/app_name" >
         </activity>
+        
+          <activity
+            android:name="com.delux.idata.LanuageActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+         <activity
+            android:name="com.delux.idata.SettingActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <receiver android:name=".LanuageReceiver">
+            <intent-filter>
+                <action android:name="com.delux.idata.language"/>
+            </intent-filter>
+        </receiver>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

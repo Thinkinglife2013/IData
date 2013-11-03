@@ -30,5 +30,12 @@
     <string name="copy">复制</string>
      <string name="move">移动</string>
      <string name="delete">删除</string>
+     <string name="open_file_tip">手机尚未安装打开此种类型的软件，请自行下载安装</string>
+     <string name="lanuage">语言设置</string>
+     <string name="route">路由设置</string>
+      <string name="about">关于本机</string>
+       <string name="cn">简体中文</string>
+        <string name="tw">繁体中文</string>
+         <string name="en">英文</string>
 
 </resources>
