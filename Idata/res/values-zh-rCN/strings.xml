@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">iData</string>
+  <string name="app_name">iData</string>
     <string name="action_settings">Settings</string>
-    <string name="encrypt">加密</string>
+      <string name="encrypt">加密</string>
     <string name="confirm_password">请输入加密的密码</string>
     <string name="ok">确定</string>
     <string name="cancle">取消</string>

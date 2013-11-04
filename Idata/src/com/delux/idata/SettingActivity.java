@@ -9,11 +9,14 @@ import android.widget.LinearLayout;
 
 
 public class SettingActivity extends Activity{
-	 
+	public static SettingActivity settingActivity; 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setting);
+		
+		settingActivity = this;
 		
 		LinearLayout lanuageLayout = (LinearLayout)findViewById(R.id.lanuage);
 		

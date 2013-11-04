@@ -42,7 +42,7 @@ public class LanuageActivity extends Activity{
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					if(isChecked){
 						 Intent i = new Intent(action);
-						  switchLanguage(Locale.ENGLISH);
+						  switchLanguage(Locale.US);
 	                      finish();
 	                      sendBroadcast(i);
 					}

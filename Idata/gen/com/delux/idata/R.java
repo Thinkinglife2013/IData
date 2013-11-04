@@ -22,15 +22,12 @@ public final class R {
         public static final int category_color=0x7f04001d;
         public static final int click_bg=0x7f04001c;
         /**  列表项描述字体颜色 
- 列表项描述字体颜色 
          */
         public static final int column_category_listitem_description_color=0x7f040022;
         /**  列表项字体颜大小 
- 列表项字体颜大小 
          */
         public static final int column_category_listitem_title_color=0x7f040021;
         /**  输入框字体颜色 
- 输入框字体颜色 
          */
         public static final int column_category_search_input_textcolor=0x7f040020;
         public static final int column_desc_txt_read_color=0x7f04001b;
@@ -57,34 +54,28 @@ public final class R {
         public static final int white=0x7f040009;
     }
     public static final class dimen {
-        /** 
+        /**  Default screen margins, per the Android Design guidelines. 
+
          Customize dimensions originally defined in res/values/dimens.xml (such as
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
- Default screen margins, per the Android Design guidelines. 
- Default screen margins, per the Android Design guidelines. 
          */
         public static final int activity_horizontal_margin=0x7f050006;
         public static final int activity_vertical_margin=0x7f050007;
         /**  列表项高度 
- 列表项高度 
          */
         public static final int column_category_item_height=0x7f050001;
         /**  列表项描述字体大小 
- 列表项描述字体大小 
          */
         public static final int column_category_listitem_description_textsize=0x7f050003;
         /**  列表项主题和描述padding，左边图片和标题显示区padding 
- 列表项主题和描述padding，左边图片和标题显示区padding 
          */
         public static final int column_category_listitem_padding=0x7f050004;
         public static final int column_category_listitem_padding_top_botoom=0x7f050005;
         /**  列表项主题大小 
- 列表项主题大小 
          */
         public static final int column_category_listitem_title_textsize=0x7f050002;
         /**  界面左右padding 
- 界面左右padding 
          */
         public static final int column_category_padding_left=0x7f050000;
         public static final int content_detail_pub_time_font_size=0x7f050013;
@@ -100,31 +91,24 @@ public final class R {
         public static final int dialog_title_logo_left_margin=0x7f05000e;
         public static final int dialog_top_margin=0x7f050009;
         /**  栏目列表图片左padding 
- 栏目列表图片左padding 
          */
         public static final int public_dimen_img_padding_l=0x7f050023;
         /**  栏目列表图片高_宽 
- 栏目列表图片高_宽 
          */
         public static final int public_dimen_img_w_h=0x7f050022;
         /**  栏目列表左右间距 
- 栏目列表左右间距 
          */
         public static final int public_dimen_padding_left_right=0x7f05001e;
         /**  栏目列表摘要字体大小 
- 栏目列表摘要字体大小 
          */
         public static final int public_dimen_textsize_description=0x7f050021;
         /**  栏目列表主题字体大小 
- 栏目列表主题字体大小 
          */
         public static final int public_dimen_textsize_main_title=0x7f05001f;
         /**  栏目列表时间字体大小 
- 栏目列表时间字体大小 
          */
         public static final int public_dimen_textsize_time=0x7f050020;
         /**  top_bar 标题字体大小 
- top_bar 标题字体大小 
          */
         public static final int public_topbar_title_textsize=0x7f050024;
         public static final int setting_category=0x7f050014;
@@ -286,20 +270,9 @@ public final class R {
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         
-
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    
-
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        
          */
         public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
- Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
