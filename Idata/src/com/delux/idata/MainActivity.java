@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -123,6 +124,17 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 		}
 	}
 	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Log.i("MainActivity", "onDestroy");
+	}
+	
+	@Override
+	public void finish() {
+		Log.i("MainActivity", "finish");
+		super.finish();
+	}
 	
 	public interface BackKeyEvent{
 		public void onBack();

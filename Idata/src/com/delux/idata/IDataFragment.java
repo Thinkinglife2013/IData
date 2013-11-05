@@ -38,6 +38,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 	ListView filelistView;
 	View categoryView;
 	private int curClickType;
+	private boolean isRoot = true; //是否在分类界面
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -540,7 +541,6 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 		}
 	}
 	
-	private boolean isRoot;
 	public void onBack() {
 		Log.i("IDataFragment", "curParent ="+curParent);
 		if(!isMutilChooseMode){

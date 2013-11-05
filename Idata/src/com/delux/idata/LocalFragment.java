@@ -34,7 +34,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 	ListView filelistView;
 	View categoryView;
 	private int curClickType;
-	private boolean isRoot; 
+	private boolean isRoot = true; 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -564,6 +564,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 	@Override
 	public void onClick(LinearLayout bottomLayout,
 			LinearLayout mutilChooseLayout) {
+		Log.i("LocalFragment", "isRoot ="+isRoot);
 		if(!isRoot){
 			this.bottomLayout = bottomLayout;
 			this.mutilChooseLayout = mutilChooseLayout;
@@ -575,6 +576,13 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 			listAdapter.setMutilMode(true);
 			listAdapter.notifyDataSetChanged();
 		}
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Log.i("LocalFragment", "onDestroy");
+		
 	}
 
 }
