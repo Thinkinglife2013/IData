@@ -6,9 +6,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delux.util.FileUtil;
@@ -19,8 +24,10 @@ public class LocalFileListAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private int categoryType;
 	private boolean isMutilMode; //是否多选的状态
+	private Context context;
 
 	public LocalFileListAdapter(Context context, File[] fileArray, int categoryType){
+		this.context = context;
 		this.mInflater = LayoutInflater.from(context);
 		this.fileArray = fileArray;
 		this.categoryType = categoryType;
@@ -59,6 +66,8 @@ public class LocalFileListAdapter extends BaseAdapter {
 		public ImageView cornerIcon;
 		public ImageView divider;
 		public CheckBox checkBox;
+		public RelativeLayout toolLayout;
+		public LinearLayout toolLine;
 	}
 	
 	@Override
@@ -72,6 +81,8 @@ public class LocalFileListAdapter extends BaseAdapter {
 			holder.cornerIcon = (ImageView)convertView.findViewById(R.id.corner_icon);
 			holder.divider = (ImageView)convertView.findViewById(R.id.divider);
 			holder.checkBox = (CheckBox)convertView.findViewById(R.id.checkbox);
+			holder.toolLayout = (RelativeLayout)convertView.findViewById(R.id.tool);
+			holder.toolLine = (LinearLayout)convertView.findViewById(R.id.tool_line);
 			
 			convertView.setTag(holder);
 			
@@ -81,6 +92,34 @@ public class LocalFileListAdapter extends BaseAdapter {
 		
 		File file = fileArray[position];
 		String name = getName(file);
+		
+		final View toolLineView = holder.toolLine;
+		holder.toolLayout.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Animation scale = AnimationUtils.loadAnimation(
+						context, R.anim.scale_anim);
+				toolLineView.startAnimation(scale);
+				toolLineView.setVisibility(View.VISIBLE);
+				scale.setAnimationListener(new AnimationListener() {
+
+					@Override
+					public void onAnimationStart(Animation animation) {
+					}
+
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						
+//						toolLineView.setVisibility(View.GONE);
+					}
+				});
+			}
+		});
 		
 		try {
 			if(file.isDirectory()){
