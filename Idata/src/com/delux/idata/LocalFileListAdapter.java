@@ -4,7 +4,9 @@ import java.io.File;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -94,10 +96,17 @@ public class LocalFileListAdapter extends BaseAdapter {
 		String name = getName(file);
 		
 		final View toolLineView = holder.toolLine;
-		holder.toolLayout.setOnClickListener(new View.OnClickListener() {
+		holder.toolLayout.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public boolean onTouch(final View v, MotionEvent event) {
+			    int iAction = event.getAction();  
+		        if (iAction == MotionEvent.ACTION_DOWN) { 
+		        	v.setBackgroundResource(R.color.click_bg);
+		        } else if (iAction == MotionEvent.ACTION_UP) { 
+		        	v.setBackgroundResource(android.R.color.transparent);
+		        }
+			        
 				Animation scale = AnimationUtils.loadAnimation(
 						context, R.anim.scale_anim);
 				toolLineView.startAnimation(scale);
@@ -114,10 +123,11 @@ public class LocalFileListAdapter extends BaseAdapter {
 
 					@Override
 					public void onAnimationEnd(Animation animation) {
-						
+						v.setBackgroundResource(android.R.color.transparent);
 //						toolLineView.setVisibility(View.GONE);
 					}
 				});
+				return true;
 			}
 		});
 		

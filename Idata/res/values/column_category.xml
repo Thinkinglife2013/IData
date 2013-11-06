@@ -5,7 +5,7 @@
     <!-- 输入框字体颜色 -->
     <color name="column_category_search_input_textcolor">#cccccc</color>
     <!-- 列表项高度 -->
-    <dimen name="column_category_item_height">93dip</dimen>
+    <dimen name="column_category_item_height">83dip</dimen>
     <!-- 列表项主题大小 -->
     <dimen name="column_category_listitem_title_textsize">15.1dip</dimen>
     <!-- 列表项字体颜大小 -->
@@ -16,5 +16,5 @@
     <color name="column_category_listitem_description_color">#ff999999</color>
     <!-- 列表项主题和描述padding，左边图片和标题显示区padding -->
     <dimen name="column_category_listitem_padding">10dip</dimen>
-    <dimen name="column_category_listitem_padding_top_botoom">9.9dip</dimen>
+    <dimen name="column_category_listitem_padding_top_botoom">9dip</dimen>
 </resources>
