@@ -14,8 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,7 +31,7 @@ import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
 
 
-public class LocalFragment extends Fragment implements BackKeyEvent, MutilChooseCallBack{
+public class LocalFragment extends Fragment implements BackKeyEvent, MutilChooseCallBack, OnClickListener{
 	private String curParent;
 	Map<Integer, ArrayList> categoryMap = new HashMap<Integer, ArrayList>();
 	ListView filelistView;
@@ -37,11 +40,21 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 	private boolean isRoot = true; 
 
 	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+//		if(id != R.id.tool_line && id != R.id.tool){
+//			View view = filelistView.getChildAt(1);
+//			Log.i("LocalFragment", view.toString());
+//		}
+	}
+	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		curParent = "/data/data";
 		
 		View contextView = inflater.inflate(R.layout.fragment_item2, container, false);
+		
 		View photoRow = contextView.findViewById(R.id.photo);
 		View videoRow = contextView.findViewById(R.id.video);
 		View musicRow = contextView.findViewById(R.id.music);
@@ -244,11 +257,30 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 								filelistView.setAdapter(listAdapter);
 								filelistView.setVisibility(View.VISIBLE);
 								
+								filelistView.setOnScrollListener(new OnScrollListener() {
+									
+									@Override
+									public void onScrollStateChanged(AbsListView view, int scrollState) {
+										View view2 = filelistView.getChildAt(listAdapter.getCurShowToolPosition());
+										view2.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+									}
+									
+									@Override
+									public void onScroll(AbsListView view, int firstVisibleItem,
+											int visibleItemCount, int totalItemCount) {
+									
+										
+									}
+								});
+								
 								filelistView.setOnItemClickListener(new OnItemClickListener() {
 
 									@Override
 									public void onItemClick(AdapterView<?> parent, View arg1,
 											int position, long arg3) {
+										View view = parent.getChildAt(listAdapter.getCurShowToolPosition());
+										view.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+										
 										File file = (File)parent.getItemAtPosition(position);
 										try {
 											String fileName = getName(file);

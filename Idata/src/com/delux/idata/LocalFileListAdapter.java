@@ -27,6 +27,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 	private int categoryType;
 	private boolean isMutilMode; //是否多选的状态
 	private Context context;
+	private int curShowToolPosition = -1;
 
 	public LocalFileListAdapter(Context context, File[] fileArray, int categoryType){
 		this.context = context;
@@ -73,7 +74,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 	}
 	
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, final ViewGroup parent) {
 		ViewHolder holder;
 		if(convertView == null){
 			holder = new ViewHolder();
@@ -102,6 +103,13 @@ public class LocalFileListAdapter extends BaseAdapter {
 			public boolean onTouch(final View v, MotionEvent event) {
 			    int iAction = event.getAction();  
 		        if (iAction == MotionEvent.ACTION_DOWN) { 
+		        	if(curShowToolPosition > -1){
+		        		parent.getChildAt(curShowToolPosition).findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+		        	}
+		        	
+		        	//当前显示工具栏的行号
+		        	curShowToolPosition = position;
+		        	
 		        	v.setBackgroundResource(R.color.click_bg);
 		        } else if (iAction == MotionEvent.ACTION_UP) { 
 		        	v.setBackgroundResource(android.R.color.transparent);
@@ -173,6 +181,14 @@ public class LocalFileListAdapter extends BaseAdapter {
 			e.printStackTrace();
 			return "";
 		}
+	}
+
+	public int getCurShowToolPosition() {
+		return curShowToolPosition;
+	}
+
+	public void setCurShowToolPosition(int curShowToolPosition) {
+		this.curShowToolPosition = curShowToolPosition;
 	}
 	
 }

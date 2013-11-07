@@ -7,83 +7,127 @@
     android:paddingBottom="@dimen/column_category_listitem_padding_top_botoom"
     android:paddingLeft="@dimen/column_category_padding_left"
     android:paddingRight="@dimen/column_category_padding_left"
-    android:paddingTop="@dimen/column_category_listitem_padding_top_botoom" 
-    >
+    android:paddingTop="@dimen/column_category_listitem_padding_top_botoom" >
 
-    <FrameLayout 
-           android:layout_width="fill_parent"
-		   android:layout_height="fill_parent" >
-    
-    <RelativeLayout 
-		    android:id="@+id/line"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent" 
-		    >
-            <ImageView 
-		        android:id="@+id/icon"
-		        android:layout_width="45dp"
-		    	android:layout_height="45dp"
-		    	android:layout_centerVertical="true"
-		    	android:scaleType="fitXY" 
-		    	/>
-		     <TextView 
-		         android:id="@+id/name"
-		        android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_centerVertical="true"
-		    	android:layout_toRightOf="@id/icon"
-		    	android:layout_marginLeft="17dp" 
-		    	android:textColor="@color/category_color"
-		    	android:textSize="18sp"
-		    	android:layout_marginRight="50dp"
-		    	android:singleLine="true"
-		    	android:ellipsize="end"/>
-		     
-		  <RelativeLayout 
-		    android:id="@+id/tool"
-		    android:layout_width="55dp"
-		    android:layout_height="fill_parent" 
-		    android:layout_alignParentRight="true"
-		     
-		    >
-			     <ImageView 
-			        android:id="@+id/corner_icon"
-			        android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:background="@drawable/corner"
-			    	android:layout_centerVertical="true"
-			    	android:layout_alignParentRight="true"
-			    	android:layout_marginRight="14dp"
-			    	/>
-			     <ImageView 
-			        android:id="@+id/divider"
-			        android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:background="@drawable/tab_divider"
-			    	android:layout_centerVertical="true"
-			    	android:layout_toLeftOf="@id/corner_icon"
-			    	android:layout_marginRight="14dp" />
-		     </RelativeLayout>
-		     
-		     <CheckBox
-		        android:id="@+id/checkbox"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        style="@style/CustomCheckboxTheme" 
-		        android:layout_centerVertical="true"
-		    	android:layout_alignParentRight="true"
-		    	android:layout_marginRight="0dp"
-		    	android:visibility="gone"/>
-    </RelativeLayout>
-    
-    		 <LinearLayout 
-		    android:id="@+id/tool_line"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent" 
-		    android:background="@drawable/tool_bg"
-		    android:visibility="invisible"
-		    >
-		    
-		  </LinearLayout>
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <RelativeLayout
+            android:id="@+id/line"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="50dp"
+                android:layout_toRightOf="@id/icon"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/category_color"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:id="@+id/tool"
+                android:layout_width="55dp"
+                android:layout_height="fill_parent"
+                android:layout_alignParentRight="true" >
+
+                <ImageView
+                    android:id="@+id/corner_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:background="@drawable/corner" />
+
+                <ImageView
+                    android:id="@+id/divider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:layout_toLeftOf="@id/corner_icon"
+                    android:background="@drawable/tab_divider" />
+            </RelativeLayout>
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                style="@style/CustomCheckboxTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="0dp"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/tool_line"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/tool_bg"
+            android:visibility="invisible"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:weightSum="4" >
+
+            <ImageView
+                android:id="@+id/rename"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:scaleType="centerInside"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/button_selector"
+                android:src="@drawable/rename_toolline" 
+                android:clickable="true"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/copy"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:scaleType="centerInside"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/button_selector"
+                android:src="@drawable/copy_toolline" 
+                android:clickable="true"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/move"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:scaleType="centerInside"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/button_selector"
+                android:src="@drawable/move_toolline" 
+                android:clickable="true"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/delete"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:scaleType="centerInside"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/button_selector"
+                android:src="@drawable/delete_toolline" 
+                android:clickable="true"
+                android:layout_weight="1"/>
+        </LinearLayout>
     </FrameLayout>
+
 </LinearLayout>
