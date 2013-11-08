@@ -2,7 +2,10 @@ package com.delux.idata;
 
 import java.io.File;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -93,10 +97,11 @@ public class LocalFileListAdapter extends BaseAdapter {
 			holder = (ViewHolder)convertView.getTag();
 		}
 		
-		File file = fileArray[position];
+		final File file = fileArray[position];
 		String name = getName(file);
 		
-		final View toolLineView = holder.toolLine;
+		final View toolLineView = holder.toolLine; //工具条
+		//点击弹出工具条
 		holder.toolLayout.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -114,6 +119,23 @@ public class LocalFileListAdapter extends BaseAdapter {
 		        } else if (iAction == MotionEvent.ACTION_UP) { 
 		        	v.setBackgroundResource(android.R.color.transparent);
 		        }
+		        
+		        ImageView renameView = (ImageView)toolLineView.findViewById(R.id.rename);
+		        ImageView copyView = (ImageView)toolLineView.findViewById(R.id.copy);
+		        ImageView moveView = (ImageView)toolLineView.findViewById(R.id.move);
+		        ImageView deleteView = (ImageView)toolLineView.findViewById(R.id.delete);
+		        
+		        //重命名
+		        renameView.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						
+//						getItem(position);
+						showRenameDialog(file);
+						toolLineView.setVisibility(View.INVISIBLE);
+					}
+				});
 			        
 				Animation scale = AnimationUtils.loadAnimation(
 						context, R.anim.scale_anim);
@@ -132,7 +154,6 @@ public class LocalFileListAdapter extends BaseAdapter {
 					@Override
 					public void onAnimationEnd(Animation animation) {
 						v.setBackgroundResource(android.R.color.transparent);
-//						toolLineView.setVisibility(View.GONE);
 					}
 				});
 				return true;
@@ -181,6 +202,37 @@ public class LocalFileListAdapter extends BaseAdapter {
 			e.printStackTrace();
 			return "";
 		}
+	}
+	
+	private void showRenameDialog(File file){
+	      AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//          builder.setIcon(android.R.drawable.ic_menu_add);
+          builder.setTitle("重命名");
+          EditText editTextAdd = new EditText(context);
+          editTextAdd.setSingleLine(true);
+          editTextAdd.setFocusable(true);
+          editTextAdd.setSelectAllOnFocus(true);
+          editTextAdd.setText(file.getName());
+
+          builder.setView(editTextAdd);
+          builder.setPositiveButton("OK", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+          builder.setNegativeButton("Cancle", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+          AlertDialog dialogAdd = builder.show();
+
 	}
 
 	public int getCurShowToolPosition() {

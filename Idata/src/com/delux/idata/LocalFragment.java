@@ -31,7 +31,7 @@ import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
 
 
-public class LocalFragment extends Fragment implements BackKeyEvent, MutilChooseCallBack, OnClickListener{
+public class LocalFragment extends Fragment implements BackKeyEvent, MutilChooseCallBack{
 	private String curParent;
 	Map<Integer, ArrayList> categoryMap = new HashMap<Integer, ArrayList>();
 	ListView filelistView;
@@ -39,14 +39,6 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 	private int curClickType;
 	private boolean isRoot = true; 
 
-	@Override
-	public void onClick(View v) {
-		int id = v.getId();
-//		if(id != R.id.tool_line && id != R.id.tool){
-//			View view = filelistView.getChildAt(1);
-//			Log.i("LocalFragment", view.toString());
-//		}
-	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,35 +98,9 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 					public void run() {
 						isRoot = false;
 						curClickType = FileUtil.PHOTO;
-						final File[] sf = getFileList(categoryMap, FileUtil.PHOTO);
-						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
 						
-						getActivity().runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								categoryView.setVisibility(View.GONE);
-								listAdapter.setFileArray(sf);
-								filelistView.setAdapter(listAdapter);
-								filelistView.setVisibility(View.VISIBLE);
-								
-								filelistView.setOnItemClickListener(new OnItemClickListener() {
-
-									@Override
-									public void onItemClick(AdapterView<?> parent, View arg1,
-											int position, long arg3) {
-										File file = (File)parent.getItemAtPosition(position);
-										try {
-											String fileName = getName(file);
-											
-											openFileOrDir(file, null, null, fileName, listAdapter);
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
-									}
-								});
-							}
-						});
+						//获取分类下的文件
+						getSubCategoryFilesOnThread();
 					
 					}
 				}).start();
@@ -153,35 +119,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 						isRoot = false;
 						curClickType = FileUtil.VIDEO;
 						
-						final File[] sf = getFileList(categoryMap, FileUtil.VIDEO);
-						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
-						
-						getActivity().runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								categoryView.setVisibility(View.GONE);
-								listAdapter.setFileArray(sf);
-								filelistView.setAdapter(listAdapter);
-								filelistView.setVisibility(View.VISIBLE);
-								
-								filelistView.setOnItemClickListener(new OnItemClickListener() {
-
-									@Override
-									public void onItemClick(AdapterView<?> parent, View arg1,
-											int position, long arg3) {
-										File file = (File)parent.getItemAtPosition(position);
-										try {
-											String fileName = getName(file);
-											
-											openFileOrDir(file, null, null, fileName, listAdapter);
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
-									}
-								});
-							}
-						});
+						getSubCategoryFilesOnThread();
 					
 					}
 				}).start();
@@ -199,35 +137,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 						isRoot = false;
 						curClickType = FileUtil.MUSIC;
 						
-						final File[] sf = getFileList(categoryMap, FileUtil.MUSIC);
-						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
-						
-						getActivity().runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								categoryView.setVisibility(View.GONE);
-								listAdapter.setFileArray(sf);
-								filelistView.setAdapter(listAdapter);
-								filelistView.setVisibility(View.VISIBLE);
-								
-								filelistView.setOnItemClickListener(new OnItemClickListener() {
-
-									@Override
-									public void onItemClick(AdapterView<?> parent, View arg1,
-											int position, long arg3) {
-										File file = (File)parent.getItemAtPosition(position);
-										try {
-											String fileName = getName(file);
-											
-											openFileOrDir(file, null, null, fileName, listAdapter);
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
-									}
-								});
-							}
-						});
+						getSubCategoryFilesOnThread();
 					
 					}
 				}).start();
@@ -245,55 +155,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 						isRoot = false;
 						curClickType = FileUtil.DOC;
 						
-						final File[] sf = getFileList(categoryMap, FileUtil.DOC);
-						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
-						
-						getActivity().runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								categoryView.setVisibility(View.GONE);
-								listAdapter.setFileArray(sf);
-								filelistView.setAdapter(listAdapter);
-								filelistView.setVisibility(View.VISIBLE);
-								
-								filelistView.setOnScrollListener(new OnScrollListener() {
-									
-									@Override
-									public void onScrollStateChanged(AbsListView view, int scrollState) {
-										View view2 = filelistView.getChildAt(listAdapter.getCurShowToolPosition());
-										view2.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
-									}
-									
-									@Override
-									public void onScroll(AbsListView view, int firstVisibleItem,
-											int visibleItemCount, int totalItemCount) {
-									
-										
-									}
-								});
-								
-								filelistView.setOnItemClickListener(new OnItemClickListener() {
-
-									@Override
-									public void onItemClick(AdapterView<?> parent, View arg1,
-											int position, long arg3) {
-										View view = parent.getChildAt(listAdapter.getCurShowToolPosition());
-										view.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
-										
-										File file = (File)parent.getItemAtPosition(position);
-										try {
-											String fileName = getName(file);
-											
-											openFileOrDir(file, null, null, fileName, listAdapter);
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
-									}
-								});
-							}
-						});
-					
+						getSubCategoryFilesOnThread();
 					}
 				}).start();
 			}
@@ -310,36 +172,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 						isRoot = false;
 						curClickType = FileUtil.ROOT;
 						
-						final File[] sf = getFileList(categoryMap, FileUtil.ROOT);
-						final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
-						
-						getActivity().runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								categoryView.setVisibility(View.GONE);
-								listAdapter.setFileArray(sf);
-								filelistView.setAdapter(listAdapter);
-								filelistView.setVisibility(View.VISIBLE);
-								
-								filelistView.setOnItemClickListener(new OnItemClickListener() {
-
-									@Override
-									public void onItemClick(AdapterView<?> parent, View arg1,
-											int position, long arg3) {
-										File file = (File)parent.getItemAtPosition(position);
-										try {
-											String fileName = getName(file);
-											
-											openFileOrDir(file, null, null, fileName, listAdapter);
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
-									}
-								});
-							}
-						});
-					
+						getSubCategoryFilesOnThread();
 					}
 				}).start();
 				
@@ -374,6 +207,57 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 		}).start();
 	}
 	
+	/**
+	 *  获取某个分类下的文件           
+	 */
+	private void getSubCategoryFilesOnThread(){
+		final File[] sf = getFileList(categoryMap, curClickType);
+		final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
+		
+		getActivity().runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				categoryView.setVisibility(View.GONE);
+				listAdapter.setFileArray(sf);
+				filelistView.setAdapter(listAdapter);
+				filelistView.setVisibility(View.VISIBLE);
+				
+				filelistView.setOnScrollListener(new OnScrollListener() {
+					
+					@Override
+					public void onScrollStateChanged(AbsListView view, int scrollState) {
+						View view2 = filelistView.getChildAt(listAdapter.getCurShowToolPosition());
+						view2.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+					}
+					
+					@Override
+					public void onScroll(AbsListView view, int firstVisibleItem,
+							int visibleItemCount, int totalItemCount) {
+					
+					}
+				});
+				
+				filelistView.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View arg1,
+							int position, long arg3) {
+						View view = parent.getChildAt(listAdapter.getCurShowToolPosition());
+						view.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+						File file = (File)parent.getItemAtPosition(position);
+						try {
+							String fileName = getName(file);
+							
+							openFileOrDir(file, null, null, fileName, listAdapter);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
+	}
 	
 	private void openFileOrDir(File file, ImageView backView, TextView titleTextView, String fileName, LocalFileListAdapter listAdapter){
 		try {
