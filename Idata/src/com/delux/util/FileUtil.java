@@ -34,7 +34,7 @@ public class FileUtil {
 					return PHOTO;
 				}else if("rmvb".equalsIgnoreCase(suffix) || "rm".equalsIgnoreCase(suffix) || "wmv".equalsIgnoreCase(suffix)
 						|| "avi".equalsIgnoreCase(suffix) || "MOV".equalsIgnoreCase(suffix) || "MPEG".equalsIgnoreCase(suffix) 
-						|| "ASF".equalsIgnoreCase(suffix)){
+						|| "ASF".equalsIgnoreCase(suffix) || "mp4".equalsIgnoreCase(suffix)){
 					return VIDEO;
 				}else if("mp3".equalsIgnoreCase(suffix) || "wma".equalsIgnoreCase(suffix) || "wav".equalsIgnoreCase(suffix)
 						|| "ogg".equalsIgnoreCase(suffix) || "ac3".equalsIgnoreCase(suffix) || "aiff".equalsIgnoreCase(suffix) 
@@ -60,10 +60,10 @@ public class FileUtil {
 				if("GIF".equalsIgnoreCase(suffix) || "png".equalsIgnoreCase(suffix) || "jpg".equalsIgnoreCase(suffix)
 						|| "bmp".equalsIgnoreCase(suffix) || "tiff".equalsIgnoreCase(suffix) || "psd".equalsIgnoreCase(suffix)
 						|| "swf".equalsIgnoreCase(suffix) || "svg".equalsIgnoreCase(suffix) || "JPEG".equalsIgnoreCase(suffix)){
-					return R.drawable.default_fileicon;
+					return R.drawable.photo_file;
 				}else if("rmvb".equalsIgnoreCase(suffix) || "rm".equalsIgnoreCase(suffix) || "wmv".equalsIgnoreCase(suffix)
 						|| "avi".equalsIgnoreCase(suffix) || "MOV".equalsIgnoreCase(suffix) || "MPEG".equalsIgnoreCase(suffix) 
-						|| "ASF".equalsIgnoreCase(suffix)){
+						|| "ASF".equalsIgnoreCase(suffix) || "mp4".equalsIgnoreCase(suffix)){
 					return R.drawable.video_icon;
 				}else if("mp3".equalsIgnoreCase(suffix) || "wma".equalsIgnoreCase(suffix) || "wav".equalsIgnoreCase(suffix)
 						|| "ogg".equalsIgnoreCase(suffix) || "ac3".equalsIgnoreCase(suffix) || "aiff".equalsIgnoreCase(suffix) 
@@ -145,7 +145,7 @@ public class FileUtil {
 				     intent.setDataAndType(uri, "application/pdf");
 				}else if("rmvb".equalsIgnoreCase(suffix) || "rm".equalsIgnoreCase(suffix) || "wmv".equalsIgnoreCase(suffix)
 						|| "avi".equalsIgnoreCase(suffix) || "MOV".equalsIgnoreCase(suffix) || "MPEG".equalsIgnoreCase(suffix) 
-						|| "ASF".equalsIgnoreCase(suffix)){
+						|| "ASF".equalsIgnoreCase(suffix)  || "mp4".equalsIgnoreCase(suffix)){
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				     intent.putExtra("oneshot", 0);
 				     intent.putExtra("configchange", 0);
@@ -250,7 +250,7 @@ public class FileUtil {
 				     intent.setDataAndType(uri, "application/pdf");
 				}else if("rmvb".equalsIgnoreCase(suffix) || "rm".equalsIgnoreCase(suffix) || "wmv".equalsIgnoreCase(suffix)
 						|| "avi".equalsIgnoreCase(suffix) || "MOV".equalsIgnoreCase(suffix) || "MPEG".equalsIgnoreCase(suffix) 
-						|| "ASF".equalsIgnoreCase(suffix)){
+						|| "ASF".equalsIgnoreCase(suffix)  || "mp4".equalsIgnoreCase(suffix)){
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				     intent.putExtra("oneshot", 0);
 				     intent.putExtra("configchange", 0);
@@ -287,7 +287,10 @@ public class FileUtil {
 		try {
 			String name = file.getName();
 			if(file.isDirectory()){
-				name = name.substring(0, name.length()-1);
+				if(name.endsWith("/"))
+					name = name.substring(0, name.length()-1);
+				else
+					name = name.substring(0, name.length());
 				name = name.substring(name.lastIndexOf("/")+1);
 				
 			}else{

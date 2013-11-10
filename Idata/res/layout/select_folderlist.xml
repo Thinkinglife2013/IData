@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/top_bg"
+        android:gravity="center" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/logo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/select_folder_bg"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40.5dp" >
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/small_folder" />
+            <TextView
+                android:id="@+id/path"
+                android:layout_width="145dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/category_color"
+                android:text="@string/cancle" 
+                android:ellipsize="start"
+                android:layout_marginLeft="5dp"
+                android:singleLine="true"
+                android:layout_centerVertical="true"
+                android:textSize="15sp"
+                android:layout_toRightOf="@id/icon"
+                android:visibility="invisible"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal" 
+                android:gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8.5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/tab_divider" />
+                 <TextView
+                    android:id="@+id/cancle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/category_color"
+                    android:text="@string/cancle" 
+                    android:layout_marginLeft="5dp"
+                    android:textSize="15sp"/>
+                 <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/tab_divider" />
+                 <TextView
+                     android:id="@+id/copy_or_move"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/darker_gray"
+                    android:text="@string/copy_to_here" 
+                    android:layout_marginLeft="5dp"
+                    android:clickable="false"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/index_divider" />
+
+        <!-- 本地存储区和idata存储区的根目录 -->
+       <LinearLayout
+            android:id="@+id/dir"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:orientation="vertical" >
+          <LinearLayout
+              android:id="@+id/local"
+	        android:layout_width="fill_parent"
+	        android:layout_height="65dp"
+	        android:orientation="horizontal"
+	        android:gravity="center_vertical"
+	        android:background="@drawable/tab_selector" >
+                <ImageView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/big_folder" 
+	            android:layout_marginLeft="17dp"/>
+               <TextView
+                android:id="@+id/one"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/tab_local"
+	            android:layout_marginLeft="10dp"
+	            android:textColor="@color/category_color"/>
+          </LinearLayout>
+          
+          <!-- 分割线 -->
+           <LinearLayout
+		        android:layout_width="fill_parent"
+		        android:layout_height="1dp"
+		        android:orientation="horizontal"
+		        android:background="#D7D7D7" />
+               
+          <LinearLayout
+            android:id="@+id/idata"
+	        android:layout_width="fill_parent"
+	        android:layout_height="65dp"
+	        android:orientation="horizontal"
+	        android:gravity="center_vertical" 
+	        android:background="@drawable/tab_selector">
+                <ImageView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/big_folder" 
+	            android:layout_marginLeft="17dp"/>
+               <TextView
+                   android:id="@+id/two"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/tab_idata"
+	            android:layout_marginLeft="10dp"
+	            android:textColor="@color/category_color"/>
+          </LinearLayout>
+          
+              <!-- 分割线 -->
+           <LinearLayout
+		        android:layout_width="fill_parent"
+		        android:layout_height="1dp"
+		        android:orientation="horizontal"
+		        android:background="#D7D7D7" />
+       </LinearLayout>
+       
+        <ListView
+            android:id="@+id/file_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="#D7D7D7"
+            android:dividerHeight="0.5dp"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none" 
+            android:visibility="gone"/>
+    </LinearLayout>
+
+</LinearLayout>

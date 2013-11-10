@@ -37,5 +37,11 @@
         <string name="cn">Simplified Chinese</string>
         <string name="tw">Traditional Chinese</string>
          <string name="en">English</string>
+         <string name="copy_to_here">copy to here</string>
+          <string name="copying">file is copying</string>
+           <string name="delete_confirm">Sure you want to delete this file？</string>
+            <string name="moving">moving files</string>
+              <string name="move_to_here">move to here</string>
+               <string name="delete_files">deleting files</string>
 
 </resources>

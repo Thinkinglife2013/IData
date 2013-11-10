@@ -227,8 +227,13 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 					
 					@Override
 					public void onScrollStateChanged(AbsListView view, int scrollState) {
-						View view2 = filelistView.getChildAt(listAdapter.getCurShowToolPosition());
-						view2.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+						int curShowToolPosition = listAdapter.getCurShowToolPosition();
+						if(curShowToolPosition > -1){
+							View view2 = filelistView.getChildAt(curShowToolPosition);
+							view2.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+							listAdapter.setCurShowToolPosition(-1);
+						}
+						
 					}
 					
 					@Override
@@ -243,11 +248,15 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 					@Override
 					public void onItemClick(AdapterView<?> parent, View arg1,
 							int position, long arg3) {
-						View view = parent.getChildAt(listAdapter.getCurShowToolPosition());
-						view.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+						int curShowToolPosition = listAdapter.getCurShowToolPosition();
+						if(curShowToolPosition > -1){
+							View view = parent.getChildAt(curShowToolPosition);
+							view.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+							listAdapter.setCurShowToolPosition(-1);
+						}
 						File file = (File)parent.getItemAtPosition(position);
 						try {
-							String fileName = getName(file);
+							String fileName = LocalFileListAdapter.getName(file);
 							
 							openFileOrDir(file, null, null, fileName, listAdapter);
 						} catch (Exception e) {
@@ -270,8 +279,12 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 				curParent = file.getParent();
 				
 				File[] subFiles = file.listFiles();
+				if(subFiles == null){
+					subFiles = new File[]{};
+				}	
 				listAdapter.setFileArray(subFiles);
 				listAdapter.notifyDataSetChanged();
+				
 			}else{
 				/*String path = file.getPath();
 				Intent intent= new Intent();        
@@ -303,6 +316,9 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 		}
 	}
 	
+	/**
+	 * 把文件进行分类
+	 */
 	private Map<Integer, ArrayList> getCategoryFiles(boolean isSdcard){
 		try {
 //			jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
@@ -317,7 +333,6 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 			
 			File[] files = rootFile.listFiles();
 			if(files != null && files.length > 0){
-		        
 		        Map<Integer, ArrayList> categoryMap = new HashMap<Integer, ArrayList>();
 		        ArrayList<File> rootList = new ArrayList<File>();
 		        ArrayList<File> photoList = new ArrayList<File>();
@@ -334,7 +349,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 							
 							if(subfiles2 != null && subfiles2.length > 0){
 								for(File  subfile2 : subfiles2){
-									int category = FileUtil.getFileCategory(getName(subfile2));
+									int category = FileUtil.getFileCategory(LocalFileListAdapter.getName(subfile2));
 									if(FileUtil.PHOTO == category){
 										photoList.add(subfile2);
 									}else if(FileUtil.MUSIC == category){
@@ -347,7 +362,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 								}
 							}
 						}else{
-							int category = FileUtil.getFileCategory(getName(file));
+							int category = FileUtil.getFileCategory(LocalFileListAdapter.getName(file));
 							if(FileUtil.PHOTO == category){
 								photoList.add(file);
 							}else if(FileUtil.MUSIC == category){
@@ -366,11 +381,6 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 				categoryMap.put(FileUtil.VIDEO, videoList);
 				
 				return categoryMap;
-//		        curParent = files[0].getPath();
-//		        final SmbFile[] subfiles = files[0].listFiles();
-//		        if(subfiles.length > 0){
-		        
-//		        }
 			}
 
 		}catch(Exception e){
@@ -388,24 +398,6 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 		return sf;
 	}
 	
-	private String getName(File file){
-		try {
-			String name = file.getName();
-			if(file.isDirectory()){
-				name = name.substring(0, name.length()-1);
-				name = name.substring(name.lastIndexOf("/")+1);
-				
-			}else{
-				name = name.substring(0, name.length());
-				name = name.substring(name.lastIndexOf("/")+1);
-			}
-			return name;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -493,6 +485,14 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 			listAdapter.notifyDataSetChanged();
 		}
 	}
+	
+//	public static void onPostFresh(String path) {
+//		Log.i("LocalFragment", "onPostFresh");
+//		File file = new File(path);
+//		LocalFileListAdapter localFileListAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+//		localFileListAdapter.setFileArray(file.listFiles());
+//		localFileListAdapter.notifyDataSetChanged();
+//	}
 	
 	@Override
 	public void onDestroy() {

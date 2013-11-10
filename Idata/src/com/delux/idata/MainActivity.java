@@ -1,5 +1,6 @@
 package com.delux.idata;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 
@@ -160,5 +162,21 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 		return super.onKeyDown(keyCode, event);
 	}
 	
-
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		String fromPath = data.getStringExtra("fromPath");
+		Log.i("fromPath", fromPath);
+		File file = new File(fromPath);
+		
+		ListView filelistView;
+		 if(curSelectPosition == 0){
+			 filelistView = ((LocalFragment)mFragmentList.get(0)).filelistView;
+		  }else{
+			  filelistView = ((LocalFragment)mFragmentList.get(0)).filelistView;
+		  }
+		LocalFileListAdapter localFileListAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+		localFileListAdapter.setFileArray(file.getParentFile().listFiles());
+		localFileListAdapter.notifyDataSetChanged();
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

@@ -336,7 +336,7 @@ public class MainActivity2 extends Activity {
 			SmbFile file = fileArray[position];
 			try {
 				if(file.isDirectory()){
-					holder.icon.setImageResource(R.drawable.folder);
+					holder.icon.setImageResource(R.drawable.normal_folder);
 				}else{
 					holder.icon.setImageResource(R.drawable.default_fileicon);
 				}

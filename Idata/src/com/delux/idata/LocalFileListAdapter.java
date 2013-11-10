@@ -3,9 +3,12 @@ package com.delux.idata;
 import java.io.File;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
 
 public class LocalFileListAdapter extends BaseAdapter {
@@ -32,6 +36,15 @@ public class LocalFileListAdapter extends BaseAdapter {
 	private boolean isMutilMode; //是否多选的状态
 	private Context context;
 	private int curShowToolPosition = -1;
+	private boolean isMoveOrCopy;
+
+	public boolean isMoveOrCopy() {
+		return isMoveOrCopy;
+	}
+
+	public void setMoveOrCopy(boolean isMoveOrCopy) {
+		this.isMoveOrCopy = isMoveOrCopy;
+	}
 
 	public LocalFileListAdapter(Context context, File[] fileArray, int categoryType){
 		this.context = context;
@@ -100,6 +113,13 @@ public class LocalFileListAdapter extends BaseAdapter {
 		final File file = fileArray[position];
 		String name = getName(file);
 		
+		//如果是移动或拷贝
+		if(isMoveOrCopy){
+			holder.toolLayout.setVisibility(View.INVISIBLE);
+		}else{
+			holder.toolLayout.setVisibility(View.VISIBLE);
+		}
+		
 		final View toolLineView = holder.toolLine; //工具条
 		//点击弹出工具条
 		holder.toolLayout.setOnTouchListener(new OnTouchListener() {
@@ -125,15 +145,87 @@ public class LocalFileListAdapter extends BaseAdapter {
 		        ImageView moveView = (ImageView)toolLineView.findViewById(R.id.move);
 		        ImageView deleteView = (ImageView)toolLineView.findViewById(R.id.delete);
 		        
+		        //删除
+		        deleteView.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						DialogUtil.showDeleteDialog(context, new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								final ProgressDialog progressDialog = ProgressDialog.show(context, null, context.getString(R.string.delete_files), true, false); 
+								new Thread(new Runnable() {
+									public void run() {
+										if(!deleteFile(file.getPath())){
+											deleteDirectory(file.getPath());
+										}
+										
+										File[] newFileArray = new File[fileArray.length-1];
+										for(int i=0; i<fileArray.length-1; i++){
+											newFileArray[i] = fileArray[i];
+											if(i >= position){
+												newFileArray[i] = fileArray[i+1];
+											}
+										}
+										fileArray = newFileArray;
+										((FragmentActivity)context).runOnUiThread(new Runnable() {
+											
+											@Override
+											public void run() {
+												notifyDataSetChanged();
+												progressDialog.dismiss();
+											}
+										});
+									}
+								}).start();
+								
+							}
+						});
+						
+//						LocalFragment.onPostFresh(file.getPath());
+						toolLineView.setVisibility(View.INVISIBLE);
+						curShowToolPosition = -1;
+					}
+				});
+		        
+		        //移动
+		        moveView.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent i = new Intent(context, SelectDirActivity.class);
+						i.putExtra("moveOrCopy", "move");
+						i.putExtra("fromFile", file.getPath()+"/");
+						((FragmentActivity)context).startActivityForResult(i, 1);
+//						LocalFragment.onPostFresh(file.getPath());
+						toolLineView.setVisibility(View.INVISIBLE);
+						curShowToolPosition = -1;
+					}
+				});
+		        
 		        //重命名
 		        renameView.setOnClickListener(new View.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-						
-//						getItem(position);
-						showRenameDialog(file);
+						showRenameDialog(file, position);
 						toolLineView.setVisibility(View.INVISIBLE);
+						curShowToolPosition = -1;
+					}
+				});
+		        
+		        //复制
+		        copyView.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent i = new Intent(context, SelectDirActivity.class);
+						i.putExtra("moveOrCopy", "copy");
+						i.putExtra("fromFile", file.getPath()+"/");
+						context.startActivity(i);
+						toolLineView.setVisibility(View.INVISIBLE);
+						curShowToolPosition = -1;
 					}
 				});
 			        
@@ -162,7 +254,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 		
 		try {
 			if(file.isDirectory()){
-				holder.icon.setImageResource(R.drawable.folder);
+				holder.icon.setImageResource(R.drawable.normal_folder);
 			}else{
 				if(isMutilMode){//多选模式
 					holder.cornerIcon.setVisibility(View.GONE);
@@ -185,7 +277,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 		return convertView;
 	}
 	
-	private String getName(File file){
+	public static String getName(File file){
 		try {
 			String name = file.getName();
 			if(file.isDirectory()){
@@ -204,11 +296,52 @@ public class LocalFileListAdapter extends BaseAdapter {
 		}
 	}
 	
-	private void showRenameDialog(File file){
+	/** 
+	* 删除文件 
+	* @param srcFileName 	源文件完整路径
+	* @return 文件删除成功返回true，否则返回false 
+	*/  
+	public boolean deleteFile(String srcFileName) {
+		File srcFile = new File(srcFileName);
+		if(!srcFile.exists() || !srcFile.isFile()) 
+		    return false;
+		
+		return srcFile.delete();
+	}
+	
+	/** 
+	* 移动目录 
+	* @param srcDirName 	源目录完整路径
+	* @param destDirName 	目的目录完整路径
+	* @return 目录移动成功返回true，否则返回false 
+	*/  
+	public  boolean deleteDirectory(String srcDirName) {
+		
+		File srcDir = new File(srcDirName);
+		if(!srcDir.exists() || !srcDir.isDirectory())  
+			return false;  
+	   
+	   /**
+	    * 如果是文件则移动，否则递归移动文件夹。删除最终的空源文件夹
+	    * 注意移动文件夹时保持文件夹的树状结构
+	    */
+	   File[] sourceFiles = srcDir.listFiles();
+	   for (File sourceFile : sourceFiles) {
+		   if (sourceFile.isFile())
+			   deleteFile(sourceFile.getAbsolutePath());
+		   else if (sourceFile.isDirectory())
+			   deleteDirectory(sourceFile.getAbsolutePath());
+		   else
+			   ;
+	   }
+	   return srcDir.delete();
+	}
+	
+	private void showRenameDialog(final File file, final int position){
 	      AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //          builder.setIcon(android.R.drawable.ic_menu_add);
           builder.setTitle("重命名");
-          EditText editTextAdd = new EditText(context);
+          final EditText editTextAdd = new EditText(context);
           editTextAdd.setSingleLine(true);
           editTextAdd.setFocusable(true);
           editTextAdd.setSelectAllOnFocus(true);
@@ -219,7 +352,14 @@ public class LocalFileListAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
+				String parentPath = file.getParent();
+				
+				String newName = editTextAdd.getText().toString();
+				String newFilePath = parentPath+ "/" + newName;
+				File newNameFile = new File(newFilePath);
+				file.renameTo(newNameFile);
+				fileArray[position] = newNameFile;
+				notifyDataSetChanged();
 				
 			}
 		});
@@ -227,7 +367,6 @@ public class LocalFileListAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				
 			}
 		});

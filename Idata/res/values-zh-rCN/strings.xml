@@ -37,5 +37,11 @@
        <string name="cn">简体中文</string>
         <string name="tw">繁体中文</string>
          <string name="en">英文</string>
+         <string name="copy_to_here">复制到此处</string>
+           <string name="copying">正在复制文件</string>
+            <string name="delete_confirm">确定要删除此文件吗？</string>
+             <string name="moving">正在移动文件</string>
+              <string name="move_to_here">移动到此处</string>
+                 <string name="delete_files">正在删除文件</string>
 
 </resources>
