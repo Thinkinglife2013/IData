@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,8 @@ import java.util.Map;
 import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
+import jcifs.smb.SmbFileInputStream;
+import jcifs.smb.SmbFileOutputStream;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -28,6 +31,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delux.util.FileUtil;
 import com.delux.util.MyFIleFilter;
@@ -83,9 +87,14 @@ public class SelectDirActivity extends Activity {
 					final ProgressDialog progressDialog = ProgressDialog.show(SelectDirActivity.this, null, getString(R.string.moving), true, false); 
 					new Thread(new Runnable() {
 						public void run() {
-							if(!moveFile(fromFile, pathView.getText().toString())){
-								moveDirectory(fromFile, pathView.getText().toString());
+							if(pathView.getText().toString().startsWith("smb://")){
+								//TODO
+							}else{
+								if(!moveFile(fromFile, pathView.getText().toString())){
+									moveDirectory(fromFile, pathView.getText().toString());
+								}
 							}
+					
 							runOnUiThread(new Runnable() {
 								
 								@Override
@@ -109,7 +118,12 @@ public class SelectDirActivity extends Activity {
 					final ProgressDialog progressDialog = ProgressDialog.show(SelectDirActivity.this, null, getString(R.string.copying), true, false); 
 					new Thread(new Runnable() {
 						public void run() {
-							copy(fromFile, pathView.getText().toString()+"/");
+							if(pathView.getText().toString().startsWith("smb://")){
+								copyIdata(fromFile, pathView.getText().toString());
+							}else{
+								copy(fromFile, pathView.getText().toString()+"/");
+							}
+							
 							runOnUiThread(new Runnable() {
 								
 								@Override
@@ -205,7 +219,7 @@ public class SelectDirActivity extends Activity {
 //				        final SmbFile[] files = files[0].listFiles(new MyIdataFIleFilter());
 					
 					final SmbFile[] sf = getIdataFileList(categoryMap, FileUtil.ROOT);
-					final FileListAdapter listAdapter = new FileListAdapter(SelectDirActivity.this, null);
+					final FileListAdapter listAdapter = new FileListAdapter(SelectDirActivity.this, null, FileUtil.ROOT, null);
 					final SmbFile curFile = file;
 					
 					runOnUiThread(new Runnable() {
@@ -259,6 +273,31 @@ public class SelectDirActivity extends Activity {
 	}
 	
 	/**
+	 *  连接idata获取文件对象           
+	 */
+	private SmbFile getSmbFile(String url){
+		 try {
+			jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+			jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
+			
+	        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
+        
+			SmbFile file = new SmbFile(url, auth);
+			return file;
+		} catch (MalformedURLException e) {
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					Toast.makeText(SelectDirActivity.this, R.string.not_connect_idata, 0).show();
+				}
+			});
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
 	 *  获取当前手机目录下的文件           
 	 */
 	private void getSubCategoryFilesOnThread(final boolean isSdcard, final ListView filelistView){
@@ -292,7 +331,7 @@ public class SelectDirActivity extends Activity {
 						}
 					
 					final File[] sf = getFileList(categoryMap, FileUtil.ROOT);
-					final LocalFileListAdapter listAdapter = new LocalFileListAdapter(SelectDirActivity.this, null, FileUtil.ROOT);
+					final LocalFileListAdapter listAdapter = new LocalFileListAdapter(SelectDirActivity.this, null, FileUtil.ROOT, null);
 					final File curFile = rootFile;
 					
 					runOnUiThread(new Runnable() {
@@ -601,7 +640,91 @@ public class SelectDirActivity extends Activity {
 	}
 	
 	/**
-	 * 拷贝
+	 * 拷贝idata目录或文件
+	 */
+	public int copyIdata(String fromFile, String toFile)
+    {
+		try{
+			Log.i("idataPath", "copyIdata------fromFile ="+fromFile+"; toFile ="+toFile);
+	        //要复制的文件目录
+	        SmbFile[] currentFiles;
+	        
+	        SmbFile root = getSmbFile(fromFile);
+//	        SmbFile root = new SmbFile(fromFile);
+	        //如同判断SD卡是否存在或者文件是否存在
+	        //如果不存在则 return出去
+	        if(root == null || !root.exists())
+	        {
+	            return -1;
+	        }else if(root.exists() && root.isDirectory()){
+	        	toFile += root.getName() + "/";
+	        	  //目标目录
+	        	SmbFile targetDir = getSmbFile(toFile);
+//	        	SmbFile targetDir = new SmbFile(toFile);
+	            //创建目录
+	            if(!targetDir.exists())
+	            {
+	                targetDir.mkdirs();
+	            }
+	            //如果存在则获取当前目录下的全部文件 填充数组
+	            currentFiles = root.listFiles();
+	             
+	            //遍历要复制该目录下的全部文件
+	            for(int i= 0;i<currentFiles.length;i++)
+	            {
+	                if(currentFiles[i].isDirectory())//如果当前项为子目录 进行递归
+	                {
+	                    return copyIdata(currentFiles[i].getPath() + "/", toFile);
+	                     
+	                }else//如果当前项为文件则进行文件拷贝
+	                {
+	                    return CopyIdataFile(currentFiles[i].getPath(), toFile + currentFiles[i].getName());
+	                }
+	            }
+	        }else if(root.exists() && root.isFile()){
+	        	//如果当前项为文件则进行文件拷贝
+	        	 return CopyIdataFile(root.getPath(), toFile + root.getName());
+	        }
+		}catch(Exception e){
+			e.printStackTrace();
+			return -1;
+		}
+        
+        return 0;
+    }
+	
+    //idata文件拷贝
+    //要复制的目录下的所有非子目录(文件夹)文件拷贝
+    public int CopyIdataFile(String fromFile, String toFile)
+    {
+        try
+        {
+        	Log.i("idataPath", "CopyIdataFile----------fromFile ="+fromFile+"; toFile ="+toFile);
+        	SmbFile fromSmb = getSmbFile(fromFile);
+        	SmbFile toSmb = getSmbFile(toFile);
+        	SmbFileInputStream fosfrom = new SmbFileInputStream(fromSmb);
+        	SmbFileOutputStream fosto = new SmbFileOutputStream(toSmb);
+            byte bt[] = new byte[1024];
+            int c;
+            while ((c = fosfrom.read(bt)) > 0) 
+            {
+            	
+                fosto.write(bt, 0, c);
+            }
+            Log.i("idataPath", "CopyIdataFile----------close");
+            fosfrom.close();
+            fosto.close();
+            return 0;
+             
+        } catch (Exception ex) 
+        {
+        	ex.printStackTrace();
+            return -1;
+        }
+    }
+	
+	/**
+	 * 拷贝本地目录或文件
 	 */
 	public int copy(String fromFile, String toFile)
     {

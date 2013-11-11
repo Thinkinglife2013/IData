@@ -56,7 +56,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 		categoryView = contextView.findViewById(R.id.category);
 		filelistView = (ListView)contextView.findViewById(R.id.filelist_view);
 		
-		final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
+//		final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
 		final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.load), true, false); 
 		new Thread(new Runnable() {
 			
@@ -180,7 +180,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 	private void getSubCategoryFilesOnThread(){
 		try{
 			final SmbFile[] sf = getFileList(categoryMap, curClickType);
-			final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
+			final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null, curClickType, categoryMap);
 			
 			getActivity().runOnUiThread(new Runnable() {
 				
@@ -198,6 +198,9 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 							int curShowToolPosition = listAdapter.getCurShowToolPosition();
 							if(curShowToolPosition > -1){
 								View view2 = filelistView.getChildAt(curShowToolPosition);
+								if(view2 == null){
+									Log.i("idata_onScroll", curShowToolPosition+"---listView_count ="+filelistView.getCount());
+								}
 								view2.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
 								listAdapter.setCurShowToolPosition(-1);
 							}

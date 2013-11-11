@@ -1,5 +1,9 @@
 package com.delux.idata;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Map;
+
 import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
@@ -33,11 +37,12 @@ public class FileListAdapter extends BaseAdapter {
 
 	private SmbFile[] fileArray;
 	private LayoutInflater mInflater;
-//	private int categoryType;
+	private int categoryType;
 	private boolean isMutilMode; //是否多选的状态
 	private Context context;
 	private int curShowToolPosition = -1;
 	private boolean isMoveOrCopy;
+	private Map<Integer, ArrayList> categoryMap;
 
 	public boolean isMoveOrCopy() {
 		return isMoveOrCopy;
@@ -47,10 +52,12 @@ public class FileListAdapter extends BaseAdapter {
 		this.isMoveOrCopy = isMoveOrCopy;
 	}
 	
-	public FileListAdapter(Context context, SmbFile[] fileArray){
+	public FileListAdapter(Context context, SmbFile[] fileArray,  int categoryType, Map<Integer, ArrayList> categoryMap){
 		this.context = context;
 		this.mInflater = LayoutInflater.from(context);
 		this.fileArray = fileArray;
+		this.categoryType = categoryType;
+		this.categoryMap = categoryMap;
 	}
 	
 	public void setMutilMode(boolean isMutilMode) {
@@ -168,6 +175,8 @@ public class FileListAdapter extends BaseAdapter {
 											}
 										}
 										fileArray = newFileArray;
+										categoryMap.put(categoryType, convertToList(fileArray));
+										
 										((FragmentActivity)context).runOnUiThread(new Runnable() {
 											
 											@Override
@@ -221,7 +230,7 @@ public class FileListAdapter extends BaseAdapter {
 					public void onClick(View v) {
 						Intent i = new Intent(context, SelectDirActivity.class);
 						i.putExtra("moveOrCopy", "copy");
-						i.putExtra("fromFile", file.getPath()+"/");
+						i.putExtra("fromFile", file.getPath());
 						context.startActivity(i);
 						toolLineView.setVisibility(View.INVISIBLE);
 						curShowToolPosition = -1;
@@ -370,6 +379,8 @@ public class FileListAdapter extends BaseAdapter {
 					file.renameTo(newNameFile);
 					fileArray[position] = newNameFile;
 					notifyDataSetChanged();
+					
+					categoryMap.put(categoryType, convertToList(fileArray));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -383,7 +394,14 @@ public class FileListAdapter extends BaseAdapter {
 			}
 		});
           AlertDialog dialogAdd = builder.show();
-
+	}
+	
+	private ArrayList convertToList(SmbFile[] FileArray){
+		ArrayList<SmbFile> list = new ArrayList<SmbFile>();
+		for(SmbFile	file : fileArray){
+			list.add(file);
+		}
+		return list;
 	}
 
 	public int getCurShowToolPosition() {

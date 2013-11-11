@@ -212,7 +212,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 	 */
 	private void getSubCategoryFilesOnThread(){
 		final File[] sf = getFileList(categoryMap, curClickType);
-		final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType);
+		final LocalFileListAdapter listAdapter = new LocalFileListAdapter(getActivity(), null, curClickType, categoryMap);
 		
 		getActivity().runOnUiThread(new Runnable() {
 			
@@ -228,9 +228,14 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 					@Override
 					public void onScrollStateChanged(AbsListView view, int scrollState) {
 						int curShowToolPosition = listAdapter.getCurShowToolPosition();
+//						Log.i("onScroll", "firstVisibleItem ="+firstVisibleItem+"; visibleItemCount="+visibleItemCount+"; totalItemCount="+totalItemCount+"; getCurShowToolPosition="+curShowToolPosition);
+						
 						if(curShowToolPosition > -1){
-							View view2 = filelistView.getChildAt(curShowToolPosition);
-							view2.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+							View toolLineView =filelistView.findViewWithTag("visible");
+							toolLineView.setVisibility(View.INVISIBLE);
+							toolLineView.setTag("");
+//							View view2 = filelistView.getChildAt(curShowToolPosition);
+//							view2.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
 							listAdapter.setCurShowToolPosition(-1);
 						}
 						
@@ -250,8 +255,11 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 							int position, long arg3) {
 						int curShowToolPosition = listAdapter.getCurShowToolPosition();
 						if(curShowToolPosition > -1){
-							View view = parent.getChildAt(curShowToolPosition);
-							view.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+//							View view = parent.getChildAt(curShowToolPosition);
+//							view.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+							View toolLineView =filelistView.findViewWithTag("visible");
+							toolLineView.setVisibility(View.INVISIBLE);
+							toolLineView.setTag("");
 							listAdapter.setCurShowToolPosition(-1);
 						}
 						File file = (File)parent.getItemAtPosition(position);

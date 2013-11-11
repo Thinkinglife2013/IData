@@ -63,7 +63,7 @@ public class IDataFilesActivity extends Activity {
 		curParent = intent.getStringExtra("curParent");
 		final int type = intent.getIntExtra("type",0);
 		
-		final FileListAdapter listAdapter = new FileListAdapter(IDataFilesActivity.this, null);
+		final FileListAdapter listAdapter = new FileListAdapter(IDataFilesActivity.this, null,0,null);
 		   new Thread(new Runnable() {
 				
 				@Override

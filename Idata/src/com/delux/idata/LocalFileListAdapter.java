@@ -1,6 +1,9 @@
 package com.delux.idata;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -37,6 +40,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 	private Context context;
 	private int curShowToolPosition = -1;
 	private boolean isMoveOrCopy;
+	private Map<Integer, ArrayList> categoryMap;
 
 	public boolean isMoveOrCopy() {
 		return isMoveOrCopy;
@@ -46,11 +50,12 @@ public class LocalFileListAdapter extends BaseAdapter {
 		this.isMoveOrCopy = isMoveOrCopy;
 	}
 
-	public LocalFileListAdapter(Context context, File[] fileArray, int categoryType){
+	public LocalFileListAdapter(Context context, File[] fileArray, int categoryType, Map<Integer, ArrayList> categoryMap){
 		this.context = context;
 		this.mInflater = LayoutInflater.from(context);
 		this.fileArray = fileArray;
 		this.categoryType = categoryType;
+		this.categoryMap = categoryMap;
 	}
 	
 	public void setMutilMode(boolean isMutilMode) {
@@ -169,6 +174,8 @@ public class LocalFileListAdapter extends BaseAdapter {
 											}
 										}
 										fileArray = newFileArray;
+										categoryMap.put(categoryType, convertToList(fileArray));
+										
 										((FragmentActivity)context).runOnUiThread(new Runnable() {
 											
 											@Override
@@ -233,6 +240,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 						context, R.anim.scale_anim);
 				toolLineView.startAnimation(scale);
 				toolLineView.setVisibility(View.VISIBLE);
+				toolLineView.setTag("visible");
 				scale.setAnimationListener(new AnimationListener() {
 
 					@Override
@@ -361,6 +369,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 				fileArray[position] = newNameFile;
 				notifyDataSetChanged();
 				
+				categoryMap.put(categoryType, convertToList(fileArray));
 			}
 		});
           builder.setNegativeButton("Cancle", new OnClickListener() {
@@ -371,9 +380,16 @@ public class LocalFileListAdapter extends BaseAdapter {
 			}
 		});
           AlertDialog dialogAdd = builder.show();
-
 	}
-
+	
+	private ArrayList convertToList(File[] FileArray){
+		ArrayList<File> list = new ArrayList<File>();
+		for(File	file : fileArray){
+			list.add(file);
+		}
+		return list;
+	}
+	
 	public int getCurShowToolPosition() {
 		return curShowToolPosition;
 	}
