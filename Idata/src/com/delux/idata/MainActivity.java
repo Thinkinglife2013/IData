@@ -1,9 +1,13 @@
 package com.delux.idata;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbException;
+import jcifs.smb.SmbFile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 
 public class MainActivity extends FragmentActivity implements OnPageChangeListener{
@@ -166,17 +171,51 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		String fromPath = data.getStringExtra("fromPath");
 		Log.i("fromPath", fromPath);
-		File file = new File(fromPath);
 		
 		ListView filelistView;
 		 if(curSelectPosition == 0){
+			 File file = new File(fromPath);
 			 filelistView = ((LocalFragment)mFragmentList.get(0)).filelistView;
+			LocalFileListAdapter localFileListAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+			localFileListAdapter.setFileArray(file.getParentFile().listFiles());
+			localFileListAdapter.notifyDataSetChanged();
 		  }else{
-			  filelistView = ((LocalFragment)mFragmentList.get(0)).filelistView;
+			  SmbFile file = getSmbFile(fromPath);
+			  filelistView = ((IDataFragment)mFragmentList.get(1)).filelistView;
+				FileListAdapter fileListAdapter = (FileListAdapter)filelistView.getAdapter();
+				try {
+					fileListAdapter.setFileArray(getSmbFile(file.getParent()).listFiles());
+				} catch (SmbException e) {
+					e.printStackTrace();
+				}
+				fileListAdapter.notifyDataSetChanged();
 		  }
-		LocalFileListAdapter localFileListAdapter = (LocalFileListAdapter)filelistView.getAdapter();
-		localFileListAdapter.setFileArray(file.getParentFile().listFiles());
-		localFileListAdapter.notifyDataSetChanged();
+	
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	/**
+	 *  连接idata获取文件对象           
+	 */
+	private SmbFile getSmbFile(String url){
+		 try {
+			jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+			jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
+			
+	        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
+        
+			SmbFile file = new SmbFile(url, auth);
+			return file;
+		} catch (MalformedURLException e) {
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					Toast.makeText(MainActivity.this, R.string.not_connect_idata, 0).show();
+				}
+			});
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

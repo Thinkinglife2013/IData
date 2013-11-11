@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -163,6 +164,7 @@ public class FileListAdapter extends BaseAdapter {
 								final ProgressDialog progressDialog = ProgressDialog.show(context, null, context.getString(R.string.delete_files), true, false); 
 								new Thread(new Runnable() {
 									public void run() {
+										Log.i("parentPath", file.getPath());
 										if(!deleteFile(file.getPath())){
 											deleteDirectory(file.getPath());
 										}
@@ -175,7 +177,9 @@ public class FileListAdapter extends BaseAdapter {
 											}
 										}
 										fileArray = newFileArray;
-										categoryMap.put(categoryType, convertToList(fileArray));
+										
+										if(categoryType != FileUtil.ROOT)
+											categoryMap.put(categoryType, convertToList(fileArray));
 										
 										((FragmentActivity)context).runOnUiThread(new Runnable() {
 											
@@ -204,7 +208,7 @@ public class FileListAdapter extends BaseAdapter {
 					public void onClick(View v) {
 						Intent i = new Intent(context, SelectDirActivity.class);
 						i.putExtra("moveOrCopy", "move");
-						i.putExtra("fromFile", file.getPath()+"/");
+						i.putExtra("fromFile", file.getPath());
 						((FragmentActivity)context).startActivityForResult(i, 1);
 //						LocalFragment.onPostFresh(file.getPath());
 						toolLineView.setVisibility(View.INVISIBLE);
@@ -241,6 +245,7 @@ public class FileListAdapter extends BaseAdapter {
 						context, R.anim.scale_anim);
 				toolLineView.startAnimation(scale);
 				toolLineView.setVisibility(View.VISIBLE);
+				toolLineView.setTag("visible");
 				scale.setAnimationListener(new AnimationListener() {
 
 					@Override
@@ -297,7 +302,7 @@ public class FileListAdapter extends BaseAdapter {
         NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
        
 		try {
-	        SmbFile srcFile = new SmbFile("smb://192.168.169.1/Share/",auth);
+	        SmbFile srcFile = new SmbFile(srcFileName,auth);
 			if(!srcFile.exists() || !srcFile.isFile()) 
 			    return false;
 			srcFile.delete();
@@ -321,7 +326,7 @@ public class FileListAdapter extends BaseAdapter {
         NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
        
 		try {
-	        SmbFile srcDir = new SmbFile("smb://192.168.169.1/Share/",auth);
+	        SmbFile srcDir = new SmbFile(srcDirName,auth);
 	    	if(!srcDir.exists() || !srcDir.isDirectory())  
 				return false;  
 	 	   /**

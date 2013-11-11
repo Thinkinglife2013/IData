@@ -469,6 +469,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 			isMutilChooseMode = false;
 			LocalFileListAdapter listAdapter = (LocalFileListAdapter)filelistView.getAdapter();
 			listAdapter.setMutilMode(false);
+			listAdapter.selectFiles.clear();
 			listAdapter.notifyDataSetChanged();
 		}
 	}
@@ -484,6 +485,17 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 		if(!isRoot){
 			this.bottomLayout = bottomLayout;
 			this.mutilChooseLayout = mutilChooseLayout;
+			
+			LinearLayout delMany = (LinearLayout)mutilChooseLayout.findViewById(R.id.del);
+			delMany.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					LocalFileListAdapter localFileListAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+					localFileListAdapter.delMany(localFileListAdapter.selectFiles, localFileListAdapter.convertToList(localFileListAdapter.getFileArray()));
+				}
+			});
+			
 			bottomLayout.setVisibility(View.GONE);
 			mutilChooseLayout.setVisibility(View.VISIBLE);
 			isMutilChooseMode = true;

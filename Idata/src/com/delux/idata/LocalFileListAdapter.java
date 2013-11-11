@@ -2,7 +2,7 @@ package com.delux.idata;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import android.app.AlertDialog;
@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +23,8 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +44,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 	private int curShowToolPosition = -1;
 	private boolean isMoveOrCopy;
 	private Map<Integer, ArrayList> categoryMap;
+	public Map<Integer,File> selectFiles = new HashMap<Integer, File>();
 
 	public boolean isMoveOrCopy() {
 		return isMoveOrCopy;
@@ -174,7 +178,11 @@ public class LocalFileListAdapter extends BaseAdapter {
 											}
 										}
 										fileArray = newFileArray;
-										categoryMap.put(categoryType, convertToList(fileArray));
+										
+										Log.i("parentPath", file.getParent());
+										if(categoryType != FileUtil.ROOT || (categoryType == FileUtil.ROOT && ("/data/data/com.delux.idata".equalsIgnoreCase(file.getParent()) 
+												|| "/mnt/sdcard".equalsIgnoreCase(file.getParent()))))
+											categoryMap.put(categoryType, convertToList(fileArray));
 										
 										((FragmentActivity)context).runOnUiThread(new Runnable() {
 											
@@ -261,19 +269,40 @@ public class LocalFileListAdapter extends BaseAdapter {
 		});
 		
 		try {
+			if(isMutilMode){//多选模式
+				holder.toolLayout.setVisibility(View.GONE);
+				
+				holder.checkBox.setVisibility(View.VISIBLE);
+				
+				holder.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						// TODO Auto-generated method stub
+						if(isChecked){
+							selectFiles.put(position, file);
+						}else{
+							if(selectFiles.containsKey(position))
+								selectFiles.remove(position);
+						}
+						
+					}
+				});
+				if(selectFiles.containsKey(position)){
+					holder.checkBox.setChecked(true);
+				}else{
+					holder.checkBox.setChecked(false);
+				}
+				
+			}else{//非多选模式
+				holder.toolLayout.setVisibility(View.VISIBLE);
+				holder.checkBox.setVisibility(View.GONE);
+				holder.checkBox.setChecked(false);
+			}
+			
 			if(file.isDirectory()){
 				holder.icon.setImageResource(R.drawable.normal_folder);
 			}else{
-				if(isMutilMode){//多选模式
-					holder.cornerIcon.setVisibility(View.GONE);
-					holder.divider.setVisibility(View.GONE);
-					holder.checkBox.setVisibility(View.VISIBLE);
-				}else{//非多选模式
-					holder.cornerIcon.setVisibility(View.VISIBLE);
-					holder.divider.setVisibility(View.VISIBLE);
-					holder.checkBox.setVisibility(View.GONE);
-				}
-				
 				holder.icon.setImageResource(FileUtil.getFileIconResId(name));
 			}
 		} catch (Exception e) {
@@ -283,6 +312,56 @@ public class LocalFileListAdapter extends BaseAdapter {
 		holder.name.setText(name);
 		
 		return convertView;
+	}
+	
+	public void delMany(final Map<Integer, File> delFiles, final ArrayList<File> allFiles){
+		DialogUtil.showDeleteDialog(context, new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				final ProgressDialog progressDialog = ProgressDialog.show(context, null, context.getString(R.string.delete_files), true, false); 
+				new Thread(new Runnable() {
+					public void run() {
+						File parentFile = delFiles.get(0).getParentFile();
+						for(Map.Entry<Integer,File>  entry : delFiles.entrySet()){
+							Log.i("parentPath", "position ="+entry.getKey()+"; path ="+entry.getValue().getPath());
+							if(!deleteFile(entry.getValue().getPath())){
+								deleteDirectory(entry.getValue().getPath());
+							}
+						
+							allFiles.remove(entry.getValue());
+//							File[] newFileArray = new File[fileArray.length-1];
+//							for(int i=0; i<fileArray.length-1; i++){
+//								newFileArray[i] = fileArray[i];
+//								if(i >= entry.getKey()){
+//									newFileArray[i] = fileArray[i+1];
+//								}
+//							}
+//							fileArray = newFileArray;
+							Log.i("parentPath", "fileArray_count ="+fileArray.length);
+						}
+						
+						
+						if(categoryType != FileUtil.ROOT || (categoryType == FileUtil.ROOT && ("/data/data/com.delux.idata".equalsIgnoreCase(parentFile.getPath()) 
+								|| "/mnt/sdcard".equalsIgnoreCase(parentFile.getPath()))))
+							categoryMap.put(categoryType, allFiles);
+						
+						fileArray = (File[])allFiles.toArray();
+						
+						((FragmentActivity)context).runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								notifyDataSetChanged();
+								progressDialog.dismiss();
+							}
+						});
+					}
+				}).start();
+				
+			}
+		});
+		
 	}
 	
 	public static String getName(File file){
@@ -382,12 +461,21 @@ public class LocalFileListAdapter extends BaseAdapter {
           AlertDialog dialogAdd = builder.show();
 	}
 	
-	private ArrayList convertToList(File[] FileArray){
+	public ArrayList convertToList(File[] FileArray){
 		ArrayList<File> list = new ArrayList<File>();
 		for(File	file : fileArray){
 			list.add(file);
 		}
 		return list;
+	}
+	
+	private File[] getFileList(Map<Integer, ArrayList>categoryMap, int type){
+		File[] sf = new File[categoryMap.get(type).size()];
+		for(int i=0; i<categoryMap.get(type).size(); i++){
+			Object[] obj = categoryMap.get(type).toArray();
+			sf[i] = (File)obj[i];
+		}
+		return sf;
 	}
 	
 	public int getCurShowToolPosition() {

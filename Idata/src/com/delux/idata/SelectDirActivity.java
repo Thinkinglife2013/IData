@@ -87,12 +87,19 @@ public class SelectDirActivity extends Activity {
 					final ProgressDialog progressDialog = ProgressDialog.show(SelectDirActivity.this, null, getString(R.string.moving), true, false); 
 					new Thread(new Runnable() {
 						public void run() {
-							if(pathView.getText().toString().startsWith("smb://")){
-								//TODO
-							}else{
-								if(!moveFile(fromFile, pathView.getText().toString())){
-									moveDirectory(fromFile, pathView.getText().toString());
+							String path = pathView.getText().toString();
+							if(path.startsWith("smb://") && fromFile.startsWith("smb://")){
+								if(!moveIdataFile(fromFile, path)){
+									moveIdataDirectory(fromFile, path);
 								}
+							}else if(!path.startsWith("smb://") && !fromFile.startsWith("smb://")){
+								if(!moveFile(fromFile, path)){
+									moveDirectory(fromFile, path);
+								}
+							}else if(!path.startsWith("smb://") && fromFile.startsWith("smb://")){
+								//TODO
+							}else if(path.startsWith("smb://") && !fromFile.startsWith("smb://")){
+								//TODO
 							}
 					
 							runOnUiThread(new Runnable() {
@@ -118,10 +125,15 @@ public class SelectDirActivity extends Activity {
 					final ProgressDialog progressDialog = ProgressDialog.show(SelectDirActivity.this, null, getString(R.string.copying), true, false); 
 					new Thread(new Runnable() {
 						public void run() {
-							if(pathView.getText().toString().startsWith("smb://")){
-								copyIdata(fromFile, pathView.getText().toString());
-							}else{
-								copy(fromFile, pathView.getText().toString()+"/");
+							String path = pathView.getText().toString();
+							if(path.startsWith("smb://") && fromFile.startsWith("smb://")){
+								copyIdata(fromFile, path);
+							}else if(!path.startsWith("smb://") && !fromFile.startsWith("smb://")){
+								copy(fromFile, path+"/");
+							}else if(!path.startsWith("smb://") && fromFile.startsWith("smb://")){
+								copyIdataToLocal(fromFile, path+"/");
+							}else if(path.startsWith("smb://") && !fromFile.startsWith("smb://")){
+								copyLocalToIdata(fromFile, path);
 							}
 							
 							runOnUiThread(new Runnable() {
@@ -179,7 +191,7 @@ public class SelectDirActivity extends Activity {
 					pathView.setVisibility(View.VISIBLE);
 					
 					getIDataCategoryFilesOnThread(filelistView);
-					//TODO
+					
 				}
 			}
 		});
@@ -584,6 +596,57 @@ public class SelectDirActivity extends Activity {
 		super.finish();
 	}
 	
+	public void moveIdataDirectory(String srcDirName, String destDirName) {
+		try {
+			SmbFile srcDir = getSmbFile(srcDirName);
+			
+			if(!srcDir.exists() || !srcDir.isDirectory())  
+				return;
+		   
+			SmbFile destDir = getSmbFile(destDirName + srcDir.getName());
+		   if(!destDir.exists())
+			   destDir.mkdirs();
+		   
+		   /**
+		    * 如果是文件则移动，否则递归移动文件夹。删除最终的空源文件夹
+		    * 注意移动文件夹时保持文件夹的树状结构
+		    */
+		   SmbFile[] sourceFiles = srcDir.listFiles();
+		   for (SmbFile sourceFile : sourceFiles) {
+			   if (sourceFile.isFile()){
+				   Log.i("moveDirectory", "file----sourcePath ="+sourceFile.getPath() +"; destPath ="+destDir.getPath());
+				   moveIdataFile(sourceFile.getPath(), destDir.getPath());
+			   }else if (sourceFile.isDirectory()){
+				   Log.i("moveDirectory", "dir----sourcePath ="+sourceFile.getPath() +"; destPath ="+destDir.getPath());
+				   moveIdataDirectory(sourceFile.getPath(), 
+						   destDir.getPath());
+			   }else{}
+				   
+		   }
+		   srcDir.delete();
+		} catch (SmbException e) {
+			e.printStackTrace();
+		}  
+	}
+	
+	public boolean moveIdataFile(String srcFileName, String destDirName) {
+		try {
+		SmbFile srcFile = getSmbFile(srcFileName);
+		
+		if(!srcFile.exists() || !srcFile.isFile()) 
+		    return false;
+		
+		SmbFile destDir = getSmbFile(destDirName);
+		if (!destDir.exists())
+			destDir.mkdirs();
+		
+		srcFile.renameTo(getSmbFile(destDirName + srcFile.getName()));
+		return true;
+		} catch (SmbException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 	/** 
 	* 移动文件 
@@ -642,6 +705,171 @@ public class SelectDirActivity extends Activity {
 	/**
 	 * 拷贝idata目录或文件
 	 */
+	public int copyLocalToIdata(String fromFile, String toFile)
+    {
+		try{
+			Log.i("idataPath", "copyIdataToLocal------fromFile ="+fromFile+"; toFile ="+toFile);
+	        //要复制的文件目录
+	        File[] currentFiles;
+	        
+	        File root = new File(fromFile);
+//	        SmbFile root = new SmbFile(fromFile);
+	        //如同判断SD卡是否存在或者文件是否存在
+	        //如果不存在则 return出去
+	        if(root == null || !root.exists())
+	        {
+	            return -1;
+	        }else if(root.exists() && root.isDirectory()){
+	        	toFile += root.getName() + "/";
+	        	  //目标目录
+	        	SmbFile targetDir = getSmbFile(toFile);
+	        	
+//	        	SmbFile targetDir = new SmbFile(toFile);
+	            //创建目录
+	            if(!targetDir.exists())
+	            {
+	                targetDir.mkdirs();
+	            }
+	            //如果存在则获取当前目录下的全部文件 填充数组
+	            currentFiles = root.listFiles();
+	             
+	            //遍历要复制该目录下的全部文件
+	            for(int i= 0;i<currentFiles.length;i++)
+	            {
+	                if(currentFiles[i].isDirectory())//如果当前项为子目录 进行递归
+	                {
+	                	copyLocalToIdata(currentFiles[i].getPath() + "/", toFile);
+	                     
+	                }else//如果当前项为文件则进行文件拷贝
+	                {
+	                	CopyLocalToIdataFile(currentFiles[i].getPath(), toFile + currentFiles[i].getName());
+	                }
+	            }
+	        }else if(root.exists() && root.isFile()){
+	        	//如果当前项为文件则进行文件拷贝
+	        	CopyLocalToIdataFile(root.getPath(), toFile + root.getName());
+	        }
+		}catch(Exception e){
+			e.printStackTrace();
+			return -1;
+		}
+        return 0;
+    }
+	
+    //idata文件拷贝
+    //要复制的目录下的所有非子目录(文件夹)文件拷贝
+    public int CopyLocalToIdataFile(String fromFile, String toFile)
+    {
+        try
+        {
+        	Log.i("idataPath", "CopyLocalToIdataFile----------fromFile ="+fromFile+"; toFile ="+toFile);
+//        	File fromFile = new File(fromFile);
+        	SmbFile toSmb = getSmbFile(toFile);
+        	FileInputStream fosfrom = new FileInputStream(fromFile);
+        	SmbFileOutputStream fosto = new SmbFileOutputStream(toSmb);
+            byte bt[] = new byte[1024];
+            int c;
+            while ((c = fosfrom.read(bt)) > 0) 
+            {
+                fosto.write(bt, 0, c);
+            }
+            Log.i("idataPath", "CopyLocalToIdataFile----------close");
+            fosfrom.close();
+            fosto.close();
+            return 0;
+             
+        } catch (Exception ex) 
+        {
+        	ex.printStackTrace();
+            return -1;
+        }
+    }
+	
+	/**
+	 * 拷贝idata目录或文件
+	 */
+	public int copyIdataToLocal(String fromFile, String toFile)
+    {
+		try{
+			Log.i("idataPath", "copyIdataToLocal------fromFile ="+fromFile+"; toFile ="+toFile);
+	        //要复制的文件目录
+	        SmbFile[] currentFiles;
+	        
+	        SmbFile root = getSmbFile(fromFile);
+//	        SmbFile root = new SmbFile(fromFile);
+	        //如同判断SD卡是否存在或者文件是否存在
+	        //如果不存在则 return出去
+	        if(root == null || !root.exists())
+	        {
+	            return -1;
+	        }else if(root.exists() && root.isDirectory()){
+	        	toFile += root.getName() + "/";
+	        	  //目标目录
+	        	File targetDir = new File(toFile);
+//	        	SmbFile targetDir = new SmbFile(toFile);
+	            //创建目录
+	            if(!targetDir.exists())
+	            {
+	                targetDir.mkdirs();
+	            }
+	            //如果存在则获取当前目录下的全部文件 填充数组
+	            currentFiles = root.listFiles();
+	             
+	            //遍历要复制该目录下的全部文件
+	            for(int i= 0;i<currentFiles.length;i++)
+	            {
+	                if(currentFiles[i].isDirectory())//如果当前项为子目录 进行递归
+	                {
+	                    copyIdataToLocal(currentFiles[i].getPath() + "/", toFile);
+	                     
+	                }else//如果当前项为文件则进行文件拷贝
+	                {
+	                    CopyIdataToLocalFile(currentFiles[i].getPath(), toFile + currentFiles[i].getName());
+	                }
+	            }
+	        }else if(root.exists() && root.isFile()){
+	        	//如果当前项为文件则进行文件拷贝
+	        	 CopyIdataToLocalFile(root.getPath(), toFile + root.getName());
+	        }
+		}catch(Exception e){
+			e.printStackTrace();
+			return -1;
+		}
+        return 0;
+    }
+	
+    //idata文件拷贝
+    //要复制的目录下的所有非子目录(文件夹)文件拷贝
+    public int CopyIdataToLocalFile(String fromFile, String toFile)
+    {
+        try
+        {
+        	Log.i("idataPath", "CopyIdataToLocalFile----------fromFile ="+fromFile+"; toFile ="+toFile);
+        	SmbFile fromSmb = getSmbFile(fromFile);
+//        	SmbFile toSmb = getSmbFile(toFile);
+        	SmbFileInputStream fosfrom = new SmbFileInputStream(fromSmb);
+        	FileOutputStream fosto = new FileOutputStream(toFile);
+            byte bt[] = new byte[1024];
+            int c;
+            while ((c = fosfrom.read(bt)) > 0) 
+            {
+                fosto.write(bt, 0, c);
+            }
+            Log.i("idataPath", "CopyIdataToLocalFile----------close");
+            fosfrom.close();
+            fosto.close();
+            return 0;
+             
+        } catch (Exception ex) 
+        {
+        	ex.printStackTrace();
+            return -1;
+        }
+    }
+    
+	/**
+	 * 拷贝idata目录或文件
+	 */
 	public int copyIdata(String fromFile, String toFile)
     {
 		try{
@@ -674,22 +902,21 @@ public class SelectDirActivity extends Activity {
 	            {
 	                if(currentFiles[i].isDirectory())//如果当前项为子目录 进行递归
 	                {
-	                    return copyIdata(currentFiles[i].getPath() + "/", toFile);
+	                    copyIdata(currentFiles[i].getPath() + "/", toFile);
 	                     
 	                }else//如果当前项为文件则进行文件拷贝
 	                {
-	                    return CopyIdataFile(currentFiles[i].getPath(), toFile + currentFiles[i].getName());
+	                    CopyIdataFile(currentFiles[i].getPath(), toFile + currentFiles[i].getName());
 	                }
 	            }
 	        }else if(root.exists() && root.isFile()){
 	        	//如果当前项为文件则进行文件拷贝
-	        	 return CopyIdataFile(root.getPath(), toFile + root.getName());
+	        	 CopyIdataFile(root.getPath(), toFile + root.getName());
 	        }
 		}catch(Exception e){
 			e.printStackTrace();
 			return -1;
 		}
-        
         return 0;
     }
 	
@@ -760,16 +987,16 @@ public class SelectDirActivity extends Activity {
             {
                 if(currentFiles[i].isDirectory())//如果当前项为子目录 进行递归
                 {
-                    return copy(currentFiles[i].getPath() + "/", toFile);
+                    copy(currentFiles[i].getPath() + "/", toFile);
                      
                 }else//如果当前项为文件则进行文件拷贝
                 {
-                    return CopyFile(currentFiles[i].getPath(), toFile + currentFiles[i].getName());
+                    CopyFile(currentFiles[i].getPath(), toFile + currentFiles[i].getName());
                 }
             }
         }else if(root.exists() && root.isFile()){
         	//如果当前项为文件则进行文件拷贝
-        	 return CopyFile(root.getPath(), toFile + root.getName());
+        	 CopyFile(root.getPath(), toFile + root.getName());
         }
         
         return 0;
@@ -780,7 +1007,6 @@ public class SelectDirActivity extends Activity {
     //要复制的目录下的所有非子目录(文件夹)文件拷贝
     public int CopyFile(String fromFile, String toFile)
     {
-         
         try
         {
             InputStream fosfrom = new FileInputStream(fromFile);

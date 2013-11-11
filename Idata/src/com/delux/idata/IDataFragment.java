@@ -197,11 +197,11 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 						public void onScrollStateChanged(AbsListView view, int scrollState) {
 							int curShowToolPosition = listAdapter.getCurShowToolPosition();
 							if(curShowToolPosition > -1){
-								View view2 = filelistView.getChildAt(curShowToolPosition);
-								if(view2 == null){
-									Log.i("idata_onScroll", curShowToolPosition+"---listView_count ="+filelistView.getCount());
-								}
-								view2.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+//								View view2 = filelistView.getChildAt(curShowToolPosition);
+//								view2.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+								View toolLineView =filelistView.findViewWithTag("visible");
+								toolLineView.setVisibility(View.INVISIBLE);
+								toolLineView.setTag("");
 								listAdapter.setCurShowToolPosition(-1);
 							}
 							
@@ -222,8 +222,11 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 							SmbFile file = (SmbFile)parent.getItemAtPosition(position);
 							int curShowToolPosition = listAdapter.getCurShowToolPosition();
 							if(curShowToolPosition > -1){
-								View view = parent.getChildAt(curShowToolPosition);
-								view.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+//								View view = parent.getChildAt(curShowToolPosition);
+//								view.findViewById(R.id.tool_line).setVisibility(View.INVISIBLE);
+								View toolLineView =filelistView.findViewWithTag("visible");
+								toolLineView.setVisibility(View.INVISIBLE);
+								toolLineView.setTag("");
 								listAdapter.setCurShowToolPosition(-1);
 							}
 							try {
