@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileOutputStream;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -40,8 +41,23 @@ public class ContactsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				backupContactsToIdata(localNum);
-				Log.i("contacts_backup", str);
+				final ProgressDialog progressDialog = ProgressDialog.show(ContactsActivity.this, null, "正在备份联系人...", true, false); 
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						backupContactsToIdata(localNum);
+						Log.i("contacts_backup", str);
+						runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								progressDialog.dismiss();
+							}
+						});
+					}
+				}).start();
+				
 			}
 		});
 
@@ -135,10 +151,18 @@ public class ContactsActivity extends Activity {
 		getContentResolver().insert(Data.CONTENT_URI, values);
 	}
 
-	private void backupContactsToIdata(TextView textView) {
+	private void backupContactsToIdata(final TextView textView) {
 		try {
-		int contactNum = getContact();
-		textView.setText(contactNum+"人");
+		final int contactNum = getContact();
+		
+		runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				textView.setText(contactNum+"人");
+			}
+		});
+		
 
 		SmbFile newFile = FileUtil.createNewFileOnIdata("contacts_backup.txt");
 		if(newFile != null){
