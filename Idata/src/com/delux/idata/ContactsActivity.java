@@ -23,6 +23,7 @@ import android.provider.ContactsContract.RawContacts;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.delux.util.FileUtil;
 
@@ -33,12 +34,13 @@ public class ContactsActivity extends Activity {
 		setContentView(R.layout.contacts_backup);
 		View backupView = findViewById(R.id.backup_contacts);
 		View restoreView = findViewById(R.id.restore_contacts);
+		final TextView localNum = (TextView)findViewById(R.id.local);
 
 		backupView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				backupContactsToIdata();
+				backupContactsToIdata(localNum);
 				Log.i("contacts_backup", str);
 			}
 		});
@@ -56,8 +58,8 @@ public class ContactsActivity extends Activity {
 
 	public String str = "";
 
-	public void getContact() {
-
+	public int getContact() {
+		int count = 0;
 		str = "";
 		// 获得所有的联系人
 		Cursor cur = getContentResolver().query(
@@ -68,6 +70,7 @@ public class ContactsActivity extends Activity {
 
 			int displayNameColumn = cur
 					.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+			
 			do {
 				// 获得联系人的ID号
 				String contactId = cur.getString(idColumn);
@@ -98,12 +101,14 @@ public class ContactsActivity extends Activity {
 							System.out.println(phoneNumber);
 						} while (phones.moveToNext());
 					}
-
+					
 				}
+				count++;
 				str += "\r\n";
 			} while (cur.moveToNext());
 
 		}
+		return count;
 	}
 
 	private void addContacts(String name, String num) {
@@ -130,9 +135,10 @@ public class ContactsActivity extends Activity {
 		getContentResolver().insert(Data.CONTENT_URI, values);
 	}
 
-	private void backupContactsToIdata() {
+	private void backupContactsToIdata(TextView textView) {
 		try {
-		getContact();
+		int contactNum = getContact();
+		textView.setText(contactNum+"人");
 
 		SmbFile newFile = FileUtil.createNewFileOnIdata("contacts_backup.txt");
 		if(newFile != null){
