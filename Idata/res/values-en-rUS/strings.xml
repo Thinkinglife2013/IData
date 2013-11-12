@@ -30,7 +30,7 @@
     <string name="copy">copy</string>
      <string name="move">move</string>
      <string name="delete">delete</string>
-     <string name="open_file_tip">手机尚未安装打开此种类型的软件，请自行下载安装</string>
+     <string name="open_file_tip">Mobile phones has yet to open this type of software installation, please download and install</string>
      <string name="lanuage">language setting</string>
      <string name="route">route setting</string>
       <string name="about">about idata</string>
@@ -43,5 +43,10 @@
             <string name="moving">moving files</string>
               <string name="move_to_here">move to here</string>
                <string name="delete_files">deleting files</string>
-
+               
+          <string name="no_move_tip">The current classification can not move files, please use this feature in the folders classification</string>
+		<string name="product_model">Product model</string>
+ 		<string name="product_name">Product name</string>
+        <string name="manufacturers">Manufacturers</string>  
+        <string name="about_idata">about idata</string>   
 </resources>

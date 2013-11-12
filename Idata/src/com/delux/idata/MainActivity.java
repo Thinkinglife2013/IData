@@ -170,27 +170,31 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		String fromPath = data.getStringExtra("fromPath");
-		Log.i("fromPath", fromPath);
 		
-		ListView filelistView;
-		 if(curSelectPosition == 0){
-			 File file = new File(fromPath);
-			 filelistView = ((LocalFragment)mFragmentList.get(0)).filelistView;
-			LocalFileListAdapter localFileListAdapter = (LocalFileListAdapter)filelistView.getAdapter();
-			localFileListAdapter.setFileArray(file.getParentFile().listFiles());
-			localFileListAdapter.notifyDataSetChanged();
-		  }else{
-			  SmbFile file = getSmbFile(fromPath);
-			  filelistView = ((IDataFragment)mFragmentList.get(1)).filelistView;
-				FileListAdapter fileListAdapter = (FileListAdapter)filelistView.getAdapter();
-				try {
-					fileListAdapter.setFileArray(getSmbFile(file.getParent()).listFiles());
-				} catch (SmbException e) {
-					e.printStackTrace();
-				}
-				fileListAdapter.notifyDataSetChanged();
-		  }
-	
+		if(fromPath != null){
+			Log.i("fromPath", fromPath);
+			
+			ListView filelistView;
+			 if(curSelectPosition == 0){
+				 File file = new File(fromPath);
+				 filelistView = ((LocalFragment)mFragmentList.get(0)).filelistView;
+				LocalFileListAdapter localFileListAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+				localFileListAdapter.setFileArray(file.getParentFile().listFiles());
+				localFileListAdapter.selectFiles.clear();
+				localFileListAdapter.notifyDataSetChanged();
+			  }else{
+				  SmbFile file = getSmbFile(fromPath);
+				  filelistView = ((IDataFragment)mFragmentList.get(1)).filelistView;
+					FileListAdapter fileListAdapter = (FileListAdapter)filelistView.getAdapter();
+					try {
+						fileListAdapter.setFileArray(getSmbFile(file.getParent()).listFiles());
+						fileListAdapter.selectFiles.clear();
+					} catch (SmbException e) {
+						e.printStackTrace();
+					}
+					fileListAdapter.notifyDataSetChanged();
+			  }
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	

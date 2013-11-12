@@ -22,17 +22,16 @@
    <LinearLayout 
        android:id="@+id/center"
        android:layout_width="wrap_content"
-	   android:layout_height="159dp"
+	   android:layout_height="176dp"
 	   android:layout_centerInParent="true"
 	   android:orientation="vertical"
-	   android:background="@drawable/lanuage_bg"
-	   android:layout_marginLeft="41dp"
-	   android:layout_marginRight="41dp"
+	   android:background="@drawable/about_idata_bg"
+	   android:layout_marginLeft="48dp"
+	   android:layout_marginRight="48dp"
 	   >
       <RelativeLayout 
-        android:id="@+id/lanuage"
         android:layout_width="match_parent"
-	    android:layout_height="53dp"
+	    android:layout_height="44dp"
 	    >
 	    <TextView 
 	         android:layout_width="wrap_content"
@@ -41,14 +40,7 @@
 	   		 android:layout_centerVertical="true"
 	   		 android:layout_alignParentLeft="true"
 	   		 android:textColor="@color/category_color"
-	   		 android:text="@string/cn"/>
-	      <RadioButton 
-	          android:id="@+id/cn"
-	         android:layout_width="wrap_content"
-	   		 android:layout_height="wrap_content"
-	   		 android:layout_marginRight="20dp"
-	   		 android:layout_alignParentRight="true"
-	   		 /> 
+	   		 android:text="@string/about_idata"/>
      </RelativeLayout>
      
       <ImageView 
@@ -59,22 +51,26 @@
      <RelativeLayout 
         android:id="@+id/route"
         android:layout_width="match_parent"
-	    android:layout_height="53dp"
+	    android:layout_height="44dp"
 	    >
 	    <TextView 
+	         android:id="@+id/made"
 	         android:layout_width="wrap_content"
 	   		 android:layout_height="wrap_content"
 	   		 android:layout_centerVertical="true"
 	   		 android:layout_alignParentLeft="true"
 	   		 android:textColor="@color/category_color"
 	   		 android:layout_marginLeft="20dp"
-	   		 android:text="@string/tw"/>
-	     <RadioButton 
+	   		 android:text="@string/manufacturers"/>
+	     <ImageView 
+	         android:layout_toRightOf="@id/made"
 	         android:layout_width="wrap_content"
 	   		 android:layout_height="wrap_content"
-	   		 android:layout_marginRight="20dp"
-	   		 android:layout_alignParentRight="true"
-	   		 /> 
+	   		  android:layout_centerVertical="true"
+	   		 android:textColor="@color/category_color"
+	   		 android:layout_marginLeft="38dp"
+	   		 android:scaleType="fitXY"
+	   		 android:src="@drawable/about_idata_logo"/>
      </RelativeLayout>
      
       <ImageView 
@@ -85,25 +81,54 @@
      <RelativeLayout 
         android:id="@+id/about"
         android:layout_width="match_parent"
-	    android:layout_height="53dp"
+	    android:layout_height="44dp"
 	    >
 	    <TextView 
+	         android:id="@+id/name"
 	         android:layout_width="wrap_content"
 	   		 android:layout_height="wrap_content"
 	   		  android:layout_centerVertical="true"
 	   		 android:layout_alignParentLeft="true"
 	   		 android:textColor="@color/category_color"
 	   		 android:layout_marginLeft="20dp"
-	   		 android:text="@string/en"/>
-	     <RadioButton 
-	          android:id="@+id/en"
+	   		 android:text="@string/product_name"/>
+	     <TextView 
+	         android:layout_toRightOf="@id/name"
 	         android:layout_width="wrap_content"
 	   		 android:layout_height="wrap_content"
-	   		 android:layout_marginRight="20dp"
-	   		 android:layout_alignParentRight="true"
-	   		 /> 
+	   		  android:layout_centerVertical="true"
+	   		 android:textColor="@color/category_color"
+	   		 android:layout_marginLeft="20dp"
+	   		 android:text="WIFI iData"/>
      </RelativeLayout>
      
+       <ImageView 
+           android:layout_width="match_parent"
+	       android:layout_height="wrap_content"
+	       android:background="@drawable/index_divider"/>
+     
+       <RelativeLayout 
+        android:layout_width="match_parent"
+	    android:layout_height="44dp"
+	    >
+	    <TextView
+	        android:id="@+id/model" 
+	         android:layout_width="wrap_content"
+	   		 android:layout_height="wrap_content"
+	   		  android:layout_centerVertical="true"
+	   		 android:layout_alignParentLeft="true"
+	   		 android:textColor="@color/category_color"
+	   		 android:layout_marginLeft="20dp"
+	   		 android:text="@string/product_model"/>
+	     <TextView 
+	         android:layout_toRightOf="@id/model"
+	         android:layout_width="wrap_content"
+	   		 android:layout_height="wrap_content"
+	   		  android:layout_centerVertical="true"
+	   		 android:textColor="@color/category_color"
+	   		 android:layout_marginLeft="20dp"
+	   		 android:text="IU-01W"/>
+     </RelativeLayout>
      </LinearLayout>
 
 </RelativeLayout>

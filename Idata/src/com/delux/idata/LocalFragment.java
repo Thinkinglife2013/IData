@@ -467,6 +467,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 			bottomLayout.setVisibility(View.VISIBLE);
 			mutilChooseLayout.setVisibility(View.GONE);
 			isMutilChooseMode = false;
+			
 			LocalFileListAdapter listAdapter = (LocalFileListAdapter)filelistView.getAdapter();
 			listAdapter.setMutilMode(false);
 			listAdapter.selectFiles.clear();
@@ -492,7 +493,43 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 				@Override
 				public void onClick(View v) {
 					LocalFileListAdapter localFileListAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+					if(localFileListAdapter.selectFiles.size() == 0){
+//						Toast.makeText(context, resId, duration)
+						return;
+					}
 					localFileListAdapter.delMany(localFileListAdapter.selectFiles, localFileListAdapter.convertToList(localFileListAdapter.getFileArray()));
+				}
+			});
+			
+			LinearLayout copyMany = (LinearLayout)mutilChooseLayout.findViewById(R.id.copy);
+			copyMany.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					LocalFileListAdapter localFileListAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+					if(localFileListAdapter.selectFiles.size() == 0){
+//						Toast.makeText(context, resId, duration)
+						return;
+					}
+					localFileListAdapter.copyMany(localFileListAdapter.selectFiles.values());
+				}
+			});
+			
+			LinearLayout moveMany = (LinearLayout)mutilChooseLayout.findViewById(R.id.move);
+			moveMany.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+						LocalFileListAdapter localFileListAdapter = (LocalFileListAdapter)filelistView.getAdapter();
+						if(localFileListAdapter.categoryType == FileUtil.ROOT){
+							if(localFileListAdapter.selectFiles.size() == 0){
+		//						Toast.makeText(context, resId, duration)
+								return;
+							}
+							localFileListAdapter.moveMany(localFileListAdapter.selectFiles.values());
+						}else{
+							Toast.makeText(getActivity(), R.string.no_move_tip, 1).show();
+						}
 				}
 			});
 			

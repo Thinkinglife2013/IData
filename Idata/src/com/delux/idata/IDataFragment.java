@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
@@ -54,8 +55,16 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 		View docRow = contextView.findViewById(R.id.doc);
 		View folderRow = contextView.findViewById(R.id.folder);
 		categoryView = contextView.findViewById(R.id.category);
+		View backup_restore = contextView.findViewById(R.id.contacts_backup_restore);
 		filelistView = (ListView)contextView.findViewById(R.id.filelist_view);
 		
+		backup_restore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getActivity(), ContactsActivity.class));
+			}
+		});
 //		final FileListAdapter listAdapter = new FileListAdapter(getActivity(), null);
 		final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.load), true, false); 
 		new Thread(new Runnable() {
@@ -468,6 +477,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 			
 			FileListAdapter listAdapter = (FileListAdapter)filelistView.getAdapter();
 			listAdapter.setMutilMode(false);
+			listAdapter.selectFiles.clear();
 			listAdapter.notifyDataSetChanged();
 		}
 	}
@@ -482,6 +492,56 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 		if(!isRoot){
 			this.bottomLayout = bottomLayout;
 			this.mutilChooseLayout = mutilChooseLayout;
+		
+			LinearLayout delMany = (LinearLayout)mutilChooseLayout.findViewById(R.id.del);
+			delMany.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					FileListAdapter fileListAdapter = (FileListAdapter)filelistView.getAdapter();
+					if(fileListAdapter.selectFiles.size() == 0){
+//						Toast.makeText(context, resId, duration)
+						return;
+					}
+					fileListAdapter.delMany(fileListAdapter.selectFiles, fileListAdapter.convertToList(fileListAdapter.getFileArray()));
+//					cancleMutilMode();
+				}
+			});
+			
+			LinearLayout copyMany = (LinearLayout)mutilChooseLayout.findViewById(R.id.copy);
+			copyMany.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					FileListAdapter fileListAdapter = (FileListAdapter)filelistView.getAdapter();
+					if(fileListAdapter.selectFiles.size() == 0){
+//						Toast.makeText(context, resId, duration)
+						return;
+					}
+					fileListAdapter.copyMany(fileListAdapter.selectFiles.values());
+//					cancleMutilMode();
+				}
+			});
+			
+			LinearLayout moveMany = (LinearLayout)mutilChooseLayout.findViewById(R.id.move);
+			moveMany.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					FileListAdapter fileListAdapter = (FileListAdapter)filelistView.getAdapter();
+					if(fileListAdapter.categoryType == FileUtil.ROOT){
+						if(fileListAdapter.selectFiles.size() == 0){
+	//						Toast.makeText(context, resId, duration)
+							return;
+						}
+						fileListAdapter.moveMany(fileListAdapter.selectFiles.values());
+					}else{
+						Toast.makeText(getActivity(), R.string.no_move_tip, 1).show();
+					}
+//					cancleMutilMode();
+				}
+			});
+			
 			bottomLayout.setVisibility(View.GONE);
 			mutilChooseLayout.setVisibility(View.VISIBLE);
 			isMutilChooseMode = true;
@@ -491,5 +551,17 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 			listAdapter.notifyDataSetChanged();
 		}
 	}
+	
+	//取消多选模式
+//	private void cancleMutilMode(){
+//		bottomLayout.setVisibility(View.VISIBLE);
+//		mutilChooseLayout.setVisibility(View.GONE);
+//		isMutilChooseMode = false;
+//		
+//		FileListAdapter listAdapter = (FileListAdapter)filelistView.getAdapter();
+//		listAdapter.setMutilMode(false);
+//		listAdapter.selectFiles.clear();
+//		listAdapter.notifyDataSetChanged();
+//	}
 
 }

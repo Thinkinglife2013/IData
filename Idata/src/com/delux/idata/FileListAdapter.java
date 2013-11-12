@@ -1,7 +1,8 @@
 package com.delux.idata;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import jcifs.smb.NtlmPasswordAuthentication;
@@ -25,11 +26,14 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
@@ -38,12 +42,13 @@ public class FileListAdapter extends BaseAdapter {
 
 	private SmbFile[] fileArray;
 	private LayoutInflater mInflater;
-	private int categoryType;
+	public int categoryType;
 	private boolean isMutilMode; //是否多选的状态
 	private Context context;
 	private int curShowToolPosition = -1;
 	private boolean isMoveOrCopy;
 	private Map<Integer, ArrayList> categoryMap;
+	public Map<Integer,SmbFile> selectFiles = new HashMap<Integer, SmbFile>();
 
 	public boolean isMoveOrCopy() {
 		return isMoveOrCopy;
@@ -206,13 +211,17 @@ public class FileListAdapter extends BaseAdapter {
 					
 					@Override
 					public void onClick(View v) {
-						Intent i = new Intent(context, SelectDirActivity.class);
-						i.putExtra("moveOrCopy", "move");
-						i.putExtra("fromFile", file.getPath());
-						((FragmentActivity)context).startActivityForResult(i, 1);
-//						LocalFragment.onPostFresh(file.getPath());
-						toolLineView.setVisibility(View.INVISIBLE);
-						curShowToolPosition = -1;
+						if(categoryType == FileUtil.ROOT){
+							Intent i = new Intent(context, SelectDirActivity.class);
+							i.putExtra("moveOrCopy", "move");
+							i.putExtra("fromFile", file.getPath());
+							((FragmentActivity)context).startActivityForResult(i, 1);
+	//						LocalFragment.onPostFresh(file.getPath());
+							toolLineView.setVisibility(View.INVISIBLE);
+							curShowToolPosition = -1;
+						}else{
+							Toast.makeText(context, R.string.no_move_tip, 1).show();
+						}
 					}
 				});
 		        
@@ -266,19 +275,38 @@ public class FileListAdapter extends BaseAdapter {
 		});
 		
 		try {
+			if(isMutilMode){//多选模式
+				holder.toolLayout.setVisibility(View.GONE);
+				holder.checkBox.setVisibility(View.VISIBLE);
+				
+				holder.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						// TODO Auto-generated method stub
+						if(isChecked){
+							selectFiles.put(position, file);
+						}else{
+							if(selectFiles.containsKey(position))
+								selectFiles.remove(position);
+						}
+						
+					}
+				});
+				if(selectFiles.containsKey(position)){
+					holder.checkBox.setChecked(true);
+				}else{
+					holder.checkBox.setChecked(false);
+				}
+			}else{//非多选模式
+				holder.toolLayout.setVisibility(View.VISIBLE);
+				holder.checkBox.setVisibility(View.GONE);
+				holder.checkBox.setChecked(false);
+			}
+			
 			if(file.isDirectory()){
 				holder.icon.setImageResource(R.drawable.normal_folder);
 			}else{
-				if(isMutilMode){//多选模式
-					holder.cornerIcon.setVisibility(View.GONE);
-					holder.divider.setVisibility(View.GONE);
-					holder.checkBox.setVisibility(View.VISIBLE);
-				}else{//非多选模式
-					holder.cornerIcon.setVisibility(View.VISIBLE);
-					holder.divider.setVisibility(View.VISIBLE);
-					holder.checkBox.setVisibility(View.GONE);
-				}
-				
 				holder.icon.setImageResource(FileUtil.getFileIconResId(name));
 			}
 		} catch (SmbException e) {
@@ -288,6 +316,79 @@ public class FileListAdapter extends BaseAdapter {
 		holder.name.setText(name);
 		
 		return convertView;
+	}
+	
+	public void delMany(final Map<Integer, SmbFile> delFiles, final ArrayList<SmbFile> allFiles){
+		
+		DialogUtil.showDeleteDialog(context, new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				final ProgressDialog progressDialog = ProgressDialog.show(context, null, context.getString(R.string.delete_files), true, false); 
+				new Thread(new Runnable() {
+					public void run() {
+						Log.i("parentPath", "delFiles_count ="+delFiles.size());
+					
+//						String filePath = "";
+						for(Map.Entry<Integer,SmbFile>  entry : delFiles.entrySet()){
+//							filePath = entry.getValue().getParent();
+							String deletePath = entry.getValue().getPath();
+							if(!deleteFile(deletePath)){
+								deleteDirectory(deletePath);
+							}
+						
+							allFiles.remove(entry.getValue());
+							
+							Log.i("parentPath", "fileArray_count ="+fileArray.length);
+						}
+						delFiles.clear();
+						
+						SmbFile[] newFileArray = new SmbFile[allFiles.size()];
+						for(int i=0; i<allFiles.size(); i++){
+							newFileArray[i] = allFiles.get(i);
+						}
+						fileArray = newFileArray;
+						
+						if(categoryType != FileUtil.ROOT)
+							categoryMap.put(categoryType, allFiles);
+						
+						((FragmentActivity)context).runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								notifyDataSetChanged();
+								progressDialog.dismiss();
+							}
+						});
+					}
+				}).start();
+				
+			}
+		});
+	}
+	
+	public void copyMany(Collection<SmbFile> fileCollection){
+		ArrayList<String> pathList = new ArrayList<String>();
+		for(SmbFile  file : fileCollection){
+			pathList.add(file.getPath()+"/");
+		}
+		
+		Intent i = new Intent(context, SelectDirActivity.class);
+		i.putExtra("moveOrCopy", "copy");
+		i.putExtra("fromManyFile", pathList);
+		context.startActivity(i);
+	}
+	
+	public void moveMany(Collection<SmbFile> fileCollection){
+		ArrayList<String> pathList = new ArrayList<String>();
+		for(SmbFile  file : fileCollection){
+			pathList.add(file.getPath()+"/");
+		}
+		
+		Intent i = new Intent(context, SelectDirActivity.class);
+		i.putExtra("moveOrCopy", "move");
+		i.putExtra("fromManyFile", pathList);
+		((FragmentActivity)context).startActivityForResult(i, 1);
 	}
 	
 	/** 
@@ -401,7 +502,7 @@ public class FileListAdapter extends BaseAdapter {
           AlertDialog dialogAdd = builder.show();
 	}
 	
-	private ArrayList convertToList(SmbFile[] FileArray){
+	public ArrayList convertToList(SmbFile[] FileArray){
 		ArrayList<SmbFile> list = new ArrayList<SmbFile>();
 		for(SmbFile	file : fileArray){
 			list.add(file);

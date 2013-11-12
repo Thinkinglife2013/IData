@@ -243,6 +243,7 @@
 	    
 		<!-- 通讯录备份还原 -->
 		<RelativeLayout 
+		    android:id="@+id/contacts_backup_restore"
 		    android:layout_width="fill_parent"
 		    android:layout_height="0dp" 
 		    android:background="@drawable/tab_selector"

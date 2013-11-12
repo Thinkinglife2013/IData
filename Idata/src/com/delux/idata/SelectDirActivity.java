@@ -48,6 +48,7 @@ public class SelectDirActivity extends Activity {
 	private boolean isCanWrite;
 	private TextView copyOrMoveView;
 	private String fromFile;
+	private ArrayList<String> fromManyFile;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class SelectDirActivity extends Activity {
 		Intent i = getIntent();
 		String moveOrCopy = i.getStringExtra("moveOrCopy");
 		fromFile = i.getStringExtra("fromFile");
+		fromManyFile = (ArrayList<String>)i.getSerializableExtra("fromManyFile");
 		
 		if("move".equalsIgnoreCase(moveOrCopy)){
 			copyOrMoveView.setText(R.string.move_to_here);
@@ -88,14 +90,36 @@ public class SelectDirActivity extends Activity {
 					new Thread(new Runnable() {
 						public void run() {
 							String path = pathView.getText().toString();
+							if(fromManyFile != null){
+								fromFile = fromManyFile.get(0);
+							}
+							
 							if(path.startsWith("smb://") && fromFile.startsWith("smb://")){
-								if(!moveIdataFile(fromFile, path)){
-									moveIdataDirectory(fromFile, path);
+								if(fromManyFile == null){
+									if(!moveIdataFile(fromFile, path)){
+										moveIdataDirectory(fromFile, path);
+									}
+								}else{
+									for(String  from : fromManyFile){
+										if(!moveIdataFile(from, path)){
+											moveIdataDirectory(from, path);
+										}
+									}
 								}
+								
 							}else if(!path.startsWith("smb://") && !fromFile.startsWith("smb://")){
-								if(!moveFile(fromFile, path)){
-									moveDirectory(fromFile, path);
+								if(fromManyFile == null){
+									if(!moveFile(fromFile, path)){
+										moveDirectory(fromFile, path);
+									}
+								}else{
+									for(String  from : fromManyFile){
+										if(!moveFile(from, path)){
+											moveDirectory(from, path);
+										}
+									}
 								}
+								
 							}else if(!path.startsWith("smb://") && fromFile.startsWith("smb://")){
 								//TODO
 							}else if(path.startsWith("smb://") && !fromFile.startsWith("smb://")){
@@ -126,14 +150,43 @@ public class SelectDirActivity extends Activity {
 					new Thread(new Runnable() {
 						public void run() {
 							String path = pathView.getText().toString();
+							if(fromManyFile != null){
+								fromFile = fromManyFile.get(0);
+							}
+							
 							if(path.startsWith("smb://") && fromFile.startsWith("smb://")){
-								copyIdata(fromFile, path);
+								if(fromManyFile == null){
+									copyIdata(fromFile, path);
+								}else{
+									for(String  from : fromManyFile){
+										copyIdata(from, path);
+									}
+								}
 							}else if(!path.startsWith("smb://") && !fromFile.startsWith("smb://")){
-								copy(fromFile, path+"/");
+								if(fromManyFile == null){
+									copy(fromFile, path+"/");
+								}else{
+									for(String  from : fromManyFile){
+										copy(from, path+"/");
+									}
+								}
+								
 							}else if(!path.startsWith("smb://") && fromFile.startsWith("smb://")){
-								copyIdataToLocal(fromFile, path+"/");
+								if(fromManyFile == null){
+									copyIdataToLocal(fromFile, path+"/");
+								}else{
+									for(String  from : fromManyFile){
+										copyIdataToLocal(from, path+"/");
+									}
+								}
 							}else if(path.startsWith("smb://") && !fromFile.startsWith("smb://")){
-								copyLocalToIdata(fromFile, path);
+								if(fromManyFile == null){
+									copyLocalToIdata(fromFile, path);
+								}else{
+									for(String  from : fromManyFile){
+										copyLocalToIdata(from, path);
+									}
+								}
 							}
 							
 							runOnUiThread(new Runnable() {

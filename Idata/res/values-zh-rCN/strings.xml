@@ -43,5 +43,9 @@
              <string name="moving">正在移动文件</string>
               <string name="move_to_here">移动到此处</string>
                  <string name="delete_files">正在删除文件</string>
-
+ 		<string name="no_move_tip">当前分类不能移动文件，请到文件夹分类里面使用此功能</string>
+ 		<string name="product_model">产品型号</string>
+ 		<string name="product_name">产品名称</string>
+        <string name="manufacturers">制造商</string>  
+        <string name="about_idata">关于本机</string>       
 </resources>

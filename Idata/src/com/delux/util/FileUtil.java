@@ -1,15 +1,19 @@
 package com.delux.util;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
 
+import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.delux.idata.R;
+import com.delux.idata.SelectDirActivity;
 
 public class FileUtil {
 	public static final int DEFAULT = 0;
@@ -19,6 +23,41 @@ public class FileUtil {
 	public static final int DOC = 4;
 	public static final int FOLDER = 5;
 	public static final int ROOT = 6;
+	
+	/**
+	 *  连接idata获取文件对象           
+	 */
+	public static SmbFile createNewFileOnIdata(String newName){
+		 try {
+			jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+			jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
+			
+	        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
+        
+			SmbFile file = new SmbFile("smb://192.168.169.1/Share/", auth);
+			SmbFile[] smbFile = file.listFiles();
+			
+			if(smbFile.length >0){
+				String path = smbFile[0].getPath();
+				String newPath = path + newName; 
+				
+				jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+				jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
+				
+		        NtlmPasswordAuthentication auth2 = new NtlmPasswordAuthentication(null, "admin", "admin");
+	        
+				SmbFile newFile = new SmbFile(newPath, auth);
+				
+				if(!newFile.exists())
+					newFile.createNewFile();
+				return newFile;
+			}
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	/**
 	 * 获取文件类别

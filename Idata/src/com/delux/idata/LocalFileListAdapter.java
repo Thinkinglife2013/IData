@@ -2,6 +2,7 @@ package com.delux.idata;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
@@ -38,7 +40,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 
 	private File[] fileArray;
 	private LayoutInflater mInflater;
-	private int categoryType;
+	public int categoryType;
 	private boolean isMutilMode; //是否多选的状态
 	private Context context;
 	private int curShowToolPosition = -1;
@@ -209,13 +211,17 @@ public class LocalFileListAdapter extends BaseAdapter {
 					
 					@Override
 					public void onClick(View v) {
-						Intent i = new Intent(context, SelectDirActivity.class);
-						i.putExtra("moveOrCopy", "move");
-						i.putExtra("fromFile", file.getPath()+"/");
-						((FragmentActivity)context).startActivityForResult(i, 1);
-//						LocalFragment.onPostFresh(file.getPath());
-						toolLineView.setVisibility(View.INVISIBLE);
-						curShowToolPosition = -1;
+						if(categoryType == FileUtil.ROOT){
+							Intent i = new Intent(context, SelectDirActivity.class);
+							i.putExtra("moveOrCopy", "move");
+							i.putExtra("fromFile", file.getPath()+"/");
+							((FragmentActivity)context).startActivityForResult(i, 1);
+	//						LocalFragment.onPostFresh(file.getPath());
+							toolLineView.setVisibility(View.INVISIBLE);
+							curShowToolPosition = -1;
+						}else{
+							Toast.makeText(context, R.string.no_move_tip, 1).show();
+						}
 					}
 				});
 		        
@@ -271,7 +277,6 @@ public class LocalFileListAdapter extends BaseAdapter {
 		try {
 			if(isMutilMode){//多选模式
 				holder.toolLayout.setVisibility(View.GONE);
-				
 				holder.checkBox.setVisibility(View.VISIBLE);
 				
 				holder.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -315,6 +320,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 	}
 	
 	public void delMany(final Map<Integer, File> delFiles, final ArrayList<File> allFiles){
+	
 		DialogUtil.showDeleteDialog(context, new OnClickListener() {
 			
 			@Override
@@ -322,31 +328,31 @@ public class LocalFileListAdapter extends BaseAdapter {
 				final ProgressDialog progressDialog = ProgressDialog.show(context, null, context.getString(R.string.delete_files), true, false); 
 				new Thread(new Runnable() {
 					public void run() {
-						File parentFile = delFiles.get(0).getParentFile();
+						Log.i("parentPath", "delFiles_count ="+delFiles.size());
+					
+						String filePath = "";
 						for(Map.Entry<Integer,File>  entry : delFiles.entrySet()){
-							Log.i("parentPath", "position ="+entry.getKey()+"; path ="+entry.getValue().getPath());
-							if(!deleteFile(entry.getValue().getPath())){
-								deleteDirectory(entry.getValue().getPath());
+							filePath = entry.getValue().getParent();
+							String deletePath = entry.getValue().getPath();
+							if(!deleteFile(deletePath)){
+								deleteDirectory(deletePath);
 							}
 						
 							allFiles.remove(entry.getValue());
-//							File[] newFileArray = new File[fileArray.length-1];
-//							for(int i=0; i<fileArray.length-1; i++){
-//								newFileArray[i] = fileArray[i];
-//								if(i >= entry.getKey()){
-//									newFileArray[i] = fileArray[i+1];
-//								}
-//							}
-//							fileArray = newFileArray;
+							
 							Log.i("parentPath", "fileArray_count ="+fileArray.length);
 						}
+						delFiles.clear();
 						
+						File[] newFileArray = new File[allFiles.size()];
+						for(int i=0; i<allFiles.size(); i++){
+							newFileArray[i] = allFiles.get(i);
+						}
+						fileArray = newFileArray;
 						
-						if(categoryType != FileUtil.ROOT || (categoryType == FileUtil.ROOT && ("/data/data/com.delux.idata".equalsIgnoreCase(parentFile.getPath()) 
-								|| "/mnt/sdcard".equalsIgnoreCase(parentFile.getPath()))))
+						if(categoryType != FileUtil.ROOT || (categoryType == FileUtil.ROOT && ("/data/data/com.delux.idata".equalsIgnoreCase(filePath) 
+								|| "/mnt/sdcard".equalsIgnoreCase(filePath))))
 							categoryMap.put(categoryType, allFiles);
-						
-						fileArray = (File[])allFiles.toArray();
 						
 						((FragmentActivity)context).runOnUiThread(new Runnable() {
 							
@@ -361,6 +367,30 @@ public class LocalFileListAdapter extends BaseAdapter {
 				
 			}
 		});
+	}
+	
+	public void copyMany(Collection<File> fileCollection){
+		ArrayList<String> pathList = new ArrayList<String>();
+		for(File  file : fileCollection){
+			pathList.add(file.getPath()+"/");
+		}
+		
+		Intent i = new Intent(context, SelectDirActivity.class);
+		i.putExtra("moveOrCopy", "copy");
+		i.putExtra("fromManyFile", pathList);
+		context.startActivity(i);
+	}
+	
+	public void moveMany(Collection<File> fileCollection){
+		ArrayList<String> pathList = new ArrayList<String>();
+		for(File  file : fileCollection){
+			pathList.add(file.getPath()+"/");
+		}
+		
+		Intent i = new Intent(context, SelectDirActivity.class);
+		i.putExtra("moveOrCopy", "move");
+		i.putExtra("fromManyFile", pathList);
+		((FragmentActivity)context).startActivityForResult(i, 1);
 		
 	}
 	
