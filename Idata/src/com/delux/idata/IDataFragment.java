@@ -287,10 +287,10 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 			    Uri content_url;
 			    if(path.lastIndexOf("Share/Storage/") == -1){
 			    	openPath = path.substring(path.lastIndexOf("Share/SD_Card/")+14);
-			    	content_url = Uri.parse("http://192.168.169.1:8080/SD_Card/"+URLEncoder.encode(openPath));   
+			    	content_url = Uri.parse("http://192.168.169.1:8080/SD_Card/"+URLEncoder.encode(openPath).replace('+', ' '));   
 			    }else{
 			    	openPath = path.substring(path.lastIndexOf("Share/Storage/")+14);
-			    	content_url = Uri.parse("http://192.168.169.1:8080/Storage/"+URLEncoder.encode(openPath));   
+			    	content_url = Uri.parse("http://192.168.169.1:8080/Storage/"+URLEncoder.encode(openPath).replace('+', ' '));   
 			    }
 			   
 			    intent.setData(content_url);  

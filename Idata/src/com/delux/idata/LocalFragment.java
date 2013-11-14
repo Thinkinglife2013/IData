@@ -38,12 +38,18 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 	View categoryView;
 	private int curClickType;
 	private boolean isRoot = true; 
-
+	private String prefix = "/mnt";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		curParent = "/data/data";
+		File externalDir = Environment.getExternalStorageDirectory();
+		//获取手机闪存或者外置SD卡的根路径
+		if(externalDir != null){
+			String sdcardPath = externalDir.getPath();
+			prefix = sdcardPath.substring(0, sdcardPath.indexOf("/", 1));
+		}
 		
 		View contextView = inflater.inflate(R.layout.fragment_item2, container, false);
 		
@@ -72,7 +78,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 			
 			@Override
 			public void onClick(View v) {
-				curParent = "/mnt";
+				curParent = prefix;
 				v.setBackgroundResource(R.color.click_bg);
 				internalStoreView.setBackgroundResource(android.R.color.transparent);
 				getCategoryFilesOnThread(true);
@@ -82,7 +88,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 		categoryView = contextView.findViewById(R.id.category);
 		filelistView = (ListView)contextView.findViewById(R.id.filelist_view);
 		
-		if("/mnt".equals(curParent)){
+		if(prefix.equals(curParent)){
 			getCategoryFilesOnThread(true);
 		}else{
 			getCategoryFilesOnThread(false);
@@ -415,12 +421,14 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 	
 	public void onBack() {
 		Log.i("IDataFragment", "curParent ="+curParent);
+//		File extFile = Environment.getExternalStorageDirectory();
+//		Log.i("IDataFragment", "ExternalStorageDirectory ="+extFile.getPath());
 		
 		if(!isMutilChooseMode){
 			if(isRoot){
 				DialogUtil.showExitDialog(getActivity());
 			}
-			if("/mnt".equals(curParent) || curClickType != FileUtil.ROOT || "/data/data".equals(curParent)){
+			if(prefix.equals(curParent) || curClickType != FileUtil.ROOT || "/data/data".equals(curParent)){
 				isRoot = true;
 				categoryView.setVisibility(View.VISIBLE);
 				filelistView.setVisibility(View.GONE);
@@ -432,8 +440,6 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 			new Thread(new Runnable() {
 				public void run() {
 					try {
-	//					jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
-	//			        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
 						final File file = new File(curParent);
 						final File[] files = file.listFiles();
 						
@@ -441,10 +447,6 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 							
 							@Override
 							public void run() {
-	//							if("smb://192.168.169.1/Share/".equals(curParent)){
-	//								backView.setVisibility(View.GONE);
-	//							}
-								
 								String tempPath = curParent;
 								tempPath = tempPath.substring(0, tempPath.length()-1);
 								tempPath = tempPath.substring(tempPath.lastIndexOf("/")+1);
@@ -452,7 +454,6 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 								LocalFileListAdapter listAdapter = (LocalFileListAdapter)filelistView.getAdapter();
 								listAdapter.setFileArray(files);
 								filelistView.setAdapter(listAdapter);
-	//						      titleTextView.setText(tempPath);
 							      
 							      curParent = file.getParent();
 							}

@@ -23,6 +23,25 @@ public class LanuageActivity extends Activity{
 		
 		RadioButton CNButton = (RadioButton)findViewById(R.id.cn);
 		RadioButton ENButton = (RadioButton)findViewById(R.id.en);
+		RadioButton TWButton = (RadioButton)findViewById(R.id.tw);
+		
+		Intent i = getIntent();
+		int curLanuge = i.getIntExtra("curLanuage", 0);
+		
+		switch (curLanuge) {
+			case 0:
+				CNButton.setChecked(true);
+				break;
+			case 1:
+				TWButton.setChecked(true);
+				break;
+			case 2:
+				ENButton.setChecked(true);
+				break;
+			default:
+				break;
+		}
+		
 		CNButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
@@ -47,6 +66,19 @@ public class LanuageActivity extends Activity{
 	                      sendBroadcast(i);
 					}
 				}
+		});
+		
+		TWButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if(isChecked){
+					 Intent i = new Intent(action);
+					  switchLanguage(Locale.TAIWAN);
+                     finish();
+                     sendBroadcast(i);
+				}
+			}
 		});
 	}
 	

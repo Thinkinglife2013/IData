@@ -52,7 +52,7 @@
 	   		 android:layout_alignBottom="@id/divider"
 	   		 android:textColor="@color/category_color"
 	   		 android:textSize="17sp"
-	   		 android:text="备份通讯录"/>
+	   		 android:text="@string/backup_contacts"/>
 	     <TextView 
 	         android:layout_below="@id/backup"
 	         android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
 	   		 android:layout_alignLeft="@id/backup"
 	   		 android:layout_marginTop="5dp"
 	   		 android:textColor="@color/category_color"
-	   		 android:text="将联系人从手机备份到iData"/>
+	   		 android:text="@string/backup_to_idata"/>
      </RelativeLayout>
      
      <RelativeLayout 
@@ -97,7 +97,7 @@
 	   		 android:layout_alignBottom="@id/divider"
 	   		 android:textColor="@color/category_color"
 	   		 android:textSize="17sp"
-	   		 android:text="恢复通讯录"/>
+	   		 android:text="@string/restore_contacts"/>
 	     <TextView 
 	         android:layout_below="@id/backup"
 	         android:layout_width="wrap_content"
@@ -105,7 +105,7 @@
 	   		 android:layout_alignLeft="@id/backup"
 	   		 android:layout_marginTop="5dp"
 	   		 android:textColor="@color/category_color"
-	   		 android:text="将联系人从iData恢复到手机"/>
+	   		 android:text="@string/restore_to_idata"/>
      </RelativeLayout>
      
       <RelativeLayout 
@@ -120,7 +120,7 @@
 	         android:layout_width="wrap_content"
 	   		 android:layout_height="wrap_content"
 	   		 android:textColor="@color/category_color"
-	   		 android:text="本地联系人："/>
+	   		 android:text="@string/local_contacts"/>
 	       <TextView 
 	         android:id="@+id/local"
 	         android:layout_width="wrap_content"
@@ -130,7 +130,7 @@
 	   		 android:text="--"/>
 	   </RelativeLayout>
 	   
-       <RelativeLayout 
+  <!--      <RelativeLayout 
         android:id="@+id/add_contacts"
         android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
@@ -149,8 +149,8 @@
 	   		 android:layout_height="wrap_content"
 	   		 android:textColor="@color/category_color"
 	   		 android:layout_alignParentRight="true"
-	   		 android:text="--"/>
-	   </RelativeLayout>
+	   		 android:text=""/>
+	   </RelativeLayout> -->
 	   
         <RelativeLayout 
 	        android:id="@+id/add_contacts"
@@ -164,7 +164,7 @@
 	         android:layout_width="wrap_content"
 	   		 android:layout_height="wrap_content"
 	   		 android:textColor="@color/category_color"
-	   		 android:text="上一次操作："/>
+	   		 android:text="@string/last_time"/>
 	       <TextView 
 	         android:id="@+id/last_time"
 	         android:layout_width="wrap_content"

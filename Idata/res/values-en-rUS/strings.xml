@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">iData</string>
+  <string name="app_name">Wifi iData</string>
     <string name="action_settings">Settings</string>
       <string name="encrypt">jiami</string>
     <string name="confirm_password">....</string>
@@ -19,7 +19,7 @@
     <string name="music">music</string>
      <string name="doc">documents</string>
     <string name="folder">folder</string>
-    <string name="contact">backup and recover contacts</string>
+    <string name="contact">backup and import contacts</string>
      <string name="internal_store">Internal memory</string>
      <string name="sdcard">External SD card</string>
      <string name="not_connect_idata">Please reconnect with iData and try again</string>
@@ -33,7 +33,7 @@
      <string name="open_file_tip">Mobile phones has yet to open this type of software installation, please download and install</string>
      <string name="lanuage">language setting</string>
      <string name="route">route setting</string>
-      <string name="about">about idata</string>
+      <string name="about">about iData</string>
         <string name="cn">Simplified Chinese</string>
         <string name="tw">Traditional Chinese</string>
          <string name="en">English</string>
@@ -48,5 +48,18 @@
 		<string name="product_model">Product model</string>
  		<string name="product_name">Product name</string>
         <string name="manufacturers">Manufacturers</string>  
-        <string name="about_idata">about idata</string>   
+        <string name="about_idata">about iData</string>   
+        
+          <string name="backup_contacts">backup contacts</string>             
+           <string name="backup_to_idata">The contact from mobile phone backup to iData</string>   
+           <string name="restore_contacts">import contacts</string> 
+           <string name="restore_to_idata">The contact from iData import to mobile phones</string> 
+          <string name="local_contacts">local contacts：</string> 
+          
+             <string name="backuping">backuping contacts...</string> 
+           <string name="restoring">importing contacts...</string> 
+           <string name="people">contacts</string> 
+             <string name="last_time">last time the operating：</string> 
+             <string name="backup_success">Contacts the backup is complete</string>
+            <string name="restore_success">Contacts the import  is complete</string>
 </resources>

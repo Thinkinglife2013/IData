@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">Wifi iData</string>
+    <string name="action_settings">Settings</string>
+      <string name="encrypt">加密</string>
+    <string name="confirm_password">請輸入加密的密碼</string>
+    <string name="ok">確定</string>
+    <string name="cancle">取消</string>
+    <string name="input_password">請輸入密碼</string>
+    
+     <string name="load">正在加載文件列表</string>
+    <string name="tab_local">本地存儲區</string>
+    <string name="tab_idata">iData存儲區</string>
+    <string name="setting">設置</string>
+    <string name="mutil_choose">多選</string>
+    <string name="photo">照片</string>
+    <string name="video">視頻</string>
+    <string name="music">音樂</string>
+     <string name="doc">文檔</string>
+    <string name="folder">文件夾</string>
+    <string name="contact">通訊錄備份與導入</string>
+     <string name="internal_store">內部存儲區</string>
+     <string name="sdcard">外置SD卡</string>
+     <string name="not_connect_idata">尚未連接iData設備，請連接后重試！</string>
+      <string name="quit">退出</string>
+    <string name="sure_quit">確定退出應用？</string>
+    <string name="alert_dialog_ok">確定</string>
+    <string name="alert_dialog_cancel">取消</string>
+    <string name="copy">複製</string>
+     <string name="move">移動</string>
+     <string name="delete">刪除</string>
+     <string name="open_file_tip">手機尚未安裝打開此類應用的軟件，請自行下載安裝</string>
+     <string name="lanuage">語言設置</string>
+     <string name="route">路由設置</string>
+      <string name="about">關於本機</string>
+       <string name="cn">簡體中文</string>
+        <string name="tw">繁體中文</string>
+         <string name="en">英文</string>
+         <string name="copy_to_here">複製到此處</string>
+           <string name="copying">正在複製文件</string>
+            <string name="delete_confirm">確定要刪除此文件嗎？</string>
+             <string name="moving">正在移動文件</string>
+              <string name="move_to_here">移動到此處</string>
+                 <string name="delete_files">正在刪除文件</string>
+ 		<string name="no_move_tip">當前分類不能移動文件，請到文件夾分類裡面使用此功能</string>
+ 		<string name="product_model">產品型號</string>
+ 		<string name="product_name">產品名稱</string>
+        <string name="manufacturers">製造商</string>  
+        <string name="about_idata">關於本機</string>   
+        
+            <string name="backup_contacts">備份通訊錄</string>   
+           <string name="backup_to_idata">將聯繫人從手機備份到iData</string>
+           <string name="restore_contacts">導入通訊錄</string> 
+            <string name="restore_to_idata">將聯繫人從iData導入到手機</string> 
+            <string name="local_contacts">本地聯繫人：</string> 
+            
+             <string name="backuping">正在備份聯繫人...</string> 
+           <string name="restoring">正在導入聯繫人...</string> 
+           <string name="people">人</string> 
+            <string name="last_time">上一次操作：</string> 
+             <string name="backup_success">聯繫人備份完成</string>
+            <string name="restore_success">聯繫人導入完成</string>
+</resources>

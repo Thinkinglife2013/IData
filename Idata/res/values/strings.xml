@@ -59,6 +59,6 @@
            <string name="restoring">正在导入联系人...</string> 
            <string name="people">人</string> 
             <string name="last_time">上一次操作：</string> 
-             <string name="backup_success">联系人备份完成</string>
+            <string name="backup_success">联系人备份完成</string>
             <string name="restore_success">联系人导入完成</string>
 </resources>

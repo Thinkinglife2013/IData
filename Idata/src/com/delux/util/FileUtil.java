@@ -25,10 +25,9 @@ public class FileUtil {
 	public static final int ROOT = 6;
 	
 	/**
-	 *  连接idata获取文件对象           
+	 *  创建idata联系人的备份文件         
 	 */
-	public static SmbFile createNewFileOnIdata(String newName){
-		 try {
+	public static SmbFile createNewFileOnIdata(String newName) throws Exception{
 			jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
 			jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
 			
@@ -41,22 +40,49 @@ public class FileUtil {
 				String path = smbFile[0].getPath();
 				String newPath = path + newName; 
 				
-				jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
-				jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
-				
-		        NtlmPasswordAuthentication auth2 = new NtlmPasswordAuthentication(null, "admin", "admin");
+//				jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+//				jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
+//		        NtlmPasswordAuthentication auth2 = new NtlmPasswordAuthentication(null, "admin", "admin");
 	        
 				SmbFile newFile = new SmbFile(newPath, auth);
 				
-				if(!newFile.exists())
+				if(!newFile.exists()){
 					newFile.createNewFile();
+				}else{
+					newFile.delete();
+					newFile.createNewFile();
+				}
 				return newFile;
 			}
 			return null;
-		} catch (Exception e) {
-			e.printStackTrace();
+	}
+	
+	/**
+	 *  获取idata联系人的备份文件         
+	 */
+	public static SmbFile getBackupFileOnIdata(String backupName) throws Exception{
+			jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+			jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
+			
+	        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
+        
+			SmbFile file = new SmbFile("smb://192.168.169.1/Share/", auth);
+			SmbFile[] smbFile = file.listFiles();
+			
+			if(smbFile.length >0){
+				String path = smbFile[0].getPath();
+				String backupPath = path + backupName; 
+				
+//				jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+//				jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
+//		        NtlmPasswordAuthentication auth2 = new NtlmPasswordAuthentication(null, "admin", "admin");
+	        
+				SmbFile backupFile = new SmbFile(backupPath, auth);
+				
+				if(backupFile.exists())
+					return backupFile;
+			}
 			return null;
-		}
 	}
 	
 	/**
