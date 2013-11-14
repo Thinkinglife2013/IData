@@ -22,6 +22,21 @@
         android:label="@string/app_name"
          android:theme="@android:style/Theme.NoTitleBar" 
         >
+        <meta-data
+         android:name="UMENG_APPKEY"
+         android:value="5284ed8356240be0e2044612" >
+        </meta-data>
+<!--     <meta-data
+          android:name="UMENG_CHANNEL"
+          android:value="channel1" >
+    </meta-data> -->
+
+        <service
+            android:name="com.umeng.common.net.DownloadingService"
+            android:exported="true"
+            android:process=":DownloadingService" >
+        </service>
+        
         <activity
             android:name="com.delux.idata.LaunchActivity"
             android:label="@string/app_name" >

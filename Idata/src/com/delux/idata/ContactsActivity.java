@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delux.util.FileUtil;
+import com.umeng.analytics.MobclickAgent;
 
 public class ContactsActivity extends Activity {
 	@Override
@@ -132,6 +133,18 @@ public class ContactsActivity extends Activity {
 		});
 	}
 	
+	@Override
+	protected void onPause() {
+		MobclickAgent.onPause(this);
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		MobclickAgent.onResume(this);
+		super.onResume();
+	}
+
 	private void saveTopreference(String date){
 		SharedPreferences lastOperationTime = getSharedPreferences("last_contacts_operation", 0);
 		lastOperationTime.edit().putString("time", date).commit();

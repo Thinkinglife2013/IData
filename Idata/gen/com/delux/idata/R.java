@@ -182,14 +182,31 @@ public final class R {
         public static final int tool_bg=0x7f020035;
         public static final int top_bg=0x7f020036;
         public static final int txt_file=0x7f020037;
-        public static final int video_file=0x7f020038;
-        public static final int video_icon=0x7f020039;
-        public static final int xls_file=0x7f02003a;
+        public static final int umeng_common_gradient_green=0x7f020038;
+        public static final int umeng_common_gradient_orange=0x7f020039;
+        public static final int umeng_common_gradient_red=0x7f02003a;
+        public static final int umeng_update_button_cancel_bg_focused=0x7f02003b;
+        public static final int umeng_update_button_cancel_bg_normal=0x7f02003c;
+        public static final int umeng_update_button_cancel_bg_selector=0x7f02003d;
+        public static final int umeng_update_button_cancel_bg_tap=0x7f02003e;
+        public static final int umeng_update_button_close_bg_selector=0x7f02003f;
+        public static final int umeng_update_button_ok_bg_focused=0x7f020040;
+        public static final int umeng_update_button_ok_bg_normal=0x7f020041;
+        public static final int umeng_update_button_ok_bg_selector=0x7f020042;
+        public static final int umeng_update_button_ok_bg_tap=0x7f020043;
+        public static final int umeng_update_close_bg_normal=0x7f020044;
+        public static final int umeng_update_close_bg_tap=0x7f020045;
+        public static final int umeng_update_dialog_bg=0x7f020046;
+        public static final int umeng_update_title_bg=0x7f020047;
+        public static final int umeng_update_wifi_disable=0x7f020048;
+        public static final int video_file=0x7f020049;
+        public static final int video_icon=0x7f02004a;
+        public static final int xls_file=0x7f02004b;
     }
     public static final class id {
         public static final int Local_contacts=0x7f0a0017;
         public static final int about=0x7f0a0004;
-        public static final int action_settings=0x7f0a0040;
+        public static final int action_settings=0x7f0a004d;
         public static final int add_contacts=0x7f0a0018;
         public static final int backup=0x7f0a0015;
         public static final int backup_contacts=0x7f0a0012;
@@ -250,6 +267,19 @@ public final class R {
         public static final int top=0x7f0a0000;
         public static final int tw=0x7f0a0035;
         public static final int two=0x7f0a003d;
+        public static final int umeng_common_notification=0x7f0a0044;
+        public static final int umeng_common_notification_controller=0x7f0a0041;
+        public static final int umeng_common_progress_bar=0x7f0a0046;
+        public static final int umeng_common_progress_text=0x7f0a0040;
+        public static final int umeng_common_rich_notification_cancel=0x7f0a0043;
+        public static final int umeng_common_rich_notification_continue=0x7f0a0042;
+        public static final int umeng_common_title=0x7f0a0045;
+        public static final int umeng_update_content=0x7f0a0049;
+        public static final int umeng_update_id_cancel=0x7f0a004b;
+        public static final int umeng_update_id_close=0x7f0a0048;
+        public static final int umeng_update_id_ignore=0x7f0a004c;
+        public static final int umeng_update_id_ok=0x7f0a004a;
+        public static final int umeng_update_wifi_indicator=0x7f0a0047;
         public static final int video=0x7f0a002a;
         public static final int viewPager=0x7f0a000d;
     }
@@ -267,11 +297,26 @@ public final class R {
         public static final int mutil_bottom=0x7f03000a;
         public static final int select_folderlist=0x7f03000b;
         public static final int setting=0x7f03000c;
+        public static final int umeng_common_download_notification=0x7f03000d;
+        public static final int umeng_update_dialog=0x7f03000e;
     }
     public static final class menu {
         public static final int main=0x7f090000;
     }
     public static final class string {
+        public static final int UMAppUpdate=0x7f07004d;
+        public static final int UMBreak_Network=0x7f070045;
+        public static final int UMDialog_InstallAPK=0x7f070051;
+        public static final int UMGprsCondition=0x7f07004b;
+        public static final int UMIgnore=0x7f07004f;
+        public static final int UMNewVersion=0x7f070047;
+        public static final int UMNotNow=0x7f07004e;
+        public static final int UMTargetSize=0x7f07004a;
+        public static final int UMToast_IsUpdating=0x7f070050;
+        public static final int UMUpdateContent=0x7f070048;
+        public static final int UMUpdateNow=0x7f07004c;
+        public static final int UMUpdateSize=0x7f070049;
+        public static final int UMUpdateTitle=0x7f070046;
         public static final int about=0x7f07001f;
         public static final int about_idata=0x7f07002d;
         public static final int action_settings=0x7f070001;
@@ -328,6 +373,18 @@ public final class R {
         public static final int tab_idata=0x7f070009;
         public static final int tab_local=0x7f070008;
         public static final int tw=0x7f070021;
+        public static final int umeng_common_action_cancel=0x7f07003d;
+        public static final int umeng_common_action_continue=0x7f07003c;
+        public static final int umeng_common_action_info_exist=0x7f070039;
+        public static final int umeng_common_action_pause=0x7f07003b;
+        public static final int umeng_common_download_failed=0x7f070042;
+        public static final int umeng_common_download_finish=0x7f070043;
+        public static final int umeng_common_download_notification_prefix=0x7f07003e;
+        public static final int umeng_common_info_interrupt=0x7f07003a;
+        public static final int umeng_common_network_break_alert=0x7f070041;
+        public static final int umeng_common_patch_finish=0x7f070044;
+        public static final int umeng_common_start_download_notification=0x7f07003f;
+        public static final int umeng_common_start_patch_notification=0x7f070040;
         public static final int video=0x7f07000d;
     }
     public static final class style {

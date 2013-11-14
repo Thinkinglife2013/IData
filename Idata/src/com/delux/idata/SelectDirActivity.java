@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.delux.util.FileUtil;
 import com.delux.util.MyFIleFilter;
 import com.delux.util.MyIdataFIleFilter;
+import com.umeng.analytics.MobclickAgent;
 
 public class SelectDirActivity extends Activity {
 	private String curParent;
@@ -249,6 +250,18 @@ public class SelectDirActivity extends Activity {
 			}
 		});
 		
+	}
+	
+	@Override
+	public void onResume() {
+		MobclickAgent.onResume(this);
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause() {
+		MobclickAgent.onPause(this);
+		super.onPause();
 	}
 	
 	/**

@@ -29,6 +29,7 @@ import com.delux.idata.MainActivity.BackKeyEvent;
 import com.delux.idata.MainActivity.MutilChooseCallBack;
 import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
+import com.umeng.analytics.MobclickAgent;
 
 
 public class LocalFragment extends Fragment implements BackKeyEvent, MutilChooseCallBack{
@@ -185,6 +186,18 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 			}
 		});
 		return contextView;
+	}
+	
+	@Override
+	public void onResume() {
+		MobclickAgent.onResume(getActivity());
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause() {
+		MobclickAgent.onPause(getActivity());
+		super.onPause();
 	}
 	
 	/**

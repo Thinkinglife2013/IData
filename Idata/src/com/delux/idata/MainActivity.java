@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.umeng.update.UmengUpdateAgent;
+
 import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
@@ -38,6 +40,14 @@ public class MainActivity extends FragmentActivity implements OnPageChangeListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		//友盟自動更新 begin
+		 //如果想程序启动时自动检查是否需要更新， 把下面两行代码加在Activity 的onCreate()函数里。
+			UmengUpdateAgent.setUpdateOnlyWifi(false);
+//		 	如果您同时使用了手动更新和自动检查更新，为了避免更新回调被多次调用，请加上下面这句代码
+			UmengUpdateAgent.setDownloadListener(null);
+			UmengUpdateAgent.update(this);
+			//end
 		
 		mainActivity = this;
 		

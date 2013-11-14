@@ -2,6 +2,8 @@ package com.delux.idata;
 
 import java.util.Locale;
 
+import com.umeng.analytics.MobclickAgent;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -89,6 +91,18 @@ public class LanuageActivity extends Activity{
           config.locale = locale; // 简体中文
           resources.updateConfiguration(config, dm);
   }
+	  
+		@Override
+		public void onResume() {
+			MobclickAgent.onResume(this);
+			super.onResume();
+		}
+		
+		@Override
+		public void onPause() {
+			MobclickAgent.onPause(this);
+			super.onPause();
+		}
 	
 
 }

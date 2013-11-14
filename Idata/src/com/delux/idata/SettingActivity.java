@@ -1,5 +1,7 @@
 package com.delux.idata;
 
+import com.umeng.analytics.MobclickAgent;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -67,6 +69,18 @@ public class SettingActivity extends Activity{
 			}
 		});
 		
+	}
+	
+	@Override
+	public void onResume() {
+		MobclickAgent.onResume(this);
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause() {
+		MobclickAgent.onPause(this);
+		super.onPause();
 	}
 	
 }
