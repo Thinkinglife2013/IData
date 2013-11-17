@@ -27,8 +27,8 @@
 			    android:layout_marginLeft="47dp"
 			    >
 			  	<ImageView 
-		        	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
+		        	android:layout_width="95dp"
+			    	android:layout_height="30dp"
 			    	android:background="@drawable/local_store_button"
 			    	 />
 			    <TextView 
@@ -37,7 +37,7 @@
 			    	android:text="@string/internal_store"
 			    	android:textColor="@color/category_color"
 			    	android:layout_centerInParent="true"
-			    	android:textSize="10sp"
+			    	android:textSize="13dp"
 			    	 />
 		    </RelativeLayout>
 		    
@@ -51,8 +51,8 @@
 			    android:layout_marginRight="47dp"
 			    >
 			  	<ImageView 
-		        	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
+		        	android:layout_width="95dp"
+			    	android:layout_height="30dp"
 			    	android:background="@drawable/local_store_button"
 			    	 />
 			    <TextView 
@@ -61,7 +61,7 @@
 			    	android:text="@string/sdcard"
 			    	android:layout_centerInParent="true"
 			    	android:textColor="@color/category_color"
-			    	android:textSize="10sp"
+			    	android:textSize="13dp"
 			    	 />
 		    </RelativeLayout>
 		     <ImageView 

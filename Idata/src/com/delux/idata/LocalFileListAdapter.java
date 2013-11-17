@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -35,6 +36,7 @@ import android.widget.Toast;
 
 import com.delux.util.DialogUtil;
 import com.delux.util.FileUtil;
+import com.delux.util.ImageUtil;
 
 public class LocalFileListAdapter extends BaseAdapter {
 
@@ -47,6 +49,8 @@ public class LocalFileListAdapter extends BaseAdapter {
 	private boolean isMoveOrCopy;
 	private Map<Integer, ArrayList> categoryMap;
 	public Map<Integer,File> selectFiles = new HashMap<Integer, File>();
+	private double thumnailWidth;
+	private double thumnailHeight;
 
 	public boolean isMoveOrCopy() {
 		return isMoveOrCopy;
@@ -62,6 +66,14 @@ public class LocalFileListAdapter extends BaseAdapter {
 		this.fileArray = fileArray;
 		this.categoryType = categoryType;
 		this.categoryMap = categoryMap;
+		
+		if(categoryType == FileUtil.PHOTO){
+			 DisplayMetrics metric = new DisplayMetrics();
+			 ((FragmentActivity)context).getWindowManager().getDefaultDisplay().getMetrics(metric);
+			 float density = metric.density;
+			 thumnailWidth = (45 * density) + 0.5; 
+			 thumnailHeight = thumnailWidth; 
+		}
 	}
 	
 	public void setMutilMode(boolean isMutilMode) {
@@ -283,7 +295,6 @@ public class LocalFileListAdapter extends BaseAdapter {
 					
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-						// TODO Auto-generated method stub
 						if(isChecked){
 							selectFiles.put(position, file);
 						}else{
@@ -308,7 +319,14 @@ public class LocalFileListAdapter extends BaseAdapter {
 			if(file.isDirectory()){
 				holder.icon.setImageResource(R.drawable.normal_folder);
 			}else{
-				holder.icon.setImageResource(FileUtil.getFileIconResId(name));
+//				int width = holder.icon.getMeasuredWidth();
+//				int height = holder.icon.getMeasuredHeight();
+//				Log.i("thumbnail", "width ="+thumnailWidth+"; height ="+thumnailHeight);
+				if(categoryType == FileUtil.PHOTO){
+					holder.icon.setImageBitmap(ImageUtil.getImageThumbnail(file.getAbsolutePath(), (int)thumnailWidth, (int)thumnailHeight));
+				}else{
+					holder.icon.setImageResource(FileUtil.getFileIconResId(name));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

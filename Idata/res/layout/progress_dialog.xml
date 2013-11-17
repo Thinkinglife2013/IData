@@ -1,0 +1,29 @@
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+<!--     <TextView  android:id="@+id/tv"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="正在下载文件，稍等。。。。。"
+	    /> -->
+    
+	<ProgressBar android:id="@+id/down_pb"
+		android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:max="100"
+	    style="?android:attr/progressBarStyleHorizontal"
+		/>
+	
+	  <Button  android:id="@+id/cancle"
+	    android:layout_width="70dp" 
+	    android:layout_height="wrap_content" 
+	    android:layout_marginTop="20dp"
+	    android:text="取消"
+	    android:layout_gravity="center_horizontal"
+	    />
+ 
+
+</LinearLayout >

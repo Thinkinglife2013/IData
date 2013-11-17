@@ -62,4 +62,6 @@
              <string name="last_time">last time the operating：</string> 
              <string name="backup_success">Contacts the backup is complete</string>
             <string name="restore_success">Contacts the import  is complete</string>
+            
+            <string name="downloading">downloading</string>
 </resources>

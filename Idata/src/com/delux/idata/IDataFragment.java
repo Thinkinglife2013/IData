@@ -1,8 +1,8 @@
 package com.delux.idata;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.net.MalformedURLException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,20 +10,24 @@ import java.util.Map;
 import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
+import jcifs.smb.SmbFileInputStream;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -44,6 +48,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 	View categoryView;
 	private int curClickType;
 	private boolean isRoot = true; //是否在分类界面
+	private boolean isCancleDownload; //是否取消下载
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -275,7 +280,155 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 		}
 	}
 	
-	private void openFileOrDir(SmbFile file, ImageView backView, TextView titleTextView, String fileName, FileListAdapter listAdapter){
+	private void openFileOrDir(final SmbFile file, ImageView backView, TextView titleTextView, String fileName, FileListAdapter listAdapter){
+		try {
+			isRoot = false;
+			if(file.isDirectory()){
+				if(backView != null && titleTextView != null){
+					backView.setVisibility(View.VISIBLE);
+					titleTextView.setText(fileName);
+				}
+				curParent = file.getParent();
+				
+				SmbFile[] subFiles = file.listFiles();
+				if(subFiles == null){
+					subFiles = new SmbFile[]{};
+				}	
+				listAdapter.setFileArray(subFiles);
+				listAdapter.notifyDataSetChanged();
+			}else{
+				//TODO
+				String path = Environment.getExternalStorageDirectory().getPath()+"/idata_files/"+file.getName();
+				File saveFile = new File(path);
+				if(saveFile.exists() && (saveFile.length() == file.getContentLength())){
+					 Intent intent = FileUtil.getOpenLocalAppIntent(saveFile);
+					 startActivity(intent);
+				}else{
+				       final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+		                progressDialog.setTitle(R.string.downloading);
+//		                progressDialog.setMessage("正在下载中，请稍后......");
+		                progressDialog.setCancelable(false);
+//		                progressDialog.setIndeterminate(true);
+		          /*      LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+		                View contentView = layoutInflater.inflate(R.layout.progress_dialog, null);
+		                Button cancleButton = (Button)contentView.findViewById(R.id.cancle);
+		                cancleButton.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								progressDialog.dismiss();
+							}
+						});*/
+		                
+		                progressDialog.setButton("取消", new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								isCancleDownload = true;
+								
+							}
+						});
+		                
+		                //    设置最大进度，ProgressDialog的进度范围是从1-10000
+		                progressDialog.setMax(file.getContentLength());
+		                //    设置ProgressDialog的显示样式，ProgressDialog.STYLE_HORIZONTAL代表的是水平进度条
+		                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		                progressDialog.show();			
+		                
+		                downloadIdataFile(file.getPath(), path, progressDialog);
+		            
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private int downloaded = 0; //已下载文件大小
+	private void downloadIdataFile(final String fromFile, final String toFile, final ProgressDialog progressDialog){
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				  try
+			        {
+			        	Log.i("idataPath", "CopyIdataToLocalFile----------fromFile ="+fromFile+"; toFile ="+toFile);
+			        	SmbFile fromSmb = getSmbFile(fromFile);
+			        	SmbFileInputStream fosfrom = new SmbFileInputStream(fromSmb);
+			        	
+			        	File saveFile = new File(toFile);
+			        	File dir = saveFile.getParentFile();
+			        	if(!dir.exists()){
+			        		dir.mkdir();
+			        	}
+			        	FileOutputStream fosto = new FileOutputStream(toFile);
+			            byte bt[] = new byte[1024];
+			            downloaded = 0;
+			            int c;
+			            isCancleDownload = false;
+			            while ((c = fosfrom.read(bt)) > 0 && !isCancleDownload) 
+			            {
+			                fosto.write(bt, 0, c);
+			                downloaded += c;
+			                getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									progressDialog.setProgress(downloaded);
+								}
+							});
+			            }
+			            fosfrom.close();
+			            fosto.close();
+			            
+			            if(downloaded == progressDialog.getMax()){
+				            getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+								    progressDialog.dismiss();
+					                Intent intent = FileUtil.getOpenLocalAppIntent(new File(toFile));
+									startActivity(intent);
+								}
+							});
+			            }
+//			            return 0;
+			             
+			        } catch (Exception ex) 
+			        {
+			        	ex.printStackTrace();
+//			            return -1;
+			        }
+			}
+		}).start();
+	}
+	
+	/**
+	 *  连接idata获取文件对象           
+	 */
+	private SmbFile getSmbFile(String url){
+		 try {
+			jcifs.Config.setProperty( "jcifs.smb.lmCompatibility", "0");
+			jcifs.Config.setProperty( "jcifs.smb.client.responseTimeout", "5000");
+			
+	        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "admin", "admin");
+        
+			SmbFile file = new SmbFile(url, auth);
+			return file;
+		} catch (MalformedURLException e) {
+			getActivity().runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					Toast.makeText(getActivity(), R.string.not_connect_idata, 0).show();
+				}
+			});
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+/*	private void openFileOrDir(SmbFile file, ImageView backView, TextView titleTextView, String fileName, FileListAdapter listAdapter){
 		try {
 			isRoot = false;
 			if(file.isDirectory()){
@@ -313,7 +466,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	private Map<Integer, ArrayList> getCategoryFiles(){
 			try {
