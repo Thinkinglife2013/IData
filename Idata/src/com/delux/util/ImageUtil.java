@@ -26,6 +26,11 @@ public class ImageUtil {
         options.inJustDecodeBounds = false; // 设为 false  
         // 计算缩放比  
         int h = options.outHeight;  
+        //不是图片返回null
+        if(h <= 0){
+        	return null;
+        }
+        
         int w = options.outWidth;  
         int beWidth = w / width;  
         int beHeight = h / height;  

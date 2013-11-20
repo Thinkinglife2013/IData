@@ -376,7 +376,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 							
 							if(subfiles2 != null && subfiles2.length > 0){
 								for(File  subfile2 : subfiles2){
-									int category = FileUtil.getFileCategory(LocalFileListAdapter.getName(subfile2));
+									int category = FileUtil.getLocalFileCategory(subfile2);
 									if(FileUtil.PHOTO == category){
 										photoList.add(subfile2);
 									}else if(FileUtil.MUSIC == category){
@@ -389,7 +389,7 @@ public class LocalFragment extends Fragment implements BackKeyEvent, MutilChoose
 								}
 							}
 						}else{
-							int category = FileUtil.getFileCategory(LocalFileListAdapter.getName(file));
+							int category = FileUtil.getLocalFileCategory(file);
 							if(FileUtil.PHOTO == category){
 								photoList.add(file);
 							}else if(FileUtil.MUSIC == category){

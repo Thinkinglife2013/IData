@@ -50,6 +50,7 @@ public class SelectDirActivity extends Activity {
 	private TextView copyOrMoveView;
 	private String fromFile;
 	private ArrayList<String> fromManyFile;
+	private String prefix = "/mnt";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -389,7 +390,13 @@ public class SelectDirActivity extends Activity {
 				try {
 						File rootFile;
 						if(isSdcard){
-							curParent = "/mnt";
+							File externalDir = Environment.getExternalStorageDirectory();
+							//获取手机闪存或者外置SD卡的根路径
+							if(externalDir != null){
+								String sdcardPath = externalDir.getPath();
+								prefix = sdcardPath.substring(0, sdcardPath.indexOf("/", 1));
+							}
+							curParent = prefix;
 							rootFile = Environment.getExternalStorageDirectory();
 						}else{
 							curParent = "/data/data";
@@ -561,7 +568,7 @@ public class SelectDirActivity extends Activity {
 		  			
 		  		//真实目录
 		  		}else{
-					if("/mnt".equals(curParent) || "/data/data".equals(curParent) || "smb://192.168.169.1/".equals(curParent)){
+					if(prefix.equals(curParent) || "/data/data".equals(curParent) || "smb://192.168.169.1/".equals(curParent)){
 //						isRoot = true;
 						localpartitionView.setVisibility(View.VISIBLE);
 						filelistView.setVisibility(View.GONE);

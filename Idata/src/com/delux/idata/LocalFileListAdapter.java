@@ -6,12 +6,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -67,9 +69,9 @@ public class LocalFileListAdapter extends BaseAdapter {
 		this.categoryType = categoryType;
 		this.categoryMap = categoryMap;
 		
-		if(categoryType == FileUtil.PHOTO){
+		if(categoryType == FileUtil.PHOTO  || categoryType == FileUtil.ROOT){
 			 DisplayMetrics metric = new DisplayMetrics();
-			 ((FragmentActivity)context).getWindowManager().getDefaultDisplay().getMetrics(metric);
+			 ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(metric);
 			 float density = metric.density;
 			 thumnailWidth = (45 * density) + 0.5; 
 			 thumnailHeight = thumnailWidth; 
@@ -136,13 +138,6 @@ public class LocalFileListAdapter extends BaseAdapter {
 		final File file = fileArray[position];
 		String name = getName(file);
 		
-		//如果是移动或拷贝
-		if(isMoveOrCopy){
-			holder.toolLayout.setVisibility(View.INVISIBLE);
-		}else{
-			holder.toolLayout.setVisibility(View.VISIBLE);
-		}
-		
 		final View toolLineView = holder.toolLine; //工具条
 		//点击弹出工具条
 		holder.toolLayout.setOnTouchListener(new OnTouchListener() {
@@ -198,7 +193,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 												|| "/mnt/sdcard".equalsIgnoreCase(file.getParent()))))
 											categoryMap.put(categoryType, convertToList(fileArray));
 										
-										((FragmentActivity)context).runOnUiThread(new Runnable() {
+										((Activity)context).runOnUiThread(new Runnable() {
 											
 											@Override
 											public void run() {
@@ -227,7 +222,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 							Intent i = new Intent(context, SelectDirActivity.class);
 							i.putExtra("moveOrCopy", "move");
 							i.putExtra("fromFile", file.getPath()+"/");
-							((FragmentActivity)context).startActivityForResult(i, 1);
+							((Activity)context).startActivityForResult(i, 1);
 	//						LocalFragment.onPostFresh(file.getPath());
 							toolLineView.setVisibility(View.INVISIBLE);
 							curShowToolPosition = -1;
@@ -311,7 +306,12 @@ public class LocalFileListAdapter extends BaseAdapter {
 				}
 				
 			}else{//非多选模式
-				holder.toolLayout.setVisibility(View.VISIBLE);
+				//如果是移动或拷贝
+				if(isMoveOrCopy){
+					holder.toolLayout.setVisibility(View.INVISIBLE);
+				}else{
+					holder.toolLayout.setVisibility(View.VISIBLE);
+				}
 				holder.checkBox.setVisibility(View.GONE);
 				holder.checkBox.setChecked(false);
 			}
@@ -319,11 +319,13 @@ public class LocalFileListAdapter extends BaseAdapter {
 			if(file.isDirectory()){
 				holder.icon.setImageResource(R.drawable.normal_folder);
 			}else{
-//				int width = holder.icon.getMeasuredWidth();
-//				int height = holder.icon.getMeasuredHeight();
-//				Log.i("thumbnail", "width ="+thumnailWidth+"; height ="+thumnailHeight);
-				if(categoryType == FileUtil.PHOTO){
-					holder.icon.setImageBitmap(ImageUtil.getImageThumbnail(file.getAbsolutePath(), (int)thumnailWidth, (int)thumnailHeight));
+				if(categoryType == FileUtil.PHOTO || categoryType == FileUtil.ROOT){
+					Bitmap bitmap = ImageUtil.getImageThumbnail(file.getAbsolutePath(), (int)thumnailWidth, (int)thumnailHeight);
+					if(bitmap != null){
+						holder.icon.setImageBitmap(bitmap);
+					}else{
+						holder.icon.setImageResource(FileUtil.getFileIconResId(name));
+					}
 				}else{
 					holder.icon.setImageResource(FileUtil.getFileIconResId(name));
 				}
@@ -372,7 +374,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 								|| "/mnt/sdcard".equalsIgnoreCase(filePath))))
 							categoryMap.put(categoryType, allFiles);
 						
-						((FragmentActivity)context).runOnUiThread(new Runnable() {
+						((Activity)context).runOnUiThread(new Runnable() {
 							
 							@Override
 							public void run() {
@@ -408,7 +410,7 @@ public class LocalFileListAdapter extends BaseAdapter {
 		Intent i = new Intent(context, SelectDirActivity.class);
 		i.putExtra("moveOrCopy", "move");
 		i.putExtra("fromManyFile", pathList);
-		((FragmentActivity)context).startActivityForResult(i, 1);
+		((Activity)context).startActivityForResult(i, 1);
 		
 	}
 	

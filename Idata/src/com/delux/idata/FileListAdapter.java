@@ -125,12 +125,6 @@ public class FileListAdapter extends BaseAdapter {
 		
 		final SmbFile file = fileArray[position];
 		String name = FileUtil.getName(file);
-		//如果是移动或拷贝
-		if(isMoveOrCopy){
-			holder.toolLayout.setVisibility(View.INVISIBLE);
-		}else{
-			holder.toolLayout.setVisibility(View.VISIBLE);
-		}
 		
 		final View toolLineView = holder.toolLine; //工具条
 		//点击弹出工具条
@@ -299,7 +293,12 @@ public class FileListAdapter extends BaseAdapter {
 					holder.checkBox.setChecked(false);
 				}
 			}else{//非多选模式
-				holder.toolLayout.setVisibility(View.VISIBLE);
+				//如果是移动或拷贝
+				if(isMoveOrCopy){
+					holder.toolLayout.setVisibility(View.INVISIBLE);
+				}else{
+					holder.toolLayout.setVisibility(View.VISIBLE);
+				}
 				holder.checkBox.setVisibility(View.GONE);
 				holder.checkBox.setChecked(false);
 			}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">Wifi iData</string>
+  <string name="app_name">多彩微盒</string>
     <string name="action_settings">Settings</string>
       <string name="encrypt">加密</string>
     <string name="confirm_password">请输入加密的密码</string>
