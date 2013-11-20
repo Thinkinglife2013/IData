@@ -840,11 +840,13 @@ public class SelectDirActivity extends Activity {
         	SmbFile toSmb = getSmbFile(toFile);
         	FileInputStream fosfrom = new FileInputStream(fromFile);
         	SmbFileOutputStream fosto = new SmbFileOutputStream(toSmb);
-            byte bt[] = new byte[1024];
+            byte bt[] = new byte[102400];
             int c;
             while ((c = fosfrom.read(bt)) > 0) 
             {
+//            	Log.i("idataPath", "CopyLocalToIdataFile----------per_read_size="+c);
                 fosto.write(bt, 0, c);
+//                Log.i("idataPath", "CopyLocalToIdataFile----------write end");
             }
             Log.i("idataPath", "CopyLocalToIdataFile----------close");
             fosfrom.close();
@@ -922,10 +924,11 @@ public class SelectDirActivity extends Activity {
 //        	SmbFile toSmb = getSmbFile(toFile);
         	SmbFileInputStream fosfrom = new SmbFileInputStream(fromSmb);
         	FileOutputStream fosto = new FileOutputStream(toFile);
-            byte bt[] = new byte[1024];
+            byte bt[] = new byte[102400];
             int c;
             while ((c = fosfrom.read(bt)) > 0) 
             {
+//            	Log.i("idataPath", "CopyIdataToLocalFile----------per_read_size="+c);
                 fosto.write(bt, 0, c);
             }
             Log.i("idataPath", "CopyIdataToLocalFile----------close");
