@@ -1007,7 +1007,7 @@ public class SelectDirActivity extends Activity {
         	SmbFile toSmb = getSmbFile(toFile);
         	SmbFileInputStream fosfrom = new SmbFileInputStream(fromSmb);
         	SmbFileOutputStream fosto = new SmbFileOutputStream(toSmb);
-            byte bt[] = new byte[1024];
+            byte bt[] = new byte[102400];
             int c;
             while ((c = fosfrom.read(bt)) > 0) 
             {
@@ -1087,7 +1087,7 @@ public class SelectDirActivity extends Activity {
         {
             InputStream fosfrom = new FileInputStream(fromFile);
             OutputStream fosto = new FileOutputStream(toFile);
-            byte bt[] = new byte[1024];
+            byte bt[] = new byte[102400];
             int c;
             while ((c = fosfrom.read(bt)) > 0) 
             {

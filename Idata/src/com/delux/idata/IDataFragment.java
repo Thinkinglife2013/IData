@@ -362,7 +362,7 @@ public class IDataFragment extends Fragment implements BackKeyEvent, MutilChoose
 			        		dir.mkdir();
 			        	}
 			        	FileOutputStream fosto = new FileOutputStream(toFile);
-			            byte bt[] = new byte[1024];
+			            byte bt[] = new byte[102400];
 			            downloaded = 0;
 			            int c;
 			            isCancleDownload = false;
