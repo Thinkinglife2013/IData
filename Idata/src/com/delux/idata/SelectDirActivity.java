@@ -36,6 +36,8 @@ import android.widget.Toast;
 import com.delux.util.FileUtil;
 import com.delux.util.MyFIleFilter;
 import com.delux.util.MyIdataFIleFilter;
+import com.enterprisedt.net.ftp.FTPFile;
+import com.enterprisedt.net.ftp.FileTransferClient;
 import com.umeng.analytics.MobclickAgent;
 
 public class SelectDirActivity extends Activity {
@@ -815,12 +817,12 @@ public class SelectDirActivity extends Activity {
 	                     
 	                }else//如果当前项为文件则进行文件拷贝
 	                {
-	                	CopyLocalToIdataFile(currentFiles[i].getPath(), toFile + currentFiles[i].getName());
+	                	CopyLocalToIdataFile(currentFiles[i], toFile + currentFiles[i].getName());
 	                }
 	            }
 	        }else if(root.exists() && root.isFile()){
 	        	//如果当前项为文件则进行文件拷贝
-	        	CopyLocalToIdataFile(root.getPath(), toFile + root.getName());
+	        	CopyLocalToIdataFile(root, toFile + root.getName());
 	        }
 		}catch(Exception e){
 			e.printStackTrace();
@@ -831,9 +833,9 @@ public class SelectDirActivity extends Activity {
 	
     //idata文件拷贝
     //要复制的目录下的所有非子目录(文件夹)文件拷贝
-    public int CopyLocalToIdataFile(String fromFile, String toFile)
+    public int CopyLocalToIdataFile(File fromFile, String toFile)
     {
-        try
+/*        try
         {
         	Log.i("idataPath", "CopyLocalToIdataFile----------fromFile ="+fromFile+"; toFile ="+toFile);
 //        	File fromFile = new File(fromFile);
@@ -857,7 +859,65 @@ public class SelectDirActivity extends Activity {
         {
         	ex.printStackTrace();
             return -1;
+        }*/
+        // extract command-line arguments
+        String host = "192.168.169.1";
+        String username = "admin";
+        String password = "admin";
+        String filename = "UploadDownloadFiles.java";
+
+        // set up logger so that we get some output
+//        Logger log = Logger.getLogger(UploadDownloadFiles.class);
+//        Logger.setLevel(Level.INFO);
+
+        FileTransferClient ftp = null;
+
+        try {
+            // create client
+//            log.info("Creating FTP client");
+            ftp = new FileTransferClient();
+
+            // set remote host
+            ftp.setRemoteHost(host);
+            ftp.setUserName(username);
+            ftp.setPassword(password);
+
+            // connect to the server
+//            log.info("Connecting to server " + host);
+            ftp.connect();
+//            log.info("Connected and logged in to server " + host);
+
+//            log.info("Uploading file");
+//            ftp.uploadFile(filename, filename);
+              
+              FTPFile[] files = ftp.directoryList();
+              String name = files[0].getName();
+              Log.i("idataPath", "CopyLocalToIdataFile----------fromFile="+fromFile.getPath()+"; remoteFile="+name);
+              ftp.uploadFile(fromFile.getPath(), name+"/"+fromFile.getName());
+//            log.info("File uploaded");
+
+//            log.info("Downloading file");
+//            ftp.downloadFile(filename + ".copy", filename);
+//            log.info("File downloaded");
+
+//            log.info("Deleting remote file");
+//            ftp.deleteFile(filename);
+//            log.info("Deleted remote file");
+
+//            File file = new File(filename + ".copy");
+//            file.delete();
+//            log.info("Deleted local file copy");
+
+            // Shut down client
+//            log.info("Quitting client");
+            ftp.disconnect();
+
+//            log.info("Example complete");
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return 0;
     }
 	
 	/**
