@@ -783,7 +783,7 @@ public class SelectDirActivity extends Activity {
 	public int copyLocalToIdata(String fromFile, String toFile)
     {
 		try{
-			Log.i("idataPath", "copyIdataToLocal------fromFile ="+fromFile+"; toFile ="+toFile);
+			Log.i("idataPath", "copyLocalToIdata------fromFile ="+fromFile+"; toFile ="+toFile);
 	        //要复制的文件目录
 	        File[] currentFiles;
 	        
@@ -890,14 +890,28 @@ public class SelectDirActivity extends Activity {
 //            log.info("Uploading file");
 //            ftp.uploadFile(filename, filename);
               
-              FTPFile[] files = ftp.directoryList();
-              String name = files[0].getName();
-              Log.i("idataPath", "CopyLocalToIdataFile----------fromFile="+fromFile.getPath()+"; remoteFile="+name);
-              ftp.uploadFile(fromFile.getPath(), name+"/"+fromFile.getName());
+//              FTPFile[] files = ftp.directoryList();
+              FTPFile[] files = ftp.directoryList("Storage");
+              Log.i("idataPath", "CopyLocalToIdataFile----------permission="+files[0].getPermissions()+"; owner ="+files[0].getOwner()+"; raw ="+files[0].getRaw());
+
+//              String name = files[0].getName();
+              for(FTPFile  file : files){
+            	  String name = file.getName();
+	              if("html".equals(name)){
+	            	    Log.i("idataPath", "CopyLocalToIdataFile----------permission="+file.getPermissions()+"; owner ="+file.getOwner()+"; raw ="+file.getRaw());
+	            	  	file.setPermissions("d---------");
+	            	    Log.i("idataPath", "CopyLocalToIdataFile----------permission="+file.getPermissions()+"; owner ="+file.getOwner()+"; raw ="+file.getRaw());
+	                    Log.i("idataPath", "CopyLocalToIdataFile----------fromFile="+fromFile.getPath()+"; remoteFile="+name);
+	                    ftp.uploadFile(fromFile.getPath(), "Storage/"+name+"/"+fromFile.getName());
+//	                    ftp.uploadURLFile(fromFile.getPath(), "ftp://192.168.169.1/Storage/"+name+"/"+fromFile.getName());//login error
+	                    break;
+	              }
+              }
+          
 //            log.info("File uploaded");
 
 //            log.info("Downloading file");
-//            ftp.downloadFile(filename + ".copy", filename);
+//              ftp.downloadFile(filename, filename);
 //            log.info("File downloaded");
 
 //            log.info("Deleting remote file");
