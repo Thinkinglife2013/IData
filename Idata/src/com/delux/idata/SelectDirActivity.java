@@ -866,10 +866,6 @@ public class SelectDirActivity extends Activity {
         String password = "admin";
         String filename = "UploadDownloadFiles.java";
 
-        // set up logger so that we get some output
-//        Logger log = Logger.getLogger(UploadDownloadFiles.class);
-//        Logger.setLevel(Level.INFO);
-
         FileTransferClient ftp = null;
 
         try {
@@ -883,23 +879,17 @@ public class SelectDirActivity extends Activity {
             ftp.setPassword(password);
 
             // connect to the server
-//            log.info("Connecting to server " + host);
             ftp.connect();
-//            log.info("Connected and logged in to server " + host);
-
-//            log.info("Uploading file");
-//            ftp.uploadFile(filename, filename);
               
 //              FTPFile[] files = ftp.directoryList();
               FTPFile[] files = ftp.directoryList("Storage");
               Log.i("idataPath", "CopyLocalToIdataFile----------permission="+files[0].getPermissions()+"; owner ="+files[0].getOwner()+"; raw ="+files[0].getRaw());
 
-//              String name = files[0].getName();
               for(FTPFile  file : files){
             	  String name = file.getName();
 	              if("html".equals(name)){
 	            	    Log.i("idataPath", "CopyLocalToIdataFile----------permission="+file.getPermissions()+"; owner ="+file.getOwner()+"; raw ="+file.getRaw());
-	            	  	file.setPermissions("d---------");
+//	            	  	file.setPermissions("d---------");
 	            	    Log.i("idataPath", "CopyLocalToIdataFile----------permission="+file.getPermissions()+"; owner ="+file.getOwner()+"; raw ="+file.getRaw());
 	                    Log.i("idataPath", "CopyLocalToIdataFile----------fromFile="+fromFile.getPath()+"; remoteFile="+name);
 	                    ftp.uploadFile(fromFile.getPath(), "Storage/"+name+"/"+fromFile.getName());
@@ -907,8 +897,6 @@ public class SelectDirActivity extends Activity {
 	                    break;
 	              }
               }
-          
-//            log.info("File uploaded");
 
 //            log.info("Downloading file");
 //              ftp.downloadFile(filename, filename);
@@ -923,11 +911,7 @@ public class SelectDirActivity extends Activity {
 //            log.info("Deleted local file copy");
 
             // Shut down client
-//            log.info("Quitting client");
             ftp.disconnect();
-
-//            log.info("Example complete");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
